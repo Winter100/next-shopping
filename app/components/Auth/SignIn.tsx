@@ -1,8 +1,37 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+
+interface LoginType {
+  email: string;
+  password: string;
+}
 
 export default function SignIn() {
+  const [userValue, setUserValue] = useState<LoginType>({
+    email: "",
+    password: "",
+  });
+
+  function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setUserValue({
+      ...userValue,
+      [e.target.name]: e.target.value,
+    });
+  }
+  async function signInHandler(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const repsonse = await signIn("credentials", {
+      redirect: false,
+      email: userValue.email,
+      password: userValue.password,
+    });
+
+    console.log(repsonse);
+  }
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -13,16 +42,18 @@ export default function SignIn() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={signInHandler}>
             <div>
               <label
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Email address
+                이메일
               </label>
               <div className="mt-2">
                 <input
+                  onChange={inputChangeHandler}
+                  value={userValue.email}
                   id="email"
                   name="email"
                   type="email"
@@ -39,7 +70,7 @@ export default function SignIn() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Password
+                  비밀번호
                 </label>
                 <div className="text-sm">
                   <a
@@ -52,6 +83,8 @@ export default function SignIn() {
               </div>
               <div className="mt-2">
                 <input
+                  value={userValue.password}
+                  onChange={inputChangeHandler}
                   id="password"
                   name="password"
                   type="password"
