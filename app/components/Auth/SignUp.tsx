@@ -14,14 +14,26 @@ export default function SignUp() {
     password: "",
     name: "",
   });
+  const [checkPassword, setCheckPassword] = useState("");
+  const [checkOutput, setCheckOutput] = useState("");
+
   function changeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setUserValue({
       ...userValue,
       [e.target.name]: e.target.value,
     });
   }
+
+  function checkPasswordHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setCheckPassword(e.target.value);
+  }
   async function signUpHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setCheckOutput("가입중...");
+
+    if (checkPassword !== userValue.password) {
+      return setCheckOutput("비밀번호가 서로 다릅니다");
+    }
 
     const data = checkUser(userValue);
 
@@ -33,6 +45,9 @@ export default function SignUp() {
     }
 
     const response = await MongoDbSignUp(userValue);
+    if (response.message !== "ok") {
+      setCheckOutput(response.message);
+    }
 
     if (response.message === "ok") {
       console.log("가입완료");
@@ -50,12 +65,20 @@ export default function SignUp() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={signUpHandler} className="space-y-6">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              이메일
-            </label>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                이메일
+              </label>
+              <div className="text-sm">
+                <button className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  이메일 중복 확인
+                </button>
+              </div>
+            </div>
+
             <div className="mt-2">
               <input
                 value={userValue.email}
@@ -64,6 +87,26 @@ export default function SignUp() {
                 name="email"
                 type="email"
                 autoComplete="email"
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              닉네임
+            </label>
+            <div className="mt-2">
+              <input
+                value={userValue.name}
+                onChange={changeHandler}
+                id="name"
+                name="name"
+                type="text"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -104,6 +147,8 @@ export default function SignUp() {
             </div>
             <div className="mt-2">
               <input
+                value={checkPassword}
+                onChange={checkPasswordHandler}
                 id="password2"
                 name="password2"
                 type="password"
@@ -115,23 +160,11 @@ export default function SignUp() {
           </div>
 
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              닉네임
-            </label>
-            <div className="mt-2">
-              <input
-                value={userValue.name}
-                onChange={changeHandler}
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
+            {checkOutput && (
+              <p className="text-center text-red-500 font-bold">
+                {checkOutput}
+              </p>
+            )}
           </div>
 
           <div>
@@ -144,7 +177,7 @@ export default function SignUp() {
           </div>
         </form>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
+        <p className="mt-10 text-center text-sm text-gray-600">
           <Link
             href="/auth/in"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"

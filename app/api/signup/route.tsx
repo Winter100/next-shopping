@@ -1,37 +1,55 @@
 "use server";
 
 import { hashPassword } from "@/lib/auth";
-import { connectDatabase } from "@/lib/db";
+import { checkEmail, checkName, connectDatabase } from "@/lib/db";
 import { User } from "@/type/type";
 
 async function MongoDbSignUp(req: User) {
-  const collectionName = "Shopping-User";
-
   const { email, name, password } = req;
+
+  if (
+    email.trim().length === 0 ||
+    !email.includes("@") ||
+    name.trim().length === 0 ||
+    !name ||
+    !password ||
+    password.trim().length === 0
+  ) {
+    return { message: "정보가 옳바르지 않습니다." };
+  }
+
+  const collectionName = "Shopping-User";
 
   const client = await connectDatabase();
 
-  const db = client.db();
+  try {
+    const db = client.db();
 
-  const existingUser = await db.collection(collectionName).findOne({
-    email: email,
-  });
+    const checkedEmail = await checkEmail(email);
+    const checkedName = await checkName(name);
 
-  if (existingUser) {
-    return { message: "이미 가입된 메일입니다." };
+    if (checkedEmail) {
+      return { message: checkedEmail.message };
+    }
+    if (checkedName) {
+      return { message: checkedName.message };
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    await db.collection(collectionName).insertOne({
+      email: email,
+      name: name,
+      password: hashedPassword,
+    });
+
+    return { message: "ok" };
+  } catch (error) {
+    console.log(error);
+    return { message: "에러발생!" };
+  } finally {
+    client.close();
   }
-
-  const hashedPassword = await hashPassword(password);
-
-  const result = await db.collection(collectionName).insertOne({
-    email: email,
-    name: name,
-    password: hashedPassword,
-  });
-
-  client.close();
-
-  return { message: "ok" };
 }
 
 export default MongoDbSignUp;
