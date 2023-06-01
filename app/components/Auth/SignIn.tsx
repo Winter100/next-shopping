@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface LoginType {
   email: string;
@@ -10,12 +11,12 @@ interface LoginType {
 }
 
 export default function SignIn() {
+  const router = useRouter();
   const [message, setMessage] = useState("");
   const [userValue, setUserValue] = useState<LoginType>({
     email: "",
     password: "",
   });
-
   function inputChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setUserValue({
       ...userValue,
@@ -25,21 +26,20 @@ export default function SignIn() {
   async function signInHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const repsonse = await signIn("credentials", {
+    const response = await signIn("credentials", {
       redirect: false,
       email: userValue.email,
       password: userValue.password,
     });
 
-    if (repsonse?.error) {
-      setMessage(repsonse.error);
+    if (response?.error) {
+      setMessage(response.error);
+    } else {
+      router.push("/");
     }
-
-    console.log(repsonse);
   }
   return (
     <>
-      <button onClick={() => signOut()}>로그아웃</button>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
