@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 interface LoginType {
   email: string;
@@ -10,6 +10,7 @@ interface LoginType {
 }
 
 export default function SignIn() {
+  const [message, setMessage] = useState("");
   const [userValue, setUserValue] = useState<LoginType>({
     email: "",
     password: "",
@@ -30,10 +31,15 @@ export default function SignIn() {
       password: userValue.password,
     });
 
+    if (repsonse?.error) {
+      setMessage(repsonse.error);
+    }
+
     console.log(repsonse);
   }
   return (
     <>
+      <button onClick={() => signOut()}>로그아웃</button>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -94,7 +100,7 @@ export default function SignIn() {
                 />
               </div>
             </div>
-
+            {message && <p>{message}</p>}
             <div>
               <button
                 type="submit"
