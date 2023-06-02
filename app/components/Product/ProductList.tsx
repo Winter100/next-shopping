@@ -1,8 +1,11 @@
+import Image from "next/image";
+import Link from "next/link";
+
 const products = [
   {
     id: 1,
     name: "Earthen Bottle",
-    href: "#",
+    href: `/product/detail/1`,
     price: "$48",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
@@ -12,7 +15,7 @@ const products = [
   {
     id: 2,
     name: "Nomad Tumbler",
-    href: "#",
+    href: "/product/detail",
     price: "$35",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg",
@@ -22,7 +25,7 @@ const products = [
   {
     id: 3,
     name: "Focus Paper Refill",
-    href: "#",
+    href: "/product/detail",
     price: "$89",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg",
@@ -32,7 +35,7 @@ const products = [
   {
     id: 4,
     name: "Machined Mechanical Pencil",
-    href: "#",
+    href: "/product/detail",
     price: "$35",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg",
@@ -50,11 +53,16 @@ export default function ProductList() {
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
-            <a key={product.id} href={product.href} className="group">
+            <Link
+              key={product.id}
+              href={`/product/detail/${product.id}`}
+              className="group"
+            >
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                <img
+                <Image
                   src={product.imageSrc}
                   alt={product.imageAlt}
+                  fill={true}
                   className="h-full w-full object-cover object-center group-hover:opacity-75"
                 />
               </div>
@@ -62,7 +70,7 @@ export default function ProductList() {
               <p className="mt-1 text-lg font-medium text-gray-900">
                 {product.price}
               </p>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

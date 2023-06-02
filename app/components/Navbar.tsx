@@ -1,13 +1,11 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
   const { data } = useSession();
 
   console.log("asdf", data);
@@ -17,7 +15,13 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
-    await signOut();
+    await signOut({ callbackUrl: `/` });
+  };
+
+  const handlerCloseMenu = () => {
+    if (isDropdownOpen) {
+      setIsDropdownOpen(false);
+    }
   };
 
   const handleSearch = () => {
@@ -27,7 +31,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-gray-800" onClick={handlerCloseMenu}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -82,16 +86,15 @@ export default function Navbar() {
                   href={"/auth/in"}
                   className="ml-4 px-3 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
                 >
-                  Log In
+                  로그인
                 </Link>
               ) : (
-                <Link
-                  href={"/"}
+                <button
                   onClick={handleLogout}
                   className="ml-4 px-3 py-2 rounded-md text-sm font-medium bg-red-500 text-white hover:bg-red-600 focus:outline-none"
                 >
-                  Log Out
-                </Link>
+                  로그아웃
+                </button>
               )}
               <div className="ml-4">
                 <div className="relative">

@@ -25,6 +25,7 @@ export default function SignIn() {
   }
   async function signInHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setMessage("로그인중...");
 
     const response = await signIn("credentials", {
       redirect: false,
@@ -37,6 +38,8 @@ export default function SignIn() {
     } else {
       router.push("/");
     }
+
+    return;
   }
   return (
     <>
@@ -100,7 +103,9 @@ export default function SignIn() {
                 />
               </div>
             </div>
-            {message && <p>{message}</p>}
+            {message && (
+              <p className="text-center text-red-500 font-bold">{message}</p>
+            )}
             <div>
               <button
                 type="submit"
