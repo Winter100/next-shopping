@@ -1,6 +1,15 @@
 import Image from "next/image";
 
-export default function ProductDetail() {
+interface Props {
+  title: string;
+  imgsrc: string;
+  description: string;
+  seller: string;
+  options: string;
+  price: number;
+}
+
+export default function ProductDetail({}) {
   // /product/page.tsx에서 프롭스로 디테일 데이터 내려주기
 
   return (

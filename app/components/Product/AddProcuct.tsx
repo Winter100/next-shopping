@@ -7,22 +7,9 @@ export default function AddProcuct() {
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState(0);
 
-  const handleTitleChange = (e: any) => {
-    setTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e: any) => {
-    setDescription(e.target.value);
-  };
-
   function priceChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setPrice(Number(e.target.value));
   }
-
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    setImage(file);
-  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -33,12 +20,27 @@ export default function AddProcuct() {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
+    <form className="container mx-auto py-8 ">
+      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8 h-full">
         <div className="flex flex-col md:flex-row">
-          <div className="md:w-1/2 border-2">
-            <div className="border-2">이미지 자리</div>
+          <div className="md:w-[528px] md:mr-8">
+            <div className="border-2 h-[792px]">이미지 자리</div>
+            <div className="text-center mt-2 ">
+              <input
+                type="file"
+                className="hidden"
+                id="mainImage"
+                accept="image/*"
+              />
+              <label
+                htmlFor="mainImage"
+                className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold "
+              >
+                대표 이미지 업로드
+              </label>
+            </div>
           </div>
+
           <div className="md:w-1/2 md:ml-8">
             <div className="text-4xl font-semibold text-gray-800 mb-3 text-center mb-10">
               <label className="block font-bold mb-1" htmlFor="title">
@@ -59,7 +61,7 @@ export default function AddProcuct() {
               <table>
                 <tbody>
                   <tr>
-                    <td className="font-semibold w-1/4">흥정여부</td>
+                    <td className="font-semibold text-sm w-1/4">흥정여부</td>
                     <td>
                       <select
                         name="bargaining"
@@ -76,7 +78,7 @@ export default function AddProcuct() {
                     </td>
                   </tr>
                   <tr>
-                    <td className="font-semibold">직거래</td>
+                    <td className="font-semibold text-sm w-1/4">직거래</td>
                     <td>
                       <select
                         name="isMeet"
@@ -93,7 +95,7 @@ export default function AddProcuct() {
                     </td>
                   </tr>
                   <tr>
-                    <td className="font-semibold">지역</td>
+                    <td className="font-semibold text-sm w-1/4">지역선택</td>
                     <td>
                       <select
                         name="random"
@@ -109,7 +111,7 @@ export default function AddProcuct() {
                   </tr>
 
                   <tr>
-                    <td className="font-semibold">가격</td>
+                    <td className=" font-semibold text-sm w-1/4">희망가격</td>
                     <td>
                       <input
                         onChange={priceChangeHandler}
@@ -128,14 +130,21 @@ export default function AddProcuct() {
           </div>
         </div>
 
-        <div className="mt-10">제품 다른 사진들</div>
+        <div className="mt-10">
+          <label htmlFor="description" className="block text-center text-2xl">
+            설명
+          </label>
+          <textarea
+            id="description"
+            className="resize-none w-full h-[600px] "
+          ></textarea>
+        </div>
+        <div className="text-center">
+          <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
+            등록하기
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   );
-}
-
-{
-  /* <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
-구매하기
-</button> */
 }
