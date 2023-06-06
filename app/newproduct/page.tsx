@@ -1,5 +1,5 @@
 import { myGetServerSession } from "@/lib/getSession";
-import AddProcuct from "../components/Product/AddProcuct";
+import AddProcuct from "../components/Product/Addproduct";
 
 export default async function NewproductPage() {
   const session = await myGetServerSession();
