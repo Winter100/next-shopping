@@ -8,8 +8,6 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const { data } = useSession();
 
-  console.log("asdf", data);
-
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };

@@ -9,7 +9,7 @@ interface Props {
   price: number;
 }
 
-export default function ProductDetail({}) {
+export default function ProductDetail() {
   // /product/page.tsx에서 프롭스로 디테일 데이터 내려주기
 
   return (

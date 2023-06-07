@@ -1,40 +1,86 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import Image from "next/image";
+
+import { ProductsType } from "@/app/page";
+import { POST } from "@/app/api/addproducts/route";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function AddProcuct() {
+  const [image, setImage] = useState<string | null>(null);
+  const [price, setPrice] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
-  const [price, setPrice] = useState(0);
 
+  const { status, data } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("auth/in");
+    },
+  });
+
+  function titleChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setTitle(e.target.value);
+  }
   function priceChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setPrice(Number(e.target.value));
   }
+  function descriptionChangeHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setDescription(e.target.value);
+  }
 
-  const handleSubmit = (e: any) => {
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const image = reader.result as string;
+        setImage(image);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage(null);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // 여기에서 제품 등록 처리 로직을 구현합니다.
-    // 제목: title
-    // 설명: description
-    // 이미지: image
-  };
+
+    const addData = {
+      title,
+      description,
+      price,
+      imageSrc: image,
+      email: data?.user?.email,
+      name: data?.user?.name,
+    };
+
+    await POST(addData);
+  }
 
   return (
-    <form className="container mx-auto py-8 ">
+    <form className="container mx-auto py-8" onSubmit={handleSubmit}>
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8 h-full">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-[528px] md:mr-8">
-            <div className="border-2 h-[792px]">이미지 자리</div>
+            <div className="border-2 h-[792px]">
+              {image && (
+                <Image src={image} alt="이미지" width={400} height={300} />
+              )}
+            </div>
             <div className="text-center mt-2 ">
               <input
                 type="file"
                 className="hidden"
                 id="mainImage"
                 accept="image/*"
+                onChange={handleImageChange}
+                name="imageSrc"
               />
               <label
                 htmlFor="mainImage"
-                className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold "
+                className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold"
               >
                 대표 이미지 업로드
               </label>
@@ -47,6 +93,8 @@ export default function AddProcuct() {
                 제품명
               </label>
               <input
+                onChange={titleChangeHandler}
+                value={title}
                 id="title"
                 name="title"
                 type="text"
@@ -64,6 +112,7 @@ export default function AddProcuct() {
                     <td className="font-semibold text-sm w-1/4">흥정여부</td>
                     <td>
                       <select
+                        defaultValue={"no"}
                         name="bargaining"
                         className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       >
@@ -71,9 +120,7 @@ export default function AddProcuct() {
                           -- 선택 --
                         </option>
                         <option value="yes">가능</option>
-                        <option value="no" selected>
-                          불가능
-                        </option>
+                        <option value="no">불가능</option>
                       </select>
                     </td>
                   </tr>
@@ -81,6 +128,7 @@ export default function AddProcuct() {
                     <td className="font-semibold text-sm w-1/4">직거래</td>
                     <td>
                       <select
+                        defaultValue={"no"}
                         name="isMeet"
                         className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       >
@@ -88,9 +136,7 @@ export default function AddProcuct() {
                           -- 선택 --
                         </option>
                         <option value="yes">가능</option>
-                        <option value="no" selected>
-                          불가능
-                        </option>
+                        <option value="no">불가능</option>
                       </select>
                     </td>
                   </tr>
@@ -115,7 +161,9 @@ export default function AddProcuct() {
                     <td>
                       <input
                         onChange={priceChangeHandler}
+                        value={price}
                         type="number"
+                        name="price"
                         className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
                       />
                     </td>
@@ -135,9 +183,12 @@ export default function AddProcuct() {
             설명
           </label>
           <textarea
+            onChange={descriptionChangeHandler}
+            value={description}
+            name="description"
             id="description"
             className="resize-none w-full h-[600px] "
-          ></textarea>
+          />
         </div>
         <div className="text-center">
           <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
