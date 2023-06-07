@@ -109,9 +109,10 @@ export default function ProductList({
                   className="w-full object-cover object-center group-hover:opacity-75"
                 />
               </div>
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+              <h3 className="mt-4 text-sm text-gray-700">{product.title}</h3>
+              <span>{`${product.name}`}</span>
               <p className="mt-1 text-lg font-medium text-gray-900">
-                {product.price}
+                {product.price}원
               </p>
             </Link>
           ))}

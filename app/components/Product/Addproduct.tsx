@@ -1,8 +1,7 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
-import { ProductsType } from "@/app/page";
 import { POST } from "@/app/api/addproducts/route";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -11,6 +10,12 @@ export default function AddProcuct() {
   const [image, setImage] = useState<string | null>(null);
   const [price, setPrice] = useState(0);
   const [title, setTitle] = useState("");
+  const [selectedValue, setSelectedValue] = useState({
+    random: "yes",
+    isMeet: "yes",
+    bargaining: "yes",
+  });
+
   const [description, setDescription] = useState("");
 
   const { status, data } = useSession({
@@ -20,6 +25,13 @@ export default function AddProcuct() {
     },
   });
 
+  function selectedChangeHandler(e: React.ChangeEvent<HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setSelectedValue({
+      ...selectedValue,
+      [name]: value,
+    });
+  }
   function titleChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value);
   }
@@ -47,10 +59,23 @@ export default function AddProcuct() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (
+      !image ||
+      !title ||
+      !price ||
+      !description ||
+      title.trim().length === 0 ||
+      description.trim().length === 0 ||
+      data?.user === null
+    ) {
+      return;
+    }
+
     const addData = {
       title,
       description,
       price,
+      selectedValue,
       imageSrc: image,
       email: data?.user?.email,
       name: data?.user?.name,
@@ -94,6 +119,7 @@ export default function AddProcuct() {
               </label>
               <input
                 onChange={titleChangeHandler}
+                required
                 value={title}
                 id="title"
                 name="title"
@@ -112,7 +138,8 @@ export default function AddProcuct() {
                     <td className="font-semibold text-sm w-1/4">흥정여부</td>
                     <td>
                       <select
-                        defaultValue={"no"}
+                        onChange={selectedChangeHandler}
+                        value={selectedValue.bargaining}
                         name="bargaining"
                         className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       >
@@ -128,7 +155,8 @@ export default function AddProcuct() {
                     <td className="font-semibold text-sm w-1/4">직거래</td>
                     <td>
                       <select
-                        defaultValue={"no"}
+                        onChange={selectedChangeHandler}
+                        value={selectedValue.isMeet}
                         name="isMeet"
                         className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       >
@@ -144,6 +172,8 @@ export default function AddProcuct() {
                     <td className="font-semibold text-sm w-1/4">지역선택</td>
                     <td>
                       <select
+                        value={selectedValue.random}
+                        onChange={selectedChangeHandler}
                         name="random"
                         className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       >
@@ -161,6 +191,7 @@ export default function AddProcuct() {
                     <td>
                       <input
                         onChange={priceChangeHandler}
+                        required
                         value={price}
                         type="number"
                         name="price"
@@ -183,6 +214,7 @@ export default function AddProcuct() {
             설명
           </label>
           <textarea
+            required
             onChange={descriptionChangeHandler}
             value={description}
             name="description"
