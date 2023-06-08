@@ -88,7 +88,7 @@ export default function AddProcuct() {
 
     console.log("response", response);
     if (response.status === 201) {
-      router.push("/");
+      window.location.href = "/";
     } else {
       setMessage("잠시 후 다시 시도해주세요.");
     }
