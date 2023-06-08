@@ -1,17 +1,6 @@
 import Image from "next/image";
 
-interface Props {
-  title: string;
-  imgsrc: string;
-  description: string;
-  seller: string;
-  options: string;
-  price: number;
-}
-
 export default function ProductDetail() {
-  // /product/page.tsx에서 프롭스로 디테일 데이터 내려주기
-
   return (
     <div className="container mx-auto py-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">

@@ -1,20 +1,31 @@
 import { myGetServerSession } from "@/lib/getSession";
 import ProductList from "./components/Product/ProductList";
+import GET from "./api/allproducts/route";
 
 export interface ProductsType {
+  _id: string;
   title: string;
-  id: string;
-  imageSrc: string;
-  price: string;
-  name: string;
   description: string;
+  price: number;
+  selectedValue: {
+    random: string;
+    isMeet: string;
+    bargaining: string;
+  };
+  imageSrc: string;
+  email: string | null | undefined;
+  name: string | null | undefined;
+  date: {
+    year: number;
+    month: number;
+    day: number;
+  };
 }
 
 export default async function Home() {
-  const data = await getData();
+  const data: any = await getData();
 
   const session = myGetServerSession();
-  console.log(session);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -24,24 +35,7 @@ export default async function Home() {
 }
 
 async function getData() {
-  const response = await fetch(
-    "https://react-post-c4178-default-rtdb.firebaseio.com/shopping/products.json",
-    { cache: "no-store" }
-  );
-  const newArr: ProductsType[] = [];
+  const response = await GET();
 
-  const data = await response.json();
-
-  for (const key in data) {
-    newArr.push({
-      title: data[key].title,
-      id: data[key].id,
-      imageSrc: data[key].imageSrc,
-      name: data[key].name,
-      price: data[key].price,
-      description: data[key].description,
-    });
-  }
-
-  return newArr;
+  return response;
 }

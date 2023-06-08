@@ -1,56 +1,46 @@
-interface PostType {
+"use server";
+import { connectDatabase } from "@/lib/db";
+
+export interface AddProductsType {
   title: string;
   description: string;
   price: number;
-  imageSrc: string | null;
-  email: string | null | undefined;
-  name: string | null | undefined;
   selectedValue: {
     random: string;
     isMeet: string;
     bargaining: string;
   };
+  imageSrc: string;
+  email: string | null | undefined;
+  name: string | null | undefined;
 }
 
-export async function POST(item: PostType) {
-  //Date 서버 타임스탬프로 바꾸기
-  const currentDate = new Date();
+export default async function MongoDbAddProducts(req: AddProductsType) {
+  const collectionName = "Shopping-All-Products";
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;
-  const day = currentDate.getDate();
-  const hour = currentDate.getHours();
-  const minute = currentDate.getMinutes();
-
-  const date = {
-    year,
-    month,
-    day,
-    hour,
-    minute,
-  };
+  const client = await connectDatabase();
 
   const { v4: uuidv4 } = require("uuid");
   const id = uuidv4();
-  if (!item) {
-    return { message: "제품정보 또는 로그인이 필요합니다." };
+  const date = Date.now();
+
+  // const { title, description, price, imageSrc, email, name, selectedValue } =
+  //   req;
+
+  try {
+    const db = client.db();
+
+    const response = await db.collection(collectionName).insertOne({
+      _id: id,
+      date: date,
+      ...req,
+    });
+
+    return { status: 201, message: "등록성공" };
+  } catch (error) {
+    console.log(error);
+    return { message: "에러발생!" };
+  } finally {
+    client.close();
   }
-  const setItem = {
-    ...item,
-    id,
-    date,
-  };
-
-  const response = await fetch(
-    "https://react-post-c4178-default-rtdb.firebaseio.com/shopping/products.json",
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(setItem),
-    }
-  );
-
-  const data = response.json();
 }

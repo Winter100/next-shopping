@@ -2,11 +2,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-import { POST } from "@/app/api/addproducts/route";
+import MongoDbAddProducts from "@/app/api/addproducts/route";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function AddProcuct() {
+  const [message, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [price, setPrice] = useState(0);
   const [title, setTitle] = useState("");
@@ -18,6 +19,7 @@ export default function AddProcuct() {
 
   const [description, setDescription] = useState("");
 
+  const router = useRouter();
   const { status, data } = useSession({
     required: true,
     onUnauthenticated() {
@@ -58,6 +60,7 @@ export default function AddProcuct() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setMessage("등록중...");
 
     if (
       !image ||
@@ -81,7 +84,14 @@ export default function AddProcuct() {
       name: data?.user?.name,
     };
 
-    await POST(addData);
+    const response = await MongoDbAddProducts(addData);
+
+    console.log("response", response);
+    if (response.status === 201) {
+      router.push("/");
+    } else {
+      setMessage("잠시 후 다시 시도해주세요.");
+    }
   }
 
   return (
@@ -226,6 +236,7 @@ export default function AddProcuct() {
           <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
             등록하기
           </button>
+          <p>{message}</p>
         </div>
       </div>
     </form>
