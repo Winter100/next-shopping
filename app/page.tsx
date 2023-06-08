@@ -3,7 +3,7 @@ import ProductList from "./components/Product/ProductList";
 import GET from "./api/allproducts/route";
 
 export interface ProductsType {
-  _id: string;
+  _id: any;
   title: string;
   description: string;
   price: number;
