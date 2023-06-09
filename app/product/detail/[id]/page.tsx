@@ -1,5 +1,6 @@
 import DetailProductsData from "@/app/api/[detailproducts]/route";
 import ProductDetail from "@/app/components/Product/ProductDetail";
+import TestProductDetail from "@/app/components/Product/testProductDetail";
 
 export default async function ProductDetailPage({
   params,
@@ -12,6 +13,7 @@ export default async function ProductDetailPage({
   return (
     <div>
       <ProductDetail data={data} />
+      {/* <TestProductDetail /> */}
     </div>
   );
 }
