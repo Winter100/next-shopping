@@ -73,7 +73,13 @@ export default function Navbar() {
                         href="/newproduct"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        제품 올리기
+                        물건 팔기
+                      </Link>
+                      <Link
+                        href="/profile/myproducts"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        내 판매 목록
                       </Link>
                     </div>
                   </div>
