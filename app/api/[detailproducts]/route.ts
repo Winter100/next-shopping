@@ -38,7 +38,6 @@ export default async function DetailProductsData(params: any) {
     };
     return data;
   } catch (error) {
-    console.error("데이터 조회 오류:", error);
     throw new Error("데이터 조회 중에 오류가 발생했습니다.");
   }
 }

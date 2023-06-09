@@ -6,18 +6,17 @@ import MongoDbAddProducts from "@/app/api/addproducts/route";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 
-export default function AddProcuct() {
+export default function AddProcuct({ editData = "" }: { editData: any }) {
   const [message, setMessage] = useState("");
-  const [image, setImage] = useState<string | null>(null);
-  const [price, setPrice] = useState(0);
-  const [title, setTitle] = useState("");
+  const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
+  const [price, setPrice] = useState(editData?.price || 0);
+  const [title, setTitle] = useState(editData?.title || "");
   const [selectedValue, setSelectedValue] = useState({
-    random: "yes",
-    isMeet: "yes",
-    bargaining: "yes",
+    random: editData?.selectedValue?.random || "yes",
+    isMeet: editData?.selectedValue?.isMeet || "yes",
+    bargaining: editData?.selectedValue?.bargaining || "yes",
   });
-
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(editData?.description || "");
 
   const router = useRouter();
   const { status, data } = useSession({
