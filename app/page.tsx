@@ -1,4 +1,4 @@
-import { myGetServerSession } from "@/lib/getSession";
+// import { myGetServerSession } from "@/lib/getSession";
 import ProductList from "./components/Product/ProductList";
 import GET from "./api/allproducts/route";
 
@@ -23,9 +23,10 @@ export interface ProductsType {
 }
 
 export default async function Home() {
-  const data: any = await getData();
+  // const data: any = await getData();
+  // const session = myGetServerSession();
 
-  const session = myGetServerSession();
+  const data: any = await GET();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -34,8 +35,8 @@ export default async function Home() {
   );
 }
 
-async function getData() {
-  const response = await GET();
+// async function getData() {
+//   const response = await GET();
 
-  return response;
-}
+//   return response;
+// }
