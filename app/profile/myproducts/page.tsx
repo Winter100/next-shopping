@@ -1,6 +1,5 @@
 import GetMyProductItems from "@/app/api/myproducts/route";
 import MyProductsList from "@/app/components/Product/MyProductsList";
-import { myGetServerSession } from "@/lib/getSession";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,8 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function MyProductsPage() {
-  // const session = await myGetServerSession();
-
   const data: any = await GetMyProductItems();
 
   return <MyProductsList products={data} />;

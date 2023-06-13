@@ -6,7 +6,7 @@ export default async function NewproductPage() {
 
   return (
     <div>
-      <AddProcuct editData={null} />;
+      <AddProcuct editData={null} method="POST" />;
     </div>
   );
 }

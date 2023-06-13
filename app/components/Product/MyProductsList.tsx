@@ -63,7 +63,7 @@ export default function MyProductsList({
   return (
     <div className="container mx-auto px-4 py-8 mt-8">
       <h1 className="text-3xl font-bold mb-8">내가 올린 물건</h1>
-      {products.length > 0 ? (
+      {products?.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <li key={product._id} className="bg-white shadow-lg rounded-lg p-4">

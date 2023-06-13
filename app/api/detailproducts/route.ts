@@ -6,8 +6,8 @@ import { ProductsType } from "@/type/type";
 export default async function DetailProductsData(params: any) {
   const collectionName = "Shopping-All-Products";
 
+  const client = await connectDatabase();
   try {
-    const client = await connectDatabase();
     const db = client.db();
     const response = await db
       .collection(collectionName)
@@ -38,6 +38,9 @@ export default async function DetailProductsData(params: any) {
     };
     return data;
   } catch (error) {
-    throw new Error("데이터 조회 중에 오류가 발생했습니다.");
+    console.log("e", error);
+    return;
+  } finally {
+    client.close();
   }
 }

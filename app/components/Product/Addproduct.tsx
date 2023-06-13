@@ -5,8 +5,14 @@ import Image from "next/image";
 import MongoDbAddProducts from "@/app/api/addproducts/route";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
+import MongoDbEditProducts from "@/app/api/editproducts/route";
 
-export default function AddProcuct({ editData = "" }: { editData: any }) {
+interface AddProductProps {
+  editData: any;
+  method: string;
+}
+
+export default function AddProcuct({ editData = "", method }: AddProductProps) {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
   const [price, setPrice] = useState(editData?.price || 0);
@@ -73,19 +79,32 @@ export default function AddProcuct({ editData = "" }: { editData: any }) {
       return;
     }
 
-    const addData = {
-      title,
-      description,
-      price,
-      selectedValue,
-      imageSrc: image,
-      email: data?.user?.email,
-      name: data?.user?.name,
-    };
+    let response;
 
-    const response = await MongoDbAddProducts(addData);
+    if (method === "POST") {
+      const addData = {
+        title,
+        description,
+        price,
+        selectedValue,
+        imageSrc: image,
+        email: data?.user?.email,
+        name: data?.user?.name,
+      };
 
-    console.log("response", response);
+      response = await MongoDbAddProducts(addData);
+    } else if (method === "PATCH") {
+      const PatchData = {
+        title,
+        description,
+        price,
+        selectedValue,
+        imageSrc: image,
+        _id: editData._id,
+      };
+      response = await MongoDbEditProducts(PatchData);
+    }
+
     if (response.status === 201) {
       window.location.href = "/";
     } else {
