@@ -19,7 +19,7 @@ export default function Error({
     return () => {
       clearTimeout(timeoutId); // 컴포넌트가 언마운트되면 타이머를 클리어합니다.
     };
-  }, []);
+  }, [router]);
 
   return <p>알 수 없는 오류가 발생했습니다. 잠시 후 HOME으로 이동 됩니다.</p>;
 }
