@@ -1,6 +1,8 @@
 "use server";
+
 import { hashPassword } from "@/lib/auth";
 import { checkEmail, checkName, connectDatabase } from "@/lib/db";
+
 import { User } from "@/type/type";
 
 export default async function MongoDbSignUp(req: User) {

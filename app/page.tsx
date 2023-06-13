@@ -1,6 +1,5 @@
-// import { myGetServerSession } from "@/lib/getSession";
-import ProductList from "./components/Product/ProductList";
 import GET from "./api/allproducts/route";
+import ProductList from "./components/Product/ProductList";
 
 export interface ProductsType {
   _id: any;
@@ -23,9 +22,6 @@ export interface ProductsType {
 }
 
 export default async function Home() {
-  // const data: any = await getData();
-  // const session = myGetServerSession();
-
   const data: any = await GET();
 
   return (
@@ -34,9 +30,3 @@ export default async function Home() {
     </main>
   );
 }
-
-// async function getData() {
-//   const response = await GET();
-
-//   return response;
-// }
