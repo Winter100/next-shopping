@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MyProductsPage() {
-  const session = await myGetServerSession();
+  // const session = await myGetServerSession();
 
   const data: any = await GetMyProductItems();
 

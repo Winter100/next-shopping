@@ -21,14 +21,11 @@ export default async function MongoDbAddProducts(req: AddProductsType) {
 
   const client = await connectDatabase();
 
-  const { v4: uuidv4 } = require("uuid");
-  const id = uuidv4();
-  const date = Date.now();
-
-  // const { title, description, price, imageSrc, email, name, selectedValue } =
-  //   req;
-
   try {
+    const { v4: uuidv4 } = require("uuid");
+    const id = uuidv4();
+    const date = Date.now();
+
     const db = client.db();
 
     const response = await db.collection(collectionName).insertOne({

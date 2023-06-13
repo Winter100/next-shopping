@@ -1,4 +1,4 @@
-import { ProductsType } from "@/app/page";
+import { ProductsType } from "@/type/type";
 import Image from "next/image";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import DetailProductsData from "@/app/api/[detailproducts]/route";
+import DetailProductsData from "@/app/api/detailproducts/route";
 import ProductDetail from "@/app/components/Product/ProductDetail";
 
 export default async function ProductDetailPage({

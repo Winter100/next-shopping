@@ -1,7 +1,7 @@
 "use server";
 
-import { ProductsType } from "@/app/page";
 import { connectDatabase } from "@/lib/db";
+import { ProductsType } from "@/type/type";
 
 export default async function DetailProductsData(params: any) {
   const collectionName = "Shopping-All-Products";

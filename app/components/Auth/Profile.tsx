@@ -146,20 +146,3 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
     </div>
   );
 }
-
-// import { redirect } from "next/navigation";
-// import { useSession } from "next-auth/react";
-
-// const { status, data } = useSession({
-//   required: true,
-//   onUnauthenticated() {
-//     redirect("/auth/in");
-//   },
-// });
-
-// if (status === "loading") {
-//   return <p>Loading....</p>;
-// }
-
-// const email = data?.user?.email;
-// const name = data?.user?.name;

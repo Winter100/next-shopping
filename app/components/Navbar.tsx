@@ -44,6 +44,12 @@ export default function Navbar() {
                 >
                   Home
                 </Link>
+                <Link
+                  href="/allproducts"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  상품리스트
+                </Link>
               </div>
             </div>
           </div>
