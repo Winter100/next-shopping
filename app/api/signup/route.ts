@@ -1,28 +1,27 @@
 "use server";
-
 import { hashPassword } from "@/lib/auth";
 import { checkEmail, checkName, connectDatabase } from "@/lib/db";
 import { User } from "@/type/type";
 
-async function MongoDbSignUp(req: User) {
-  const { email, name, password } = req;
-
-  if (
-    email.trim().length === 0 ||
-    !email.includes("@") ||
-    name.trim().length === 0 ||
-    !name ||
-    !password ||
-    password.trim().length === 0
-  ) {
-    return { message: "정보가 옳바르지 않습니다." };
-  }
-
-  const collectionName = "Shopping-User";
-
+export default async function MongoDbSignUp(req: User) {
   const client = await connectDatabase();
 
   try {
+    const { email, name, password } = req;
+
+    if (
+      email.trim().length === 0 ||
+      !email.includes("@") ||
+      name.trim().length === 0 ||
+      !name ||
+      !password ||
+      password.trim().length === 0
+    ) {
+      return { message: "정보가 옳바르지 않습니다." };
+    }
+
+    const collectionName = "Shopping-User";
+
     const db = client.db();
 
     const checkedEmail = await checkEmail(email);
@@ -51,5 +50,3 @@ async function MongoDbSignUp(req: User) {
     client.close();
   }
 }
-
-export default MongoDbSignUp;

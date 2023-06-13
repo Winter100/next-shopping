@@ -4,8 +4,8 @@ import { User } from "@/type/type";
 import Link from "next/link";
 import { useState } from "react";
 import { checkUser } from "./use/check-user";
-import MongoDbSignUp from "@/app/api/signup/route";
 import { useRouter } from "next/navigation";
+import MongoDbSignUp from "@/app/api/signup/route";
 
 export default function SignUp() {
   const router = useRouter();
