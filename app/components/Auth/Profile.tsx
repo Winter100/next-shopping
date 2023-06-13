@@ -38,10 +38,12 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
       oldPassword: password.oldPassword,
       newPassword: password.newPassword,
     };
-    const response = await ChangePassword(passwordData);
+    const response = await ChangePassword(passwordData, userInfo);
 
-    // const data = await response.json();
-    // console.log("data", data);
+    if (response.message.acknowledged) {
+      return setMessage("비밀번호가 변경되었습니다.");
+    }
+    return;
   }
 
   return (

@@ -1,30 +1,68 @@
 "use server";
 
+import { hashPassword, verifyPassword } from "@/lib/auth";
 import { connectDatabase } from "@/lib/db";
-import { myGetServerSession } from "@/lib/getSession";
 
 interface PasswordType {
   oldPassword: string;
   newPassword: string;
 }
 
-export default async function ChangePassword(req: PasswordType) {
-  console.log(req);
-  const collectionName = "Shopping-All-Products";
+interface userInfoType {
+  email: string;
+  name: string;
+}
 
-  const session = await myGetServerSession();
+export default async function ChangePassword(
+  req: PasswordType,
+  userInfo: userInfoType
+) {
+  const { newPassword, oldPassword } = req;
+  const userEmail = userInfo.email;
 
-  const myEmail = session.user.email;
+  if (
+    !newPassword ||
+    !oldPassword ||
+    newPassword.trim().length <= 6 ||
+    oldPassword.trim().length <= 6 ||
+    !userEmail
+  ) {
+    return;
+  }
 
-  // try {
-  //   const client = await connectDatabase();
-  //   const db = client.db();
-  //   const query = { email: myEmail };
+  try {
+    const collectionName = "Shopping-User";
 
-  //   const response = await db.collection(collectionName).find(query).toArray();
+    const client = await connectDatabase();
+    const db = client.db();
+    const query = { email: userEmail };
 
-  //   return response;
-  // } catch (error) {
-  //   console.log(error);
-  // }
+    const user = await db.collection(collectionName).findOne(query);
+
+    if (!user) {
+      client.close();
+      return { Message: "존재하지 않는 회원입니다." };
+    }
+
+    const currentPassword = user.password;
+    const passwordsAreEqual = await verifyPassword(
+      oldPassword,
+      currentPassword
+    );
+
+    if (!passwordsAreEqual) {
+      client.close();
+      return { Message: "입력한 비밀번호가 다릅니다." };
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    const result = await db
+      .collection(collectionName)
+      .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
+
+    return { message: result };
+  } catch (error) {
+    console.log(error);
+  }
 }
