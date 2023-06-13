@@ -1,13 +1,12 @@
 "use server";
 
 import { connectDatabase } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { myGetServerSession } from "@/lib/getSession";
 
 export default async function GetMyProductItems() {
   const collectionName = "Shopping-All-Products";
 
-  const session = await getServerSession(authOptions);
+  const session = await myGetServerSession();
 
   const myEmail = session.user.email;
 

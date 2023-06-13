@@ -1,4 +1,5 @@
 "use server";
+
 import { connectDatabase } from "@/lib/db";
 
 export interface AddProductsType {
