@@ -30,10 +30,10 @@ export default async function ChangePassword(
     return;
   }
 
+  const client = await connectDatabase();
   try {
     const collectionName = "Shopping-User";
 
-    const client = await connectDatabase();
     const db = client.db();
     const query = { email: userEmail };
 
@@ -64,5 +64,7 @@ export default async function ChangePassword(
     return { message: result };
   } catch (error) {
     console.log(error);
+  } finally {
+    client.close();
   }
 }

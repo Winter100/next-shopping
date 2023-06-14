@@ -5,8 +5,8 @@ import { connectDatabase } from "@/lib/db";
 export default async function GET() {
   const collectionName = "Shopping-All-Products";
 
+  const client = await connectDatabase();
   try {
-    const client = await connectDatabase();
     const db = client.db();
     const projection = {
       title: 1,
@@ -36,9 +36,12 @@ export default async function GET() {
         imageSrc: item.imageSrc,
       };
     });
+
     return transFormedData;
   } catch (error) {
     console.error("데이터 조회 오류:", error);
-    throw new Error("데이터 조회 중에 오류가 발생했습니다.");
+    return;
+  } finally {
+    client.close();
   }
 }

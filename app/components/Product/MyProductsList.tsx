@@ -1,6 +1,9 @@
+"use client";
 import { ProductsType } from "@/type/type";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import Modal from "../Btn/DeleteModeal";
 
 export default function MyProductsList({
   products,
@@ -60,6 +63,14 @@ export default function MyProductsList({
   //   },
   // ];
 
+  const [isModal, setIsModal] = useState(false);
+  const [modalId, setModalId] = useState<string | null>(null);
+
+  function deleteHandler(id: string) {
+    setIsModal(true);
+    setModalId(id);
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 mt-8">
       <h1 className="text-3xl font-bold mb-8">내가 올린 물건</h1>
@@ -67,6 +78,9 @@ export default function MyProductsList({
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <li key={product._id} className="bg-white shadow-lg rounded-lg p-4">
+              {modalId === product._id && isModal && (
+                <Modal setIsModal={setIsModal} id={modalId} />
+              )}
               <Image
                 src={product.imageSrc}
                 alt={product.title}
@@ -90,6 +104,12 @@ export default function MyProductsList({
                 >
                   수정
                 </Link>
+                <button
+                  onClick={() => deleteHandler(product._id)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                >
+                  삭제
+                </button>
               </div>
             </li>
           ))}
