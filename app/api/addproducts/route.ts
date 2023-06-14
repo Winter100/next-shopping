@@ -1,5 +1,6 @@
 "use server";
 
+import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 
 export interface AddProductsType {
@@ -17,8 +18,6 @@ export interface AddProductsType {
 }
 
 export default async function MongoDbAddProducts(req: AddProductsType) {
-  const collectionName = "Shopping-All-Products";
-
   const client = await connectDatabase();
 
   try {
@@ -28,7 +27,7 @@ export default async function MongoDbAddProducts(req: AddProductsType) {
 
     const db = client.db();
 
-    const response = await db.collection(collectionName).insertOne({
+    const response = await db.collection(collectionAllProducts).insertOne({
       _id: id,
       date: date,
       ...req,

@@ -1,6 +1,7 @@
 "use server";
 
 import { hashPassword, verifyPassword } from "@/lib/auth";
+import { collectionUsers } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 
 interface PasswordType {
@@ -32,12 +33,10 @@ export default async function ChangePassword(
 
   const client = await connectDatabase();
   try {
-    const collectionName = "Shopping-User";
-
     const db = client.db();
     const query = { email: userEmail };
 
-    const user = await db.collection(collectionName).findOne(query);
+    const user = await db.collection(collectionUsers).findOne(query);
 
     if (!user) {
       client.close();
@@ -58,7 +57,7 @@ export default async function ChangePassword(
     const hashedPassword = await hashPassword(newPassword);
 
     const result = await db
-      .collection(collectionName)
+      .collection(collectionUsers)
       .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
 
     return { message: result };

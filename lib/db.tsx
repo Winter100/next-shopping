@@ -1,5 +1,6 @@
 "use server";
 import { MongoClient } from "mongodb";
+import { collectionName } from "./collectionName";
 
 export async function connectDatabase() {
   const client = await MongoClient.connect(
@@ -9,8 +10,6 @@ export async function connectDatabase() {
 }
 
 export async function checkEmail(checkValue: string) {
-  const collectionName = "Shopping-User";
-
   const client = await connectDatabase();
   const db = client.db();
 
@@ -26,8 +25,6 @@ export async function checkEmail(checkValue: string) {
 }
 
 export async function checkName(checkValue: string) {
-  const collectionName = "Shopping-User";
-
   const client = await connectDatabase();
   const db = client.db();
 

@@ -1,16 +1,15 @@
 "use server";
 
+import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 import { ProductsType } from "@/type/type";
 
 export default async function DetailProductsData(params: any) {
-  const collectionName = "Shopping-All-Products";
-
   const client = await connectDatabase();
   try {
     const db = client.db();
     const response = await db
-      .collection(collectionName)
+      .collection(collectionAllProducts)
       .findOne({ _id: params });
 
     const {

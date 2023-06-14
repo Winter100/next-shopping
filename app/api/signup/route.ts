@@ -1,6 +1,7 @@
 "use server";
 
 import { hashPassword } from "@/lib/auth";
+import { collectionUsers } from "@/lib/collectionName";
 import { checkEmail, checkName, connectDatabase } from "@/lib/db";
 
 import { User } from "@/type/type";
@@ -22,8 +23,6 @@ export default async function MongoDbSignUp(req: User) {
       return { message: "정보가 옳바르지 않습니다." };
     }
 
-    const collectionName = "Shopping-User";
-
     const db = client.db();
 
     const checkedEmail = await checkEmail(email);
@@ -38,7 +37,7 @@ export default async function MongoDbSignUp(req: User) {
 
     const hashedPassword = await hashPassword(password);
 
-    await db.collection(collectionName).insertOne({
+    await db.collection(collectionUsers).insertOne({
       email: email,
       name: name,
       password: hashedPassword,

@@ -1,4 +1,5 @@
 "use server";
+import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 interface reqType {
   title: string;
@@ -14,15 +15,13 @@ interface reqType {
 }
 
 export default async function MongoDbEditProducts(req: reqType) {
-  const collectionName = "Shopping-All-Products";
-
   const client = await connectDatabase();
 
   try {
     const db = client.db();
 
     const query = { _id: req._id };
-    const response = await db.collection(collectionName).findOne(query);
+    const response = await db.collection(collectionAllProducts).findOne(query);
 
     if (!response) {
       return { status: 404, message: "등록 정보가 없는 제품입니다." };
@@ -30,7 +29,7 @@ export default async function MongoDbEditProducts(req: reqType) {
 
     const { title, description, price, selectedValue, imageSrc } = req;
 
-    await db.collection(collectionName).updateOne(query, {
+    await db.collection(collectionAllProducts).updateOne(query, {
       $set: { title, description, price, selectedValue, imageSrc },
     });
 

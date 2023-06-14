@@ -1,10 +1,9 @@
 "use server";
 
+import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 
 export default async function GET() {
-  const collectionName = "Shopping-All-Products";
-
   const client = await connectDatabase();
   try {
     const db = client.db();
@@ -17,7 +16,7 @@ export default async function GET() {
       imageSrc: 1,
     };
     const documents = await db
-      .collection(collectionName)
+      .collection(collectionAllProducts)
       .find({}, { projection })
       .toArray();
 

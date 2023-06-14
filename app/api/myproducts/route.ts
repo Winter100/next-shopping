@@ -1,10 +1,10 @@
 "use server";
 
+import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 import { myGetServerSession } from "@/lib/getSession";
 
 export default async function GetMyProductItems() {
-  const collectionName = "Shopping-All-Products";
   const session = await myGetServerSession();
 
   const client = await connectDatabase();
@@ -14,7 +14,10 @@ export default async function GetMyProductItems() {
     const db = client.db();
     const query = { email: myEmail };
 
-    const response = await db.collection(collectionName).find(query).toArray();
+    const response = await db
+      .collection(collectionAllProducts)
+      .find(query)
+      .toArray();
 
     return response;
   } catch (error) {
