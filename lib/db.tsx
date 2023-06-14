@@ -1,6 +1,6 @@
 "use server";
 import { MongoClient } from "mongodb";
-import { collectionName } from "./collectionName";
+import { collectionUsers } from "./collectionName";
 
 export async function connectDatabase() {
   const client = await MongoClient.connect(
@@ -13,7 +13,7 @@ export async function checkEmail(checkValue: string) {
   const client = await connectDatabase();
   const db = client.db();
 
-  const existingMail = await db.collection(collectionName).findOne({
+  const existingMail = await db.collection(collectionUsers).findOne({
     email: checkValue,
   });
 
@@ -28,7 +28,7 @@ export async function checkName(checkValue: string) {
   const client = await connectDatabase();
   const db = client.db();
 
-  const existingName = await db.collection(collectionName).findOne({
+  const existingName = await db.collection(collectionUsers).findOne({
     name: checkValue,
   });
 
