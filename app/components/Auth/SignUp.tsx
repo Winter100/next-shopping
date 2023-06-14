@@ -37,21 +37,17 @@ export default function SignUp() {
 
     const data = checkUser(userValue);
 
-    if (data) {
-      console.log("통과");
-    } else {
+    if (!data) {
       console.log("실패");
       return;
     }
 
     const response = await MongoDbSignUp(userValue);
-    if (response.message !== "ok") {
-      setCheckOutput(response.message);
-    }
-
-    if (response.message === "ok") {
+    if (response.status === 201) {
       console.log("가입완료");
       router.push("/");
+    } else {
+      setCheckOutput(response.message);
     }
   }
   return (

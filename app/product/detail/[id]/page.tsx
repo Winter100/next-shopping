@@ -10,8 +10,9 @@ export default async function ProductDetailPage({
   const data = await DetailProductsData(id);
 
   return (
-    <div>
-      <ProductDetail data={data} />
+    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+      {data && <ProductDetail data={data} />}
+      {!data && <p>존재 하지 않는 제품입니다.</p>}
     </div>
   );
 }

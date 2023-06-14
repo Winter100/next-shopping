@@ -5,8 +5,9 @@ export default async function AllProductsPage() {
   const data: any = await GET();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="flex min-h-screen flex-col items-center justify-between p-24">
       {data && <ProductList products={data} />}
-    </main>
+      {!data && <p>등록된 제품이 없습니다.</p>}
+    </div>
   );
 }

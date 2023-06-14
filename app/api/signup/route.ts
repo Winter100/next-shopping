@@ -20,7 +20,7 @@ export default async function MongoDbSignUp(req: User) {
       !password ||
       password.trim().length === 0
     ) {
-      return { message: "정보가 옳바르지 않습니다." };
+      return { message: "모든 정보를 채워주세요." };
     }
 
     const db = client.db();
@@ -43,10 +43,9 @@ export default async function MongoDbSignUp(req: User) {
       password: hashedPassword,
     });
 
-    return { message: "ok" };
+    return { status: 201, message: "가입성공" };
   } catch (error) {
-    console.log(error);
-    return { message: "에러발생!" };
+    return { message: "가입중 에러 발생!", error: error };
   } finally {
     client.close();
   }
