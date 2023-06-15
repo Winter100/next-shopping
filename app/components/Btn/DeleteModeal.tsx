@@ -29,6 +29,7 @@ export default function Modal({ setIsModal, id }: ModalProps) {
         const { email, name } = data.user;
 
         const response = await MongoDbDelete({ id, email, name });
+
         if (response.status === 200) {
           await new Promise((resolve) => {
             window.addEventListener("load", resolve);

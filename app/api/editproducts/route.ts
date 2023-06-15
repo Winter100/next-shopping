@@ -17,6 +17,7 @@ interface reqType {
 export default async function MongoDbEditProducts(req: reqType) {
   const client = await connectDatabase();
 
+  //해당 유저가 맞는지 한번더 체크하기.
   try {
     const db = client.db();
 

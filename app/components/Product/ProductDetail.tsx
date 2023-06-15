@@ -1,5 +1,6 @@
 import { ProductsType } from "@/type/type";
 import Image from "next/image";
+import BuyBtn from "../Btn/BuyBtn";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
@@ -100,9 +101,9 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               <span className="text-gray-800 font-bold text-xl">
                 {`${data.price.toLocaleString()}원`}
               </span>
-              <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
-                구매하기
-              </button>
+              <div>
+                <BuyBtn email={data.email} id={data._id} />
+              </div>
             </div>
           </div>
         </div>
