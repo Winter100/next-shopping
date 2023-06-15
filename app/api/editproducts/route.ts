@@ -1,6 +1,7 @@
 "use server";
 import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
+
 interface reqType {
   title: string;
   description: string;
@@ -14,9 +15,8 @@ interface reqType {
   _id: any;
 }
 
-export default async function MongoDbEditProducts(req: reqType) {
+export default async function MongoDbEditProductss(req: reqType) {
   const client = await connectDatabase();
-
   //해당 유저가 맞는지 한번더 체크하기.
   try {
     const db = client.db();

@@ -1,5 +1,3 @@
-"use server";
-
 import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 
