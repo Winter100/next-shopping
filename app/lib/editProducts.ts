@@ -1,20 +1,6 @@
 import { collectionAllProducts } from "@/lib/collectionName";
 import { connectDatabase } from "@/lib/db";
 
-export interface AddProductsType {
-  title: string;
-  description: string;
-  price: number;
-  selectedValue: {
-    random: string;
-    isMeet: string;
-    bargaining: string;
-  };
-  imageSrc: string;
-  email: string | null | undefined;
-  name: string | null | undefined;
-}
-
 export async function MongoDbAddProducts(req: AddProductsType) {
   const client = await connectDatabase();
 
@@ -35,6 +21,61 @@ export async function MongoDbAddProducts(req: AddProductsType) {
   } catch (error) {
     console.log(error);
     return { message: "에러발생!" };
+  } finally {
+    client.close();
+  }
+}
+
+export async function MongoDbEditProducts(
+  req: EditProductType,
+  email: string,
+  name: string
+) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+
+    const query = { _id: req._id, email: email, name: name };
+    const response = await db.collection(collectionAllProducts).findOne(query);
+
+    if (!response) {
+      return { status: 404, message: "권한 또는 제품이 없습니다." };
+    }
+    const { title, description, price, selectedValue, imageSrc } = req;
+
+    await db.collection(collectionAllProducts).updateOne(query, {
+      $set: { title, description, price, selectedValue, imageSrc },
+    });
+
+    return { status: 200, message: "등록제품 수정 성공" };
+  } catch (error) {
+    console.log(error);
+    return { message: "에러발생!" };
+  } finally {
+    client.close();
+  }
+}
+
+export async function MongoDbDeleteProducts(
+  id: any,
+  email: string,
+  name: string
+) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+
+    const query = { _id: id.id, email: email, name: name };
+
+    const result = await db.collection(collectionAllProducts).deleteOne(query);
+
+    if (result.deletedCount === 1) {
+      return { status: 200, message: "삭제되었습니다." };
+    } else {
+      return { status: 404, message: "권한 또는 삭제할 제품이 없습니다." };
+    }
+  } catch (error) {
+    console.log(error);
   } finally {
     client.close();
   }

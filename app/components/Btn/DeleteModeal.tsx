@@ -1,7 +1,6 @@
 "use client";
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import MongoDbDelete from "@/app/api/editproducts/delete/route";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
@@ -26,9 +25,19 @@ export default function Modal({ setIsModal, id }: ModalProps) {
     try {
       if (isConfirm) {
         //삭제 로직
-        const { email, name } = data.user;
+        const deleteId = {
+          id: id,
+        };
+        const response = await fetch(`/api/editproduct/delete`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application",
+          },
+          body: JSON.stringify(deleteId),
+        });
 
-        const response = await MongoDbDelete({ id, email, name });
+        const datas = await response.json();
+        console.log(datas);
 
         if (response.status === 200) {
           await new Promise((resolve) => {
@@ -36,8 +45,8 @@ export default function Modal({ setIsModal, id }: ModalProps) {
             location.reload();
           });
         }
-        // setOpen;
-        // setIsModal(false);
+        setOpen;
+        setIsModal(false);
       } else {
         //취소 로직
         setOpen;

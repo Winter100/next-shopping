@@ -1,52 +1,22 @@
-"use server";
+import { MongoDbSignUp } from "@/app/lib/auth";
+import { NextResponse } from "next/server";
 
-import { hashPassword } from "@/lib/auth";
-import { collectionUsers } from "@/lib/collectionName";
-import { checkEmail, checkName, connectDatabase } from "@/lib/db";
-
-import { User } from "@/type/type";
-
-export default async function MongoDbSignUp(req: User) {
-  const client = await connectDatabase();
-
+export async function POST(req: Request) {
   try {
-    const { email, name, password } = req;
+    const data: User = await req.json();
 
-    if (
-      email.trim().length === 0 ||
-      !email.includes("@") ||
-      name.trim().length === 0 ||
-      !name ||
-      !password ||
-      password.trim().length === 0
-    ) {
-      return { message: "모든 정보를 채워주세요." };
+    const dbResponse = await MongoDbSignUp(data);
+
+    if (dbResponse.status !== 201) {
+      throw new Error(dbResponse.message);
     }
 
-    const db = client.db();
-
-    const checkedEmail = await checkEmail(email);
-    const checkedName = await checkName(name);
-
-    if (checkedEmail) {
-      return { message: checkedEmail.message };
+    return NextResponse.json({ message: "가입 성공", status: 201 });
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json({ message: e.message });
+    } else {
+      return NextResponse.json({ message: String(e) });
     }
-    if (checkedName) {
-      return { message: checkedName.message };
-    }
-
-    const hashedPassword = await hashPassword(password);
-
-    await db.collection(collectionUsers).insertOne({
-      email: email,
-      name: name,
-      password: hashedPassword,
-    });
-
-    return { status: 201, message: "가입성공" };
-  } catch (error) {
-    return { message: "가입중 에러 발생!", error: error };
-  } finally {
-    client.close();
   }
 }

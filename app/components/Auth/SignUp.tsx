@@ -31,23 +31,34 @@ export default function SignUp() {
     e.preventDefault();
     setCheckOutput("가입중...");
 
-    if (checkPassword !== userValue.password) {
-      return setCheckOutput("비밀번호가 서로 다릅니다");
+    // if (checkPassword !== userValue.password) {
+    //   return setCheckOutput("비밀번호가 서로 다릅니다");
+    // }
+
+    const data = checkUser(userValue, checkPassword);
+
+    if (!data.isValid) {
+      return setCheckOutput(data.message);
     }
 
-    const data = checkUser(userValue);
+    // const response = await MongoDbSignUp(userValue);
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userValue),
+    });
 
-    if (!data) {
-      console.log("실패");
-      return;
-    }
-
-    const response = await MongoDbSignUp(userValue);
-    if (response.status === 201) {
-      console.log("가입완료");
+    const result = await response.json();
+    if (result.status === 201) {
       router.push("/");
+      return;
+      //가입완료
     } else {
-      setCheckOutput(response.message);
+      //가입실패
+      setCheckOutput(result.message);
+      return;
     }
   }
   return (
