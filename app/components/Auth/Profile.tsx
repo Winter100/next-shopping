@@ -1,6 +1,5 @@
 "use client";
 
-import ChangePassword from "@/app/api/chagepassword/route";
 import { useState } from "react";
 
 interface userInfoType {
@@ -38,12 +37,20 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
       oldPassword: password.oldPassword,
       newPassword: password.newPassword,
     };
-    const response = await ChangePassword(passwordData, userInfo);
+    // const response = await ChangePassword(passwordData, userInfo);
+    const response = await fetch("/api/chagepassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(passwordData),
+    });
 
-    if (response.message.acknowledged) {
+    if (response.status === 200) {
       return setMessage("비밀번호가 변경되었습니다.");
+    } else {
+      return;
     }
-    return;
   }
 
   return (

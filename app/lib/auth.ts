@@ -2,6 +2,17 @@ import { hash, compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDatabase } from "./db";
+import { collectionUsers } from "./collectionName";
+
+export interface PasswordType {
+  oldPassword: string;
+  newPassword: string;
+}
+
+interface userInfoType {
+  email: string;
+  name: string;
+}
 
 export async function hashPassword(password: string) {
   const hashedPassword = await hash(password, 12);
@@ -13,6 +24,60 @@ export async function verifyPassword(password: string, hashedPassword: string) {
   const isValid = await compare(password, hashedPassword);
 
   return isValid;
+}
+
+export async function changePassword(
+  req: PasswordType,
+  userInfo: userInfoType
+) {
+  const { newPassword, oldPassword } = req;
+  const userEmail = userInfo.email;
+  const userName = userInfo.name;
+
+  if (
+    !newPassword ||
+    !oldPassword ||
+    newPassword.trim().length < 6 ||
+    oldPassword.trim().length < 6 ||
+    !userEmail
+  ) {
+    //메시지 추가하기
+    return;
+  }
+
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const query = { email: userEmail, name: userName };
+
+    const user = await db.collection(collectionUsers).findOne(query);
+
+    if (!user) {
+      return { Message: "존재하지 않는 회원입니다." };
+    }
+
+    const currentPassword = user.password;
+    const passwordsAreEqual = await verifyPassword(
+      oldPassword,
+      currentPassword
+    );
+
+    if (!passwordsAreEqual) {
+      return { Message: "입력한 비밀번호가 다릅니다." };
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    const result = await db
+      .collection(collectionUsers)
+      .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
+
+    return { message: "비밀번호 변경 성공" };
+  } catch (error) {
+    console.log(error);
+  } finally {
+    client.close();
+  }
 }
 
 export const authOptions: NextAuthOptions = {

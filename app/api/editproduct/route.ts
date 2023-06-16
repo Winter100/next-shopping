@@ -3,6 +3,7 @@ import {
   MongoDbAddProducts,
   MongoDbEditProducts,
 } from "@/app/lib/editProducts";
+import { ProductsType } from "@/type/type";
 
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
       throw new Error("로그인 정보가 없습니다.");
     }
 
-    const data: AddProductsType = await req.json();
+    const data: ProductsType = await req.json();
 
     const dbResponse = await MongoDbAddProducts(data);
 
@@ -41,7 +42,7 @@ export async function PATCH(req: Request) {
       throw new Error("로그인 정보가 없습니다.");
     }
 
-    const data: EditProductType = await req.json();
+    const data: ProductsType = await req.json();
     const { email, name } = session.user;
 
     const dbResponse = await MongoDbEditProducts(data, email, name);

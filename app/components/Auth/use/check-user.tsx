@@ -1,3 +1,5 @@
+import { User } from "@/app/type/type";
+
 export function checkUser(data: User, checkPassword: string) {
   const { email, password, name } = data;
 

@@ -1,69 +1,35 @@
-"use server";
+import { PasswordType, authOptions, changePassword } from "@/app/lib/auth";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 
-import { hashPassword, verifyPassword } from "@/app/lib/auth";
-import { collectionUsers } from "@/app/lib/collectionName";
-import { connectDatabase } from "@/app/lib/db";
-
-interface PasswordType {
-  oldPassword: string;
-  newPassword: string;
-}
-
-interface userInfoType {
-  email: string;
-  name: string;
-}
-
-export default async function ChangePassword(
-  req: PasswordType,
-  userInfo: userInfoType
-) {
-  const { newPassword, oldPassword } = req;
-  const userEmail = userInfo.email;
-
-  if (
-    !newPassword ||
-    !oldPassword ||
-    newPassword.trim().length <= 6 ||
-    oldPassword.trim().length <= 6 ||
-    !userEmail
-  ) {
-    return;
-  }
-
-  const client = await connectDatabase();
+export async function POST(req: Request) {
   try {
-    const db = client.db();
-    const query = { email: userEmail };
+    const session = await getServerSession(authOptions);
 
-    const user = await db.collection(collectionUsers).findOne(query);
+    const data: PasswordType = await req.json();
 
-    if (!user) {
-      client.close();
-      return { Message: "존재하지 않는 회원입니다." };
+    if (!session) {
+      throw new Error("로그인 정보가 없습니다.");
     }
 
-    const currentPassword = user.password;
-    const passwordsAreEqual = await verifyPassword(
-      oldPassword,
-      currentPassword
-    );
+    const passwordData = {
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
+    };
 
-    if (!passwordsAreEqual) {
-      client.close();
-      return { Message: "입력한 비밀번호가 다릅니다." };
+    const userInfo = {
+      email: session.user.email,
+      name: session.user.name,
+    };
+
+    const result = await changePassword(passwordData, userInfo);
+
+    return NextResponse.json({ message: result.message }, { status: 200 });
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json({ message: e.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ message: String(e) });
     }
-
-    const hashedPassword = await hashPassword(newPassword);
-
-    const result = await db
-      .collection(collectionUsers)
-      .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
-
-    return { message: result };
-  } catch (error) {
-    console.log(error);
-  } finally {
-    client.close();
   }
 }

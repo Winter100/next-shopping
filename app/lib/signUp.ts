@@ -1,3 +1,4 @@
+import { User } from "../type/type";
 import { hashPassword } from "./auth";
 import { collectionUsers } from "./collectionName";
 import { checkEmail, checkName, connectDatabase } from "./db";

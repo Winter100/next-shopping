@@ -1,3 +1,4 @@
+import { ProductsType } from "@/app/type/type";
 import Image from "next/image";
 import Link from "next/link";
 

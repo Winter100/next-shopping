@@ -1,3 +1,4 @@
+import { ProductsType } from "../type/type";
 import { collectionAllProducts } from "./collectionName";
 import { connectDatabase } from "./db";
 

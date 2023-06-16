@@ -1,4 +1,5 @@
 import { MongoDbSignUp } from "@/app/lib/signUp";
+import { User } from "@/app/type/type";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

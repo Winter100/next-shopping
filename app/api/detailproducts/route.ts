@@ -2,6 +2,7 @@
 
 import { collectionAllProducts } from "@/app/lib/collectionName";
 import { connectDatabase } from "@/app/lib/db";
+import { ProductsType } from "@/app/type/type";
 
 export default async function DetailProductsData(params: any) {
   const client = await connectDatabase();
