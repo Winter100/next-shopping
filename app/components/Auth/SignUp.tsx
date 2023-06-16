@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { checkUser } from "./use/check-user";
 import { useRouter } from "next/navigation";
-import MongoDbSignUp from "@/app/api/signup/route";
 
 export default function SignUp() {
   const router = useRouter();
@@ -31,17 +30,12 @@ export default function SignUp() {
     e.preventDefault();
     setCheckOutput("가입중...");
 
-    // if (checkPassword !== userValue.password) {
-    //   return setCheckOutput("비밀번호가 서로 다릅니다");
-    // }
-
     const data = checkUser(userValue, checkPassword);
 
     if (!data.isValid) {
       return setCheckOutput(data.message);
     }
 
-    // const response = await MongoDbSignUp(userValue);
     const response = await fetch("/api/signup", {
       method: "POST",
       headers: {
