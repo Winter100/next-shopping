@@ -1,4 +1,4 @@
-import { MongoDbSignUp } from "@/app/lib/auth";
+import { MongoDbSignUp } from "@/app/lib/signUp";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

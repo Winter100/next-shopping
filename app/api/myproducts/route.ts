@@ -1,8 +1,8 @@
 "use server";
 
-import { collectionAllProducts } from "@/lib/collectionName";
-import { connectDatabase } from "@/lib/db";
-import { myGetServerSession } from "@/lib/getSession";
+import { collectionAllProducts } from "@/app/lib/collectionName";
+import { connectDatabase } from "@/app/lib/db";
+import { myGetServerSession } from "@/app/lib/getSession";
 
 export default async function GetMyProductItems() {
   const session = await myGetServerSession();

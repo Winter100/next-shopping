@@ -1,7 +1,8 @@
 import SignIn from "@/app/components/Auth/SignIn";
+import { authOptions } from "@/app/lib/auth";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {

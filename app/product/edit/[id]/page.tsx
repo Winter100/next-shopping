@@ -1,6 +1,7 @@
 import DetailProductsData from "@/app/api/detailproducts/route";
 import AddProcuct from "@/app/components/Product/Addproduct";
-import { myGetServerSession } from "@/lib/getSession";
+import { myGetServerSession } from "@/app/lib/getSession";
+
 import { redirect } from "next/navigation";
 
 export default async function EditProductsPage({

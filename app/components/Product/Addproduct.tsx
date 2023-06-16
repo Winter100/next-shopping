@@ -1,11 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-
-import MongoDbAddProducts from "@/app/api/addproducts/route";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-import MongoDbEditProducts from "@/app/api/editproducts/route";
 
 interface AddProductProps {
   editData: any;

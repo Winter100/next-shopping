@@ -1,7 +1,7 @@
-import { collectionAllProducts } from "@/lib/collectionName";
-import { connectDatabase } from "@/lib/db";
+import { collectionAllProducts } from "./collectionName";
+import { connectDatabase } from "./db";
 
-export async function MongoDbAddProducts(req: AddProductsType) {
+export async function MongoDbAddProducts(req: ProductsType) {
   const client = await connectDatabase();
 
   try {
@@ -11,7 +11,7 @@ export async function MongoDbAddProducts(req: AddProductsType) {
 
     const db = client.db();
 
-    const response = await db.collection(collectionAllProducts).insertOne({
+    await db.collection(collectionAllProducts).insertOne({
       _id: id,
       date: date,
       ...req,

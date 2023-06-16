@@ -1,7 +1,7 @@
 "use server";
 
-import { collectionAllProducts } from "@/lib/collectionName";
-import { connectDatabase } from "@/lib/db";
+import { collectionAllProducts } from "@/app/lib/collectionName";
+import { connectDatabase } from "@/app/lib/db";
 
 export default async function GET() {
   const client = await connectDatabase();

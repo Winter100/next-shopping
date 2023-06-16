@@ -1,8 +1,9 @@
+import { authOptions } from "@/app/lib/auth";
 import {
   MongoDbAddProducts,
   MongoDbEditProducts,
 } from "@/app/lib/editProducts";
-import { authOptions } from "@/lib/auth";
+
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 

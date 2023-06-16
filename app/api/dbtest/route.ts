@@ -1,5 +1,6 @@
+import { authOptions } from "@/app/lib/auth";
 import { connectDatabase } from "@/app/lib/db";
-import { authOptions } from "@/lib/auth";
+
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 

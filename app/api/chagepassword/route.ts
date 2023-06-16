@@ -1,8 +1,8 @@
 "use server";
 
-import { hashPassword, verifyPassword } from "@/lib/auth";
-import { collectionUsers } from "@/lib/collectionName";
-import { connectDatabase } from "@/lib/db";
+import { hashPassword, verifyPassword } from "@/app/lib/auth";
+import { collectionUsers } from "@/app/lib/collectionName";
+import { connectDatabase } from "@/app/lib/db";
 
 interface PasswordType {
   oldPassword: string;

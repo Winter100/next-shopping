@@ -1,8 +1,7 @@
 "use server";
 
-import { collectionAllProducts } from "@/lib/collectionName";
-import { connectDatabase } from "@/lib/db";
-import { ProductsType } from "@/type/type";
+import { collectionAllProducts } from "@/app/lib/collectionName";
+import { connectDatabase } from "@/app/lib/db";
 
 export default async function DetailProductsData(params: any) {
   const client = await connectDatabase();
