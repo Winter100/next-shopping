@@ -28,7 +28,7 @@ export async function MongoDbAddProducts(req: ProductsType) {
 }
 
 export async function MongoDbEditProducts(
-  req: EditProductType,
+  req: ProductsType,
   email: string,
   name: string
 ) {
