@@ -15,7 +15,7 @@ export interface AddProductsType {
   name: string | null | undefined;
 }
 
-export default async function MongoDbAddProducts(req: AddProductsType) {
+export async function MongoDbAddProducts(req: AddProductsType) {
   const client = await connectDatabase();
 
   try {

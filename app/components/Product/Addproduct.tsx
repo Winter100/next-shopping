@@ -92,7 +92,17 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         name: data?.user?.name,
       };
 
-      response = await MongoDbAddProducts(addData);
+      // response = await MongoDbAddProducts(addData);
+      const testResponse = await fetch("/api/editproduct", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addData),
+      });
+
+      const datas = await testResponse.json();
+      console.log(datas);
     } else if (method === "PATCH") {
       const PatchData = {
         title,
@@ -105,11 +115,11 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       response = await MongoDbEditProducts(PatchData);
     }
 
-    if (response.status === 201) {
-      window.location.href = "/";
-    } else {
-      setMessage("잠시 후 다시 시도해주세요.");
-    }
+    // if (response.status === 201) {
+    //   window.location.href = "/";
+    // } else {
+    //   setMessage("잠시 후 다시 시도해주세요.");
+    // }
   }
 
   return (
