@@ -1,6 +1,14 @@
 import ProductDetail from "@/app/components/Product/ProductDetail";
 import { ProductsType } from "@/app/type/type";
 
+import { Metadata } from "next";
+
+//동적으로 수정하기?
+export const metadata: Metadata = {
+  title: "제품 상세보기",
+  description: "...",
+};
+
 export default async function ProductDetailPage({
   params,
 }: {

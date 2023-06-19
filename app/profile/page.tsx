@@ -1,7 +1,7 @@
 import Profile from "../components/Auth/Profile";
 
-import { Metadata } from "next";
 import { myGetServerSession } from "../lib/getSession";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "My Page",

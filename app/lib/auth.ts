@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any, req) {
         const client = await connectDatabase();
-        const userCollection = client.db().collection("Shopping-User");
+        const userCollection = client.db().collection(collectionUsers);
 
         const findUser = await userCollection.findOne({
           email: credentials.email,

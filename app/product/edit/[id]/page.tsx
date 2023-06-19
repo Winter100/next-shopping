@@ -4,6 +4,13 @@ import { ProductsType } from "@/app/type/type";
 
 import { redirect } from "next/navigation";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "수정 페이지",
+  description: "사용자가 올린 제품의 내용을 수정하는 페이지입니다.",
+};
+
 export default async function EditProductsPage({
   params,
 }: {
