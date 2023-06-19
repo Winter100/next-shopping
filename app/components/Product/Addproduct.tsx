@@ -89,7 +89,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         name: data?.user?.name,
       };
       response = await fetch("/api/editproduct", {
-        method: "POST",
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -105,7 +105,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         _id: editData._id,
       };
       response = await fetch("/api/editproduct", {
-        method: "PATCH",
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },

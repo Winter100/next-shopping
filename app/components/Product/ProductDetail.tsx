@@ -38,7 +38,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                     <td className="font-semibold py-2 px-4">흥정여부</td>
                     <td className="py-2 px-4">
                       <div className="flex items-center">
-                        {data.selectedValue.bargaining === "yes" ? (
+                        {data.selectedValue?.bargaining === "yes" ? (
                           <>
                             <div className="bg-blue-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
                               <span>O</span>
@@ -58,7 +58,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                     <td className="font-semibold py-2 px-4">직거래여부</td>
                     <td className="py-2 px-4">
                       <div className="flex items-center">
-                        {data.selectedValue.isMeet === "yes" ? (
+                        {data.selectedValue?.isMeet === "yes" ? (
                           <>
                             <div className="bg-blue-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
                               <span>O</span>
@@ -78,7 +78,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                     <td className="font-semibold py-2 px-4">지역선택</td>
                     <td className="py-2 px-4">
                       <div className="flex items-center">
-                        {data.selectedValue.random === "yes" ? (
+                        {data.selectedValue?.random === "yes" ? (
                           <>
                             <div className="bg-blue-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
                               <span>O</span>
@@ -99,7 +99,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             </div>
             <div className="flex items-center mb-4 mt-[100px]">
               <span className="text-gray-800 font-bold text-xl">
-                {`${data.price.toLocaleString()}원`}
+                {`${data.price?.toLocaleString()}원`}
               </span>
               <div>
                 <BuyBtn email={data.email} id={data._id} />

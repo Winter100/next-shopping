@@ -8,6 +8,7 @@ import { ProductsType } from "@/type/type";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
+//상품 등록
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
   }
 }
 
+//상품 수정
 export async function PATCH(req: Request) {
   try {
     const session = await getServerSession(authOptions);

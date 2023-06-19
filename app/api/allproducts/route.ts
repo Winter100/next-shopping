@@ -1,46 +1,16 @@
-"use server";
+import { getAllProducts } from "@/app/lib/db";
+import { NextResponse } from "next/server";
 
-import { collectionAllProducts } from "@/app/lib/collectionName";
-import { connectDatabase } from "@/app/lib/db";
-
-export default async function GET() {
-  const client = await connectDatabase();
+export async function GET() {
   try {
-    const db = client.db();
-    const projection = {
-      title: 1,
-      price: 1,
-      date: 1,
-      name: 1,
-      _id: 1,
-      imageSrc: 1,
-    };
-    const documents = await db
-      .collection(collectionAllProducts)
-      .find({}, { projection })
-      .toArray();
+    const allProducts = await getAllProducts();
 
-    const transFormedData = documents.map((item) => {
-      const dateObj = new Date(item.date);
-      const year = dateObj.getFullYear();
-      const month = dateObj.getMonth() + 1;
-      const day = dateObj.getDate();
-
-      return {
-        title: item.title,
-        price: item.price,
-        date: { year, month, day },
-        name: item.name,
-        _id: item._id,
-        imageSrc: item.imageSrc,
-      };
-    });
-
-    return transFormedData;
-  } catch (error) {
-    console.error("데이터 조회 오류:", error);
-    return;
-  } finally {
-    client.close();
+    return NextResponse.json(allProducts);
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json({ message: e.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ message: String(e) });
+    }
   }
 }

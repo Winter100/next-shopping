@@ -1,5 +1,5 @@
-import DetailProductsData from "@/app/api/detailproducts/route";
 import ProductDetail from "@/app/components/Product/ProductDetail";
+import { ProductsType } from "@/app/type/type";
 
 export default async function ProductDetailPage({
   params,
@@ -7,12 +7,28 @@ export default async function ProductDetailPage({
   params: { id: string };
 }) {
   const id = params.id;
-  const data = await DetailProductsData(id);
+  const detailData = await getData(id);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      {data && <ProductDetail data={data} />}
-      {!data && <p>존재 하지 않는 제품입니다.</p>}
+      {detailData && <ProductDetail data={detailData} />}
+      {!detailData && <p>존재 하지 않는 제품입니다.</p>}
     </div>
   );
+}
+
+async function getData(detailId: string) {
+  //최종 배포시 "http://localhost:3000"와 실제 배포주소 .env에 담아 process.env if문으로 분기해 관리하기
+  const response = await fetch("http://localhost:3000/api/detailproducts", {
+    cache: "no-cache",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(detailId),
+  });
+
+  const data: ProductsType = await response.json();
+
+  return data;
 }

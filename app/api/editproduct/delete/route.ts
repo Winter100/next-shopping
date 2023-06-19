@@ -4,6 +4,7 @@ import { MongoDbDeleteProducts } from "@/app/lib/editProducts";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
+//등록 상품 삭제
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -13,7 +14,6 @@ export async function POST(req: Request) {
     }
 
     const id: string = await req.json();
-    console.log("id", id);
     const { email, name } = session.user;
 
     const dbResponse = await MongoDbDeleteProducts(id, email, name);

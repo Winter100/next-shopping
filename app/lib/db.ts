@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
-import { collectionUsers } from "./collectionName";
+import { collectionAllProducts, collectionUsers } from "./collectionName";
+import { ProductsType } from "../type/type";
 
 export async function connectDatabase() {
   try {
@@ -53,3 +54,91 @@ export async function checkName(checkValue: string) {
     client.close();
   }
 }
+
+export async function getDetailProduct(id: any) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+
+    const query = { _id: id };
+    const response = await db.collection(collectionAllProducts).findOne(query);
+
+    if (!response) {
+      return { status: 404, message: "존재하지 않는 상품입니다." };
+    }
+
+    const {
+      selectedValue,
+      date,
+      title,
+      name,
+      price,
+      imageSrc,
+      _id,
+      email,
+      description,
+    } = response;
+
+    const data: ProductsType = {
+      title,
+      name,
+      price,
+      imageSrc,
+      email,
+      description,
+      _id,
+      selectedValue,
+      date,
+    };
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return { message: "에러발생!" };
+  } finally {
+    client.close();
+  }
+}
+
+export async function getAllProducts() {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const projection = {
+      title: 1,
+      price: 1,
+      date: 1,
+      name: 1,
+      _id: 1,
+      imageSrc: 1,
+    };
+    const documents = await db
+      .collection(collectionAllProducts)
+      .find({}, { projection })
+      .toArray();
+
+    const transFormedData = documents.map((item) => {
+      const dateObj = new Date(item.date);
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth() + 1;
+      const day = dateObj.getDate();
+
+      return {
+        title: item.title,
+        price: item.price,
+        date: { year, month, day },
+        name: item.name,
+        _id: item._id,
+        imageSrc: item.imageSrc,
+      };
+    });
+
+    return transFormedData;
+  } catch (e) {
+    throw new Error("모든 데이터 조회중 오류");
+  } finally {
+    client.close();
+  }
+}
+
+export async function getUserInfo(id: string) {}
