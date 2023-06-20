@@ -26,15 +26,17 @@ export default async function ProductDetailPage({
 }
 
 async function getData(detailId: string) {
-  //최종 배포시 "http://localhost:3000"와 실제 배포주소 .env에 담아 process.env if문으로 분기해 관리하기
-  const response = await fetch("http://localhost:3000/api/detailproducts", {
-    cache: "no-cache",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(detailId),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts`,
+    {
+      cache: "no-cache",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(detailId),
+    }
+  );
 
   const data: ProductsType = await response.json();
 

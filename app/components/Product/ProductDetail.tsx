@@ -1,6 +1,6 @@
-import { ProductsType } from "@/type/type";
 import Image from "next/image";
 import BuyBtn from "../Btn/BuyBtn";
+import { ProductsType } from "@/app/type/type";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
