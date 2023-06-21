@@ -1,150 +1,62 @@
 "use client";
-import { ProductsType } from "@/type/type";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import Modal from "../Btn/DeleteModeal";
+import { ProductsType } from "@/app/type/type";
+import { useRouter } from "next/navigation";
 
-export default function MyProductsList() {
-  const products = [
-    {
-      id: 1,
-      title: "Product 1",
-      description: "This is product 1 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 10,
-    },
-    {
-      id: 2,
-      title: "Product 2",
-      description: "This is product 2 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 20,
-    },
-    {
-      id: 3,
-      title: "Product 3",
-      description: "This is product 3 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 30,
-    },
-    {
-      id: 4,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 5,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 6,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 7,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 17,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 27,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 37,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 47,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 57,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 67,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 77,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 87,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 97,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-    {
-      id: 12,
-      title: "Product 4",
-      description: "This is product 4 description.",
-      image: "https://dummyimage.com/300x200/ccc/000",
-      price: 40,
-    },
-  ];
+export default function MyWishList({ wishData }: { wishData: ProductsType[] }) {
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const router = useRouter();
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalId, setModalId] = useState<string | number>(null);
+  function handleItemClick(itemId: string) {
+    if (selectedItems.includes(itemId)) {
+      setSelectedItems((prevItems) => prevItems.filter((id) => id !== itemId));
+    } else {
+      setSelectedItems((prevItems) => [...prevItems, itemId]);
+    }
+  }
 
-  function deleteHandler(id: string | number) {
-    setIsModal(true);
-    setModalId(id);
+  async function handleDelete() {
+    const response = await fetch("/api/wishlist/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids: selectedItems }),
+    });
+    if (!response.ok) {
+      router.push("/");
+    }
+    const data = await response.json();
+    if (data.status === 201) {
+      router.push("/profile/wishlist");
+    } else {
+      router.push("/");
+    }
   }
 
   return (
     <div className="container mx-auto px-4 py-8 mt-8">
       <h1 className="text-3xl font-bold mb-8">찜 목록</h1>
-      {products?.length > 0 ? (
+      {wishData?.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
-            <li key={product.id} className="bg-white shadow-lg rounded-lg p-4">
+          {wishData.map((product) => (
+            <li
+              key={product._id}
+              className="bg-white shadow-lg rounded-lg p-4"
+              onClick={() => handleItemClick(product._id)}
+            >
+              <div>
+                <input
+                  type="checkbox"
+                  value={product._id}
+                  checked={selectedItems.includes(product._id)}
+                  onChange={() => {}}
+                />
+              </div>
               <Image
-                src={product.image}
+                src={product.imageSrc}
                 alt={product.title}
                 width={300}
                 height={200}
@@ -155,26 +67,25 @@ export default function MyProductsList() {
               </h2>
               <div className="mt-4 flex justify-evenly items-center">
                 <Link
-                  href={"/"}
+                  href={`/product/detail/${product._id}`}
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                 >
-                  쪽지
+                  보기
                 </Link>
-                <Link
-                  href={`/product/edit/${product.id}`}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                >
-                  수정
-                </Link>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                  삭제
-                </button>
               </div>
             </li>
           ))}
         </ul>
       ) : (
         <p className="text-gray-600 text-lg">찜 목록이 없습니다.</p>
+      )}
+      {selectedItems.length > 0 && (
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+        >
+          삭제
+        </button>
       )}
     </div>
   );

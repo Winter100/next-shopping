@@ -73,6 +73,12 @@ export default function Navbar() {
                       >
                         My Page
                       </Link>
+                      <Link
+                        href="/profile/wishlist"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        찜 목록
+                      </Link>
                     </div>
                     <div className="py-1">
                       <Link

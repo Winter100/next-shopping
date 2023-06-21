@@ -10,9 +10,23 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
   const { data } = useSession();
 
   const [isWish, setIsWish] = useState(false);
+  const [btn, setBtn] = useState(false);
 
   async function addWishList(addId: string) {
     setIsWish((is) => !is);
+    setBtn(true);
+
+    const response = await fetch("/api/wishlist/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: addId }),
+    });
+
+    const data = await response.json();
+    setBtn(false);
+    console.log(data);
   }
 
   return (
@@ -29,13 +43,15 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
           <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
             구매문의
           </button>
-          <button onClick={() => addWishList(id)}>
-            {isWish ? (
-              <HeartIcon className="w-6 h-6 text-red-500" />
-            ) : (
-              <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
-            )}
-          </button>
+          {data?.user && (
+            <button disabled={btn} onClick={() => addWishList(id)}>
+              {isWish ? (
+                <HeartIcon className="w-6 h-6 text-red-500" />
+              ) : (
+                <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
+              )}
+            </button>
+          )}
         </>
       )}
     </>

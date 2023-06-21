@@ -161,3 +161,112 @@ export async function getMyProducts(email: string, name: string) {
     client.close();
   }
 }
+
+export async function addMyWishList(
+  email: string,
+  name: string,
+  productId: string
+) {
+  const client = await connectDatabase();
+
+  try {
+    const db = client.db();
+    const query = { email, name };
+
+    const response = await db.collection(collectionUsers).findOne(query);
+
+    if (!response) {
+      return { message: "존재하지 않는 사용자입니다." };
+    }
+
+    const wishlist = response.wishlist || [];
+
+    const wishlistExists = wishlist.includes(productId);
+
+    if (wishlistExists) {
+      await db.collection(collectionUsers).updateOne(query, {
+        $pull: { wishlist: productId },
+      });
+      return { message: "Wishlist에서 제거되었습니다." };
+    } else {
+      await db.collection(collectionUsers).updateOne(query, {
+        $push: { wishlist: productId },
+      });
+      return { message: "Wishlist에 추가되었습니다." };
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      return { message: e.message };
+    } else {
+      return { message: String(e) };
+    }
+  } finally {
+    client.close();
+  }
+}
+
+export async function deleteMyWishList(
+  ids: string[],
+  email: string,
+  name: string
+) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const query = { email, name };
+
+    const response = await db.collection(collectionUsers).findOne(query);
+
+    if (!response) {
+      return { message: "존재하지 않는 사용자입니다." };
+    }
+
+    const wishlist = response.wishlist || [];
+
+    const updatedWishlist = wishlist.filter(
+      (productId: string) => !ids.includes(productId)
+    );
+
+    await db.collection(collectionUsers).updateOne(query, {
+      $set: { wishlist: updatedWishlist },
+    });
+
+    return { message: "선택한 항목이 Wishlist에서 제거되었습니다." };
+  } catch (e) {
+    if (e instanceof Error) {
+      return { message: e.message };
+    } else {
+      return { message: String(e) };
+    }
+  } finally {
+    client.close();
+  }
+}
+
+export async function getMyWishList(userEmail: string) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const userCollection = db.collection(collectionUsers);
+    const allProductsCollection = db.collection(collectionAllProducts);
+
+    const user = await userCollection.findOne({ email: userEmail });
+
+    if (user && user.wishlist && user.wishlist.length > 0) {
+      const wishlistIds = user.wishlist;
+
+      const wishlistProducts = await allProductsCollection
+        .find({ _id: { $in: wishlistIds } })
+        .toArray();
+
+      return wishlistProducts;
+    }
+
+    return [];
+  } catch (error) {
+    console.log(error);
+    return [];
+  } finally {
+    client.close();
+  }
+}
