@@ -1,5 +1,7 @@
-import GetMyProductItems from "@/app/api/myproducts/route";
 import MyProductsList from "@/app/components/Product/MyProductsList";
+
+import { myGetServerSession } from "@/app/lib/getSession";
+import { ProductsType } from "@/app/type/type";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +10,36 @@ export const metadata: Metadata = {
 };
 
 export default async function MyProductsPage() {
-  const data: any = await GetMyProductItems();
+  const session = await myGetServerSession();
 
-  return <MyProductsList products={data} />;
+  const { email, name } = session.user;
+  const data = await getData(email, name);
+
+  return (
+    <>
+      {data ? (
+        <MyProductsList products={data} />
+      ) : (
+        <p className="text-gray-600 text-lg">등록된 물건이 없습니다.</p>
+      )}
+    </>
+  );
+}
+
+async function getData(email: string, name: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/myproducts`,
+    {
+      cache: "no-store",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, name }),
+    }
+  );
+
+  const allData: ProductsType[] = await response.json();
+
+  return allData;
 }

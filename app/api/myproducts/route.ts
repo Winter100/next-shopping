@@ -1,28 +1,18 @@
-"use server";
+import { getMyProducts } from "@/app/lib/db";
+import { NextResponse } from "next/server";
 
-import { collectionAllProducts } from "@/app/lib/collectionName";
-import { connectDatabase } from "@/app/lib/db";
-import { myGetServerSession } from "@/app/lib/getSession";
-
-export default async function GetMyProductItems() {
-  const session = await myGetServerSession();
-
-  const client = await connectDatabase();
+export async function POST(req: Request) {
   try {
-    const myEmail = session.user.email;
+    const { email, name } = await req.json();
 
-    const db = client.db();
-    const query = { email: myEmail };
+    const response = await getMyProducts(email, name);
 
-    const response = await db
-      .collection(collectionAllProducts)
-      .find(query)
-      .toArray();
-
-    return response;
-  } catch (error) {
-    console.log(error);
-  } finally {
-    client.close();
+    return NextResponse.json(response);
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json({ message: e.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ message: String(e) });
+    }
   }
 }

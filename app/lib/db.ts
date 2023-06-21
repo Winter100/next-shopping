@@ -142,3 +142,22 @@ export async function getAllProducts() {
 }
 
 export async function getUserInfo(id: string) {}
+
+export async function getMyProducts(email: string, name: string) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const query = { email: email, name: name };
+
+    const response = await db
+      .collection(collectionAllProducts)
+      .find(query)
+      .toArray();
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    client.close();
+  }
+}
