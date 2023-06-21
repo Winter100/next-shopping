@@ -16,7 +16,7 @@ async function getData(email: string) {
       cache: "no-store",
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email }),
+      body: JSON.stringify({ email }),
     }
   );
 

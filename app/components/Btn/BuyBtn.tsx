@@ -6,10 +6,18 @@ import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
 
-export default function BuyBtn({ email, id }: { email: string; id: string }) {
+export default function BuyBtn({
+  email,
+  id,
+  iswish = false,
+}: {
+  email: string;
+  id: string;
+  iswish: boolean;
+}) {
   const { data } = useSession();
 
-  const [isWish, setIsWish] = useState(false);
+  const [isWish, setIsWish] = useState(iswish);
   const [btn, setBtn] = useState(false);
 
   async function addWishList(addId: string) {
@@ -24,9 +32,8 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
       body: JSON.stringify({ id: addId }),
     });
 
-    const data = await response.json();
+    const result = await response.json();
     setBtn(false);
-    console.log(data);
   }
 
   return (

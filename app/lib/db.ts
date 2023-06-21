@@ -270,3 +270,26 @@ export async function getMyWishList(userEmail: string) {
     client.close();
   }
 }
+
+export async function checkMyWishList(userEmail: string, id: string) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const userCollection = db.collection(collectionUsers);
+
+    const user = await userCollection.findOne({ email: userEmail });
+
+    if (user && user.wishlist && user.wishlist.length > 0) {
+      const wishlistIds = user.wishlist;
+
+      return wishlistIds.includes(id);
+    }
+
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  } finally {
+    client.close();
+  }
+}

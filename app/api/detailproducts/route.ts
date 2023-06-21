@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const id = await req.json();
+    const { detailId } = await req.json();
 
-    const findProduct = await getDetailProduct(id);
+    const findProduct = await getDetailProduct(detailId);
 
     return NextResponse.json(findProduct);
   } catch (e) {
