@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProductsType } from "../../type/type";
 
-export default function MyWishList({ wishData }: { wishData: ProductsType[] }) {
+export default function WishList({ wishData }: { wishData: ProductsType[] }) {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const router = useRouter();
 
@@ -26,14 +26,15 @@ export default function MyWishList({ wishData }: { wishData: ProductsType[] }) {
       body: JSON.stringify({ ids: selectedItems }),
     });
     if (!response.ok) {
-      router.push("/");
+      router.refresh();
     }
     const data = await response.json();
     if (data.status === 201) {
-      router.push("/profile/wishlist");
+      router.refresh();
     } else {
       router.push("/");
     }
+    return router.refresh();
   }
 
   return (

@@ -1,5 +1,5 @@
-import WishList from "@/src/app/components/Wish/WishList";
-import { myGetServerSession } from "@/src/app/lib/getSession";
+import WishList from "@/app/components/Wish/WishList";
+import { myGetServerSession } from "@/app/lib/getSession";
 
 export default async function WishListPage() {
   const session = myGetServerSession();

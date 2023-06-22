@@ -1,5 +1,5 @@
-import SignIn from "@/src/app/components/Auth/SignIn";
-import { authOptions } from "@/src/app/lib/auth";
+import SignIn from "@/app/components/Auth/SignIn";
+import { authOptions } from "@/app/lib/auth";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 

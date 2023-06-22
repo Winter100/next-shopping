@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 
 import { Metadata } from "next";
-import { myGetServerSession } from "@/src/app/lib/getSession";
-import AddProcuct from "@/src/app/components/Product/Addproduct";
-import { ProductsType } from "@/src/app/type/type";
+import { myGetServerSession } from "@/app/lib/getSession";
+import AddProcuct from "@/app/components/Product/Addproduct";
+import { ProductsType } from "@/app/type/type";
 
 export const metadata: Metadata = {
   title: "수정 페이지",

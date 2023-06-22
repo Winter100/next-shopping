@@ -1,7 +1,7 @@
-import MyProductsList from "@/src/app/components/Product/MyProductsList";
+import MyProductsList from "@/app/components/Product/MyProductsList";
 
-import { myGetServerSession } from "@/src/app/lib/getSession";
-import { ProductsType } from "@/src/app/type/type";
+import { myGetServerSession } from "@/app/lib/getSession";
+import { ProductsType } from "@/app/type/type";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

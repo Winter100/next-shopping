@@ -1,5 +1,5 @@
-import { authOptions } from "@/src/app/lib/auth";
-import { MongoDbDeleteProducts } from "@/src/app/lib/editProducts";
+import { authOptions } from "@/app/lib/auth";
+import { MongoDbDeleteProducts } from "@/app/lib/editProducts";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 

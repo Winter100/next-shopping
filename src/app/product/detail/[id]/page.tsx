@@ -1,6 +1,6 @@
-import ProductDetail from "@/src/app/components/Product/ProductDetail";
-import { authOptions } from "@/src/app/lib/auth";
-import { ProductsType } from "@/src/app/type/type";
+import ProductDetail from "@/app/components/Product/ProductDetail";
+import { authOptions } from "@/app/lib/auth";
+import { ProductsType } from "@/app/type/type";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 

@@ -1,4 +1,4 @@
-import { getMyWishList } from "@/src/app/lib/db";
+import { getMyWishList } from "@/app/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

@@ -1,5 +1,5 @@
-import { addMyWishList } from "@/src/app/lib/db";
-import { myGetServerSession } from "@/src/app/lib/getSession";
+import { addMyWishList } from "@/app/lib/db";
+import { myGetServerSession } from "@/app/lib/getSession";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
