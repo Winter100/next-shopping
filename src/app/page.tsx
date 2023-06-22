@@ -1,7 +1,15 @@
-export default async function Home() {
+import Link from "next/link";
+
+export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <p>테스트</p>
-    </div>
+    <>
+      <h1>Hello, Next.js 13 App Directory!</h1>
+      <p>
+        <Link href="/initial-data">Prefetching Using initial data</Link>
+      </p>
+      <p>
+        <Link href="/hydration">Prefetching Using Hydration</Link>
+      </p>
+    </>
   );
 }
