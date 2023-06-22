@@ -9,16 +9,14 @@ export async function POST(
     const { email } = await req.json();
     const id = params.id;
 
-    if (email === "") {
-      const findProduct = await getDetailProduct(id);
+    let iswish = false;
+    const findProduct = await getDetailProduct(id);
 
-      return NextResponse.json({ detailData: findProduct, iswish: false });
-    } else {
-      const findProduct = await getDetailProduct(id);
-      const iswish = await checkMyWishList(email, id);
-
-      return NextResponse.json({ detailData: findProduct, iswish: iswish });
+    if (email) {
+      iswish = await checkMyWishList(email, id);
     }
+
+    return NextResponse.json({ detailData: findProduct, iswish });
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ message: e.message }, { status: 500 });
