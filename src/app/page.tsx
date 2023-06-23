@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { User } from "./components/user-components";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <p>
         <Link href="/hydration">Prefetching Using Hydration</Link>
       </p>
+      <User />
     </>
   );
 }

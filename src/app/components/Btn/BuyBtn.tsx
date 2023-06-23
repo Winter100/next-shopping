@@ -36,6 +36,10 @@ export default function BuyBtn({
     setBtn(false);
   }
 
+  function testclick() {
+    console.log(data.user);
+  }
+
   return (
     <>
       {data?.user.email === email ? (
@@ -53,7 +57,10 @@ export default function BuyBtn({
           {data?.user && (
             <button disabled={btn} onClick={() => addWishList(id)}>
               {isWish ? (
-                <HeartIcon className="w-6 h-6 text-red-500" />
+                <>
+                  <button onClick={testclick}>확인용</button>
+                  <HeartIcon className="w-6 h-6 text-red-500" />
+                </>
               ) : (
                 <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
               )}

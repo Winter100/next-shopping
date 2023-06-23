@@ -1,7 +1,7 @@
 import { hash, compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDatabase } from "./db";
+import { connectDatabase, getMyWishList } from "./db";
 import { collectionUsers } from "./collectionName";
 
 export interface PasswordType {
@@ -136,14 +136,15 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    session: ({ session, token }) => {
+    session: async ({ session, token }) => {
       // console.log("Session Callback", { session, token });
+      const email = session.user.email;
+
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
         },
       };
     },
