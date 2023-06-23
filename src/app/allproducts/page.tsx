@@ -20,10 +20,13 @@ export default async function AllProductsPage() {
 }
 
 async function getData() {
-  const response = await fetch(`/api/allproducts`, {
-    cache: "no-store",
-    method: "GET",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/allproducts`,
+    {
+      cache: "no-store",
+      method: "GET",
+    }
+  );
 
   const allData: ProductsType[] = await response.json();
 
