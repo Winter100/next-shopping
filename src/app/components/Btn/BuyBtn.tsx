@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
+import Note from "../Note/Note";
 
 export default function BuyBtn({
   email,
@@ -19,6 +20,7 @@ export default function BuyBtn({
 
   const [isWish, setIsWish] = useState(iswish);
   const [btn, setBtn] = useState(false);
+  const [isNote, setIsNote] = useState(false);
 
   async function addWishList(addId: string) {
     setIsWish((is) => !is);
@@ -36,29 +38,35 @@ export default function BuyBtn({
     setBtn(false);
   }
 
-  function testclick() {
-    console.log(data.user);
+  async function buyHandler() {
+    setIsNote(true);
   }
+
+  const isSameUser = data?.user.email === email;
 
   return (
     <>
-      {data?.user.email === email ? (
+      {isSameUser ? (
         <Link
           href={`/product/edit/${id}`}
           className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
         >
           수정
         </Link>
+      ) : isNote && data?.user ? (
+        <Note setIsNote={setIsNote} />
       ) : (
         <>
-          <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
+          <button
+            onClick={buyHandler}
+            className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
+          >
             구매문의
           </button>
           {data?.user && (
             <button disabled={btn} onClick={() => addWishList(id)}>
               {isWish ? (
                 <>
-                  <button onClick={testclick}>확인용</button>
                   <HeartIcon className="w-6 h-6 text-red-500" />
                 </>
               ) : (
