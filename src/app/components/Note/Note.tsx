@@ -1,17 +1,34 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useRef } from "react";
 
 export default function Note({ setIsNote }: { setIsNote: any }) {
   const textAreaRef = useRef(null);
+  const params = useParams();
+
   async function submitNote(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const textValue = textAreaRef.current.value;
+    if (!textAreaRef.current) {
+      return;
+    }
+
+    const textValue: string = textAreaRef.current.value.trim();
 
     if (textValue.length < 1) {
       return;
     }
+
+    const response = await fetch(`/api/note/${params.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ textValue }),
+    });
+
+    console.log(await response.json());
   }
   return (
     <form onSubmit={submitNote}>
