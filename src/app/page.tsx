@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { User } from "./components/user-components";
+import NoteForm from "./components/Note/SendNote";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Link href="/hydration">Prefetching Using Hydration</Link>
       </p>
       <User />
+      <NoteForm />
     </>
   );
 }

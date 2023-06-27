@@ -25,6 +25,7 @@ export default function Note({ setIsNote }: { setIsNote: any }) {
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({ textValue }),
     });
 

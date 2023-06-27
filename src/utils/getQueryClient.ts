@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/query-core";
 import { cache } from "react";
 
-const getQueryClient = () => new QueryClient();
+const getQueryClient = cache(() => new QueryClient());
 export default getQueryClient;
 
 //cashe()

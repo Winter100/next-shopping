@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "../Btn/DeleteModeal";
 import { ProductsType } from "../../type/type";
+import NoteInbox from "../Note/NoteInbox";
 
 export default function MyProductsList({
   products,
@@ -94,7 +95,7 @@ export default function MyProductsList({
               </h2>
               <div className="mt-4 flex justify-evenly items-center">
                 <Link
-                  href={"/"}
+                  href={`/profile/message/${product._id}`}
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                 >
                   쪽지

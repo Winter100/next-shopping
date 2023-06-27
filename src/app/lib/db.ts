@@ -1,5 +1,9 @@
 import { MongoClient } from "mongodb";
-import { collectionAllProducts, collectionUsers } from "./collectionName";
+import {
+  collectionAllProducts,
+  collectionProductNote,
+  collectionUsers,
+} from "./collectionName";
 import { ProductsType } from "../type/type";
 
 export async function connectDatabase() {
@@ -286,6 +290,57 @@ export async function checkMyWishList(userEmail: string, id: string) {
     }
 
     return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  } finally {
+    client.close();
+  }
+}
+
+export async function productAddNote(
+  productId: any,
+  note: string,
+  fromUser: string
+) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const userCollection = db.collection(collectionProductNote);
+
+    const filter = { _id: productId };
+    const update = { $push: { [fromUser]: { note: note } } };
+
+    const result = await userCollection.updateOne(filter, update, {
+      upsert: true,
+    });
+
+    if (result.modifiedCount === 1 || result.upsertedCount === 1) {
+      console.log("성공1");
+      return true;
+    } else {
+      console.log("실패1");
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  } finally {
+    client.close();
+  }
+}
+
+export async function getProductMessage(productId: any) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const userCollection = db.collection(collectionProductNote);
+
+    const filter = { _id: productId };
+
+    const result = await userCollection.findOne(filter);
+
+    return result;
   } catch (error) {
     console.log(error);
     return false;
