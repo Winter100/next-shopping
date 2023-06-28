@@ -307,9 +307,13 @@ export async function productAddNote(
   try {
     const db = client.db();
     const userCollection = db.collection(collectionProductNote);
+    const { v4: uuidv4 } = require("uuid");
+    const id = uuidv4();
 
     const filter = { _id: productId };
-    const update = { $push: { [fromUser]: { note: note } } };
+    const update = {
+      $push: { message: { id, sender: fromUser, message: note } },
+    };
 
     const result = await userCollection.updateOne(filter, update, {
       upsert: true,

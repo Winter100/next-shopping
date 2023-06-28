@@ -6,7 +6,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { email } = await req.json();
+    const { email = "" } = await req.json();
     const id = params.id;
 
     let iswish = false;

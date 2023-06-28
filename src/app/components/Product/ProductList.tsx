@@ -2,33 +2,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ProductsType } from "../../type/type";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 
-async function getAllProduct() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/allproducts`
-  );
-  const allProducts = (await res.json()) as ProductsType[];
-  return allProducts;
-}
+// async function getAllProduct() {
+//   const res = await fetch(
+//     `${process.env.NEXT_PUBLIC_BASE_URL}/api/allproducts`
+//   );
+//   const allProducts = (await res.json()) as ProductsType[];
+//   return allProducts;
+// }
 
-export default function ProductList(/*{
+export default function ProductList({
   products = [],
 }: {
   products: ProductsType[];
-}*/) {
-  const { data, isLoading, isFetching, error } = useQuery({
-    queryKey: ["all-product"],
-    queryFn: () => getAllProduct(),
-  });
+}) {
+  // const { data, isLoading, isFetching, error } = useQuery({
+  //   queryKey: ["all-product"],
+  //   queryFn: () => getAllProduct(),
+  // });
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {data.map((product) => (
+        <div className=" grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {products.map((product) => (
             <Link
               key={product._id}
               href={`/product/detail/${product._id}`}

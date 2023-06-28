@@ -1,11 +1,11 @@
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-import { authOptions } from "../../lib/auth";
-import { ProductsType } from "../../type/type";
+import { authOptions } from "@/app/lib/auth";
 import {
   MongoDbAddProducts,
   MongoDbEditProducts,
-} from "../../lib/editProducts";
+} from "@/app/lib/editProducts";
+import { ProductsType } from "@/app/type/type";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 
 //상품 등록
 export async function POST(req: Request) {

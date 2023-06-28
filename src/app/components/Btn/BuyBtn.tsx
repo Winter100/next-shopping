@@ -6,6 +6,7 @@ import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
 import Note from "../Note/Note";
+import NoteForm from "../Note/SendNote";
 
 export default function BuyBtn({
   email,
@@ -54,7 +55,7 @@ export default function BuyBtn({
           수정
         </Link>
       ) : isNote && data?.user ? (
-        <Note setIsNote={setIsNote} />
+        <NoteForm setIsNote={setIsNote} />
       ) : (
         <>
           <button

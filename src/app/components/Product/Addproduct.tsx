@@ -88,7 +88,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         email: data?.user?.email,
         name: data?.user?.name,
       };
-      response = await fetch("/api/editproduct", {
+      response = await fetch(`/api/editproduct/edit/${addData.name}`, {
         method: method,
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         imageSrc: image,
         _id: editData._id,
       };
-      response = await fetch("/api/editproduct", {
+      response = await fetch(`/api/editproduct/edit/${editData._id}`, {
         method: method,
         headers: {
           "Content-Type": "application/json",
@@ -259,9 +259,17 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           />
         </div>
         <div className="text-center">
-          <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
-            등록하기
+          <button
+            type="submit"
+            className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
+          >
+            {method === "PATCH" ? "수정하기" : "등록"}
           </button>
+          {method === "PATCH" && (
+            <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
+              판매완료
+            </button>
+          )}
           <p>{message}</p>
         </div>
       </div>
