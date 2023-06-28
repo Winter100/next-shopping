@@ -63,7 +63,7 @@ const NoteInbox = (/*props: { id: string }*/ { data }: { data: any }) => {
         <div className="px-4 py-3">
           <ul>
             {data ? (
-              data?.message?.map((note) => (
+              data?.message?.map((note: any) => (
                 <li
                   key={note.id}
                   className={`border-b py-3 cursor-pointer ${

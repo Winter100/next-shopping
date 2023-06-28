@@ -1,7 +1,6 @@
 import Image from "next/image";
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
-import CommentForm from "../Comment/Comment";
 
 export default function ProductDetail({
   data,
@@ -24,7 +23,7 @@ export default function ProductDetail({
             />
           </div>
           <div className="md:w-1/2 md:ml-8">
-            <h1 className="text-4xl font-semibold text-gray-800 mb-3 text-center mb-10">
+            <h1 className="text-4xl font-semibold text-gray-800 text-center mb-10">
               {data.title}
             </h1>
             <div className="mt-12 mb-12">

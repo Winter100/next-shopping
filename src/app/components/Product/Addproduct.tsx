@@ -150,7 +150,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           </div>
 
           <div className="md:w-1/2 md:ml-8">
-            <div className="text-4xl font-semibold text-gray-800 mb-3 text-center mb-10">
+            <div className="text-4xl font-semibold text-gray-800 text-center mb-10">
               <label className="block font-bold mb-1" htmlFor="title">
                 제품명
               </label>
