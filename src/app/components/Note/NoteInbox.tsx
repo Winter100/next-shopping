@@ -40,7 +40,7 @@ const NoteInbox = (/*props: { id: string }*/ { data }: { data: any }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const notesPerPage = 5;
 
-  const handleNoteClick = (note) => {
+  const handleNoteClick = (note: any) => {
     setSelectedNote(note);
   };
 
@@ -48,7 +48,7 @@ const NoteInbox = (/*props: { id: string }*/ { data }: { data: any }) => {
   const indexOfFirstNote = indexOfLastNote - notesPerPage;
   const currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
 
-  const paginate = (pageNumber) => {
+  const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
@@ -62,24 +62,28 @@ const NoteInbox = (/*props: { id: string }*/ { data }: { data: any }) => {
         </div>
         <div className="px-4 py-3">
           <ul>
-            {data?.message.map((note) => (
-              <li
-                key={note.id}
-                className={`border-b py-3 cursor-pointer ${
-                  selectedNote === note ? "bg-blue-100" : ""
-                }`}
-                onClick={() => handleNoteClick(note)}
-              >
-                <span className="text-blue-500 font-semibold">
-                  {note.sender}
-                </span>
-                <p className="text-gray-600">{note.message.slice(0, 10)}</p>
-              </li>
-            ))}
+            {data ? (
+              data?.message?.map((note) => (
+                <li
+                  key={note.id}
+                  className={`border-b py-3 cursor-pointer ${
+                    selectedNote === note ? "bg-blue-100" : ""
+                  }`}
+                  onClick={() => handleNoteClick(note)}
+                >
+                  <span className="text-blue-500 font-semibold">
+                    {note.sender}
+                  </span>
+                  <p className="text-gray-600">{note.message.slice(0, 10)}</p>
+                </li>
+              ))
+            ) : (
+              <p>온 쪽지가 없습니다.</p>
+            )}
           </ul>
         </div>
         <div className="px-4 py-2 flex justify-center">
-          {data.length > notesPerPage && (
+          {data?.length > notesPerPage && (
             <nav className="pagination">
               <ul className="flex items-center">
                 {Array(Math.ceil(data.length / notesPerPage))

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
+import CommentForm from "../Comment/Comment";
 
 export default function ProductDetail({
   data,

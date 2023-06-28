@@ -14,6 +14,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
   const [price, setPrice] = useState(editData?.price || 0);
   const [title, setTitle] = useState(editData?.title || "");
+
   const [selectedValue, setSelectedValue] = useState({
     random: editData?.selectedValue?.random || "yes",
     isMeet: editData?.selectedValue?.isMeet || "yes",
@@ -265,11 +266,6 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           >
             {method === "PATCH" ? "수정하기" : "등록"}
           </button>
-          {method === "PATCH" && (
-            <button className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
-              판매완료
-            </button>
-          )}
           <p>{message}</p>
         </div>
       </div>

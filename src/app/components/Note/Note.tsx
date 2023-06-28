@@ -37,7 +37,7 @@ export default function Note({ setIsNote }: { setIsNote: any }) {
         <textarea
           ref={textAreaRef}
           className="w-full h-40 resize-none border border-gray-300 p-2 mb-4"
-          placeholder="남길 메시지를 적어주세요."
+          placeholder={`연락 방법을 적어주세요. 예) 카톡: xxxx 또는 휴대폰 번호 등`}
         />
         <div className="flex justify-between">
           <button

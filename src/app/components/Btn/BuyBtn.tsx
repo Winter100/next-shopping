@@ -6,7 +6,6 @@ import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
 import Note from "../Note/Note";
-import NoteForm from "../Note/SendNote";
 
 export default function BuyBtn({
   email,
@@ -55,14 +54,14 @@ export default function BuyBtn({
           수정
         </Link>
       ) : isNote && data?.user ? (
-        <NoteForm setIsNote={setIsNote} />
+        <Note setIsNote={setIsNote} />
       ) : (
         <>
           <button
             onClick={buyHandler}
             className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
           >
-            구매문의
+            연락 요청 하기
           </button>
           {data?.user && (
             <button disabled={btn} onClick={() => addWishList(id)}>

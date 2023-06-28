@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "../Btn/DeleteModeal";
 import { ProductsType } from "../../type/type";
-import NoteInbox from "../Note/NoteInbox";
 
 export default function MyProductsList({
   products,
