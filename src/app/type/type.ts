@@ -16,6 +16,7 @@ export interface ProductsType {
     month: number;
     day: number;
   };
+  soldout: boolean;
 }
 
 export interface User {

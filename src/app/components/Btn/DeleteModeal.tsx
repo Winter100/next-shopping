@@ -7,9 +7,10 @@ import { redirect } from "next/navigation";
 interface ModalProps {
   setIsModal: (isConfirmed: boolean) => void;
   id: string;
+  method: string;
 }
 
-export default function Modal({ setIsModal, id }: ModalProps) {
+export default function Modal({ setIsModal, id, method }: ModalProps) {
   const [open, setOpen] = useState(true);
 
   const cancelButtonRef = useRef(null);
@@ -21,30 +22,27 @@ export default function Modal({ setIsModal, id }: ModalProps) {
     },
   });
 
-  async function deleteHandler(isConfirm: boolean) {
+  async function submitHandler(isConfirm: boolean) {
     try {
       if (isConfirm) {
         //삭제 로직
-        const deleteId = {
-          id: id,
-        };
-        const response = await fetch(`/api/editproduct/delete`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application",
-          },
-          body: JSON.stringify(deleteId),
-        });
-
-        const datas = await response.json();
-        console.log(datas);
-
-        if (response.status === 200) {
-          await new Promise((resolve) => {
-            window.addEventListener("load", resolve);
-            location.reload();
+        if (method === "DELETE") {
+          const response = await fetch(`/api/editproduct/delete/${id}`, {
+            method,
           });
+          const datas = await response.json();
+          console.log(datas);
+        } else if (method === "POST") {
+          const response = await fetch(`/api/editproduct/delete/${id}`, {
+            method,
+          });
+          const datas = await response.json();
+          console.log(datas);
         }
+        await new Promise((resolve) => {
+          window.addEventListener("load", resolve);
+          location.reload();
+        });
         setOpen;
         setIsModal(false);
       } else {
@@ -57,13 +55,31 @@ export default function Modal({ setIsModal, id }: ModalProps) {
     }
   }
 
+  const modalMessage = {
+    title: "",
+    checkMessage: "",
+    lastCheckMessage: "",
+  };
+
+  if (method === "DELETE") {
+    modalMessage.title = "등록한 물품을 삭제하겠습니까?";
+    modalMessage.checkMessage =
+      "삭제한 물품은 되돌릴 수 없습니다. 삭제하시겠습니까?";
+    modalMessage.lastCheckMessage = "네, 삭제하겠습니다.";
+  } else if (method === "POST") {
+    modalMessage.title = "등록한 물품의 판매를 완료하겠습니까?";
+    modalMessage.checkMessage =
+      "판매완료한 물품은 되돌릴 수 없습니다. 판매완료 하시겠습니까?";
+    modalMessage.lastCheckMessage = "네, 판매완료 하겠습니다.";
+  }
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={deleteHandler}
+        onClose={submitHandler}
       >
         <Transition.Child
           as={Fragment}
@@ -96,11 +112,11 @@ export default function Modal({ setIsModal, id }: ModalProps) {
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
-                        등록한 물품을 삭제하겠습니까?
+                        {modalMessage.title}
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          삭제한 물품은 되돌릴 수 없습니다. 삭제하시겠습니까?
+                          {modalMessage.checkMessage}
                         </p>
                       </div>
                     </div>
@@ -110,14 +126,14 @@ export default function Modal({ setIsModal, id }: ModalProps) {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => deleteHandler(true)}
+                    onClick={() => submitHandler(true)}
                   >
-                    네, 삭제하겠습니다.
+                    {modalMessage.lastCheckMessage}
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => deleteHandler(false)}
+                    onClick={() => submitHandler(false)}
                     ref={cancelButtonRef}
                   >
                     취소

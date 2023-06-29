@@ -115,6 +115,7 @@ export async function getAllProducts() {
       name: 1,
       _id: 1,
       imageSrc: 1,
+      soldout: 1,
     };
     const documents = await db
       .collection(collectionAllProducts)
@@ -134,6 +135,7 @@ export async function getAllProducts() {
         name: item.name,
         _id: item._id,
         imageSrc: item.imageSrc,
+        soldout: item.soldout,
       };
     });
 
@@ -144,8 +146,6 @@ export async function getAllProducts() {
     client.close();
   }
 }
-
-export async function getUserInfo(id: string) {}
 
 export async function getMyProducts(email: string, name: string) {
   const client = await connectDatabase();
@@ -301,18 +301,19 @@ export async function checkMyWishList(userEmail: string, id: string) {
 export async function productAddNote(
   productId: any,
   note: string,
+  messenger: string,
   fromUser: string
 ) {
   const client = await connectDatabase();
   try {
     const db = client.db();
-    const userCollection = db.collection(collectionProductNote);
+    const userCollection = db.collection(collectionAllProducts);
     const { v4: uuidv4 } = require("uuid");
     const id = uuidv4();
 
     const filter = { _id: productId };
     const update = {
-      $push: { message: { id, sender: fromUser, message: note } },
+      $push: { message: { id, sender: fromUser, messenger, message: note } },
     };
 
     const result = await userCollection.updateOne(filter, update, {
@@ -348,6 +349,29 @@ export async function getProductMessage(productId: any) {
   } catch (error) {
     console.log(error);
     return false;
+  } finally {
+    client.close();
+  }
+}
+
+export async function soldOutProduct(id: any, email: string, name: string) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+    const query = { _id: id, email: email, name: name };
+
+    const response = await db
+      .collection(collectionAllProducts)
+      .updateOne(query, { $set: { soldout: true } });
+
+    if (response.modifiedCount === 0) {
+      return { message: "해당 제품이 없습니다", status: 404 };
+    }
+
+    return { message: "판매완료처리", status: 200 };
+  } catch (error) {
+    console.log(error);
+    throw error;
   } finally {
     client.close();
   }

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request, param: { params: { id: string } }) {
   try {
-    const { textValue } = await req.json();
+    const { messenger, textValue } = await req.json();
 
     const id = param.params.id;
 
@@ -14,10 +14,13 @@ export async function POST(req: Request, param: { params: { id: string } }) {
     if (!session) {
       return NextResponse.json({ meesage: "로그인을 해주세요." });
     }
+    if (messenger.trim().length < 1 || textValue.trim().length < 1) {
+      return NextResponse.json({ meesage: "메신저 및 내용을 적어주세요." });
+    }
 
     const fromUser = session.user.name;
 
-    const result = await productAddNote(id, textValue, fromUser);
+    const result = await productAddNote(id, textValue, messenger, fromUser);
 
     if (result) {
       return NextResponse.json({ message: "성공" });

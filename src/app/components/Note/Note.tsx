@@ -5,6 +5,7 @@ import { useRef } from "react";
 
 export default function Note({ setIsNote }: { setIsNote: any }) {
   const textAreaRef = useRef(null);
+  const messengerRef = useRef(null);
   const params = useParams();
 
   async function submitNote(e: React.FormEvent<HTMLFormElement>) {
@@ -37,7 +38,7 @@ export default function Note({ setIsNote }: { setIsNote: any }) {
         <textarea
           ref={textAreaRef}
           className="w-full h-40 resize-none border border-gray-300 p-2 mb-4"
-          placeholder={`연락 방법을 적어주세요. 예) 카톡: xxxx 또는 휴대폰 번호 등`}
+          placeholder={`연락방법과 할 말을 적어주세요. 예) 구매원합니다, 카톡:XXXXX`}
         />
         <div className="flex justify-between">
           <button

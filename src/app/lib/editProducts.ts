@@ -15,6 +15,7 @@ export async function MongoDbAddProducts(req: ProductsType) {
     await db.collection(collectionAllProducts).insertOne({
       _id: id,
       date: date,
+      soldout: false,
       ...req,
     });
 
@@ -66,7 +67,7 @@ export async function MongoDbDeleteProducts(
   try {
     const db = client.db();
 
-    const query = { _id: id.id, email: email, name: name };
+    const query = { _id: id, email: email, name: name };
 
     const result = await db.collection(collectionAllProducts).deleteOne(query);
 
