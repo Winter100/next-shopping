@@ -46,7 +46,7 @@ export default function Navbar() {
                   Home
                 </Link>
                 <Link
-                  href="/allproducts"
+                  href="/allproducts/1"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   상품리스트
