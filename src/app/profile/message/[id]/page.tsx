@@ -1,6 +1,6 @@
-import NoteInbox from "@/app/components/Note/NoteInbox";
-import getQueryClient from "@/utils/getQueryClient";
-import { Hydrate, dehydrate } from "@tanstack/react-query";
+// import NoteInbox from "@/app/components/Note/NoteInbox";
+// import getQueryClient from "@/utils/getQueryClient";
+// import { Hydrate, dehydrate } from "@tanstack/react-query";
 
 // async function getMessage(id: string) {
 //   const res = await fetch(
@@ -22,7 +22,8 @@ export default async function NotePage(param: { params: { id: string } }) {
       {/* <Hydrate state={dehydratedState}>
         <NoteInbox id={id} />
       </Hydrate> */}
-      <NoteInbox data={data} />
+      {/* <NoteInbox data={data} /> */}
+      <p>쪽지보관함 테스트</p>
     </div>
   );
 }
