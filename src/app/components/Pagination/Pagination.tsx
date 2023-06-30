@@ -1,18 +1,20 @@
 "use client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import { useState } from "react";
 
 export default function Pagination() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const params = useParams();
   const totalPages = 100;
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);
+  const pageNumber = Number(params.pagenumber);
 
-  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(pageNumber || 1);
 
   async function handleClick(pageNumber: number) {
-    router.push(`/allproducts/${pageNumber}`);
+    // router.push(`/allproducts/${pageNumber}`);
     setCurrentPage(pageNumber);
   }
 
@@ -31,16 +33,18 @@ export default function Pagination() {
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
         <li key={i}>
-          <div
-            className={`px-3 py-2 leading-tight hover:cursor-pointer ${
-              i === currentPage
-                ? "text-blue-600 bg-blue-50"
-                : "text-gray-500 bg-white"
-            } border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-            onClick={() => handleClick(i)}
-          >
-            {i}
-          </div>
+          <Link href={`allproducts/${i}`}>
+            <div
+              className={`px-3 py-2 leading-tight hover:cursor-pointer ${
+                i === currentPage
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-500 bg-white"
+              } border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+              onClick={() => handleClick(i)}
+            >
+              {i}
+            </div>
+          </Link>
         </li>
       );
     }
@@ -49,12 +53,11 @@ export default function Pagination() {
   }
 
   return (
-    <nav aria-label="Page navigation example">
-      {currentPage}
+    <nav aria-label="Page navigation">
       <ul className="inline-flex items-center -space-x-px">
         <li>
-          <a
-            href="#"
+          <Link
+            href={`/allproducts/${pageNumber - 1}`}
             className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <span className="sr-only">Previous</span>
@@ -72,12 +75,12 @@ export default function Pagination() {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </a>
+          </Link>
         </li>
         {renderPageNumbers()}
         <li>
-          <a
-            href="#"
+          <Link
+            href={`/allproducts/${pageNumber + 1}`}
             className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <span className="sr-only">Next</span>
@@ -95,7 +98,7 @@ export default function Pagination() {
                 clipRule="evenodd"
               ></path>
             </svg>
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
