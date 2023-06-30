@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { User } from "./components/user-components";
-import Pagination from "./components/Pagination/Pagination";
 
 export default function Home() {
   return (
@@ -12,8 +10,6 @@ export default function Home() {
       <p>
         <Link href="/hydration">Prefetching Using Hydration</Link>
       </p>
-      <User />
-      <Pagination />
     </>
   );
 }
