@@ -5,7 +5,6 @@ import { useRef } from "react";
 
 export default function Note({ setIsNote }: { setIsNote: any }) {
   const textAreaRef = useRef(null);
-  const messengerRef = useRef(null);
   const params = useParams();
 
   async function submitNote(e: React.FormEvent<HTMLFormElement>) {
