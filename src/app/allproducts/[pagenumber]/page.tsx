@@ -1,9 +1,9 @@
 import Pagination from "@/app/components/Pagination/Pagination";
 import ProductList from "@/app/components/Product/ProductList";
 import { ProductsType } from "@/app/type/type";
-import getQueryClient from "@/utils/getQueryClient";
-import Hydrate from "@/utils/hydrate.client";
-import { dehydrate } from "@tanstack/query-core";
+// import getQueryClient from "@/utils/getQueryClient";
+// import Hydrate from "@/utils/hydrate.client";
+// import { dehydrate } from "@tanstack/query-core";
 
 import { Metadata } from "next";
 

@@ -2,7 +2,7 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
-import LoginNav from "./Nav/LoginNav";
+import LoginNav from "./LoginNav";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

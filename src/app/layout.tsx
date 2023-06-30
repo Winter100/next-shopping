@@ -1,8 +1,8 @@
-import NavBar from "./components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { NextAuthProvider } from "./providers";
 import Providers from "@/utils/provider";
+import Navbar from "./components/Nav/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <NextAuthProvider>
-          <NavBar />
+          <Navbar />
           <Providers>
             <main>{children}</main>
           </Providers>
