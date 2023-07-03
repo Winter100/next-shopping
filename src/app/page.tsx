@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Link from "next/link";
+import { MultiUploader } from "./components/Images/Upload-Test";
+
+export const metadata: Metadata = {
+  title: "싹다팜의 HomePage",
+  description: "...",
+};
 
 export default function Home() {
   return (
@@ -10,6 +17,7 @@ export default function Home() {
       <p>
         <Link href="/hydration">Prefetching Using Hydration</Link>
       </p>
+      <MultiUploader />
     </>
   );
 }

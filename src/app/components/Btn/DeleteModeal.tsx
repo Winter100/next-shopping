@@ -3,6 +3,7 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface ModalProps {
   setIsModal: (isConfirmed: boolean) => void;
@@ -12,6 +13,7 @@ interface ModalProps {
 
 export default function Modal({ setIsModal, id, method }: ModalProps) {
   const [open, setOpen] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const cancelButtonRef = useRef(null);
 
@@ -25,6 +27,7 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
   async function submitHandler(isConfirm: boolean) {
     try {
       if (isConfirm) {
+        setIsLoading(true);
         //삭제 로직
         if (method === "DELETE") {
           const response = await fetch(`/api/editproduct/delete/${id}`, {
@@ -45,6 +48,7 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
         });
         setOpen;
         setIsModal(false);
+        setIsLoading(false);
       } else {
         //취소 로직
         setOpen;
@@ -115,20 +119,24 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
                         {modalMessage.title}
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm  text-gray-500">
                           {modalMessage.checkMessage}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    className="inline-flex w-full text-center justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => submitHandler(true)}
                   >
-                    {modalMessage.lastCheckMessage}
+                    {isLoading ? (
+                      <LoadingSpinner />
+                    ) : (
+                      modalMessage.lastCheckMessage
+                    )}
                   </button>
                   <button
                     type="button"

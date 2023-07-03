@@ -25,25 +25,26 @@ export default function ProductList({
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="sr-only">Products</h2>
+        <h2 className="sr-only">판매목록</h2>
 
         <div className=" grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products?.map((product) => (
-            <div key={product._id}>
+            <div key={product._id} className="border-2 rounded-xl">
               <Link href={`/product/detail/${product._id}`} className="group">
                 <div className="text-center">
-                  <h3 className="mt-4 text-xl text-gray-700">
+                  <h3 className="mt-1 text-xl text-gray-700 border-b-2">
                     {product.title}
                   </h3>
                 </div>
                 <div
-                  style={{
-                    width: "250px",
-                    height: "250px",
-                    position: "relative",
-                  }}
+                  className="flex items-center justify-center w-[260px] h-[250px] relative"
+                  // style={{
+                  //   width: "200px",
+                  //   height: "300px",
+                  //   position: "relative",
+                  // }}
                 >
-                  <Image
+                  {/* <Image
                     src={
                       product.soldout === true
                         ? process.env.NEXT_PUBLIC_SOLDOUT_IMAGE
@@ -51,10 +52,24 @@ export default function ProductList({
                     }
                     alt={product.title}
                     fill={product.soldout === true ? false : true}
-                    width={product.soldout === true ? 250 : 0}
+                    width={product.soldout === true ? 500 : 0}
                     height={product.soldout === true ? 250 : 0}
                     className="w-full object-cover object-center group-hover:opacity-75"
-                  />
+                  /> */}
+
+                  <div className="w-full h-full relative">
+                    <Image
+                      src={
+                        product.soldout === true
+                          ? process.env.NEXT_PUBLIC_SOLDOUT_IMAGE
+                          : product.imageSrc
+                      }
+                      alt={product.title}
+                      fill
+                      quality={100}
+                      className="group-hover:opacity-75"
+                    />
+                  </div>
                 </div>
                 <p>{`판매자: ${product.name}`}</p>
                 <span>{`등록일: ${product.date.year}-${product.date.month}-${product.date.day}`}</span>

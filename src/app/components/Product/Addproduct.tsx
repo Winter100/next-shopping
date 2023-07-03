@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
+import { FileWithPath, useDropzone } from "react-dropzone";
+import { useUploadThing } from "@/utils/uploadthing";
 
 interface AddProductProps {
   editData: any;
@@ -10,6 +12,31 @@ interface AddProductProps {
 }
 
 export default function AddProcuct({ editData = "", method }: AddProductProps) {
+  const [files, setFiles] = useState<File[]>([]);
+  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    setFiles(acceptedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    // accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
+  });
+
+  const { startUpload } = useUploadThing("imageUploader", {
+    onClientUploadComplete: () => {
+      const suc = "성공";
+      return suc;
+    },
+    onUploadError: () => {
+      alert("error occurred while uploading");
+    },
+  });
+
+  async function uploadStart(files: any) {
+    const result = await startUpload(files);
+    return result[0].fileUrl;
+  }
+
   const [message, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
   const [price, setPrice] = useState(editData?.price || 0);
@@ -49,6 +76,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+    setFiles([file]);
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -77,6 +105,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       return;
     }
 
+    const imageSrc = await uploadStart(files);
+
     let response;
 
     if (method === "POST") {
@@ -85,7 +115,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         description,
         price,
         selectedValue,
-        imageSrc: image,
+        imageSrc: imageSrc,
         email: data?.user?.email,
         name: data?.user?.name,
       };
@@ -102,7 +132,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         description,
         price,
         selectedValue,
-        imageSrc: image,
+        imageSrc: imageSrc,
         _id: editData._id,
       };
       response = await fetch(`/api/editproduct/edit/${editData._id}`, {
@@ -131,13 +161,15 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 <Image src={image} alt="이미지" width={400} height={300} />
               )}
             </div>
+            {/* {...getRootProps()} */}
             <div className="text-center mt-2 ">
               <input
+                // {...getInputProps()}
                 type="file"
+                onChange={handleImageChange}
                 className="hidden"
                 id="mainImage"
                 accept="image/*"
-                onChange={handleImageChange}
                 name="imageSrc"
               />
               <label
