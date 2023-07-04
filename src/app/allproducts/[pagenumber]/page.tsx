@@ -35,7 +35,7 @@ export default async function AllProductsPage({ params }: ParamsType) {
   const allData = await getData(pageNumber);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="flex min-h-screen flex-col items-center justify-between">
       {/* <Hydrate state={dehydratedState}>
         <ProductList />
       </Hydrate> */}

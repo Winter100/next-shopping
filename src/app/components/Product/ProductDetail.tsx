@@ -10,7 +10,7 @@ export default function ProductDetail({
   iswish: boolean;
 }) {
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 mt-15">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">

@@ -1,5 +1,5 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import LoginNav from "./LoginNav";
@@ -11,10 +11,6 @@ export default function Navbar() {
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: `/` });
   };
 
   const handlerCloseMenu = () => {
@@ -30,15 +26,15 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-800" onClick={handlerCloseMenu}>
+    <nav className="bg-gray-800 w-full fixed z-10" onClick={handlerCloseMenu}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               {/* <img className="h-8 w-8" src="logo.png" alt="Logo" /> */}
             </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
+            <div>
+              <div className="ml-4 flex items-baseline space-x-4">
                 <Link
                   href="/"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -54,35 +50,28 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          <div className="hidden md:block">
+          <div>
             <div className="ml-4 flex items-center md:ml-6">
               <div className="relative">
                 {data && (
                   <button
                     onClick={handleDropdownToggle}
-                    className="text-gray-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium focus:outline-none"
+                    className="hover:text-white px-3 py-2 rounded-md text-sm font-medium focus:outline-none bg-cyan-600"
                   >
                     Menu
                   </button>
                 )}
                 {data && isDropdownOpen && <LoginNav />}
               </div>
-              {!data ? (
+              {!data && (
                 <Link
                   href={"/auth/in"}
-                  className="ml-4 px-3 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
+                  className="px-3 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
                 >
                   로그인
                 </Link>
-              ) : (
-                <button
-                  onClick={handleLogout}
-                  className="ml-4 px-3 py-2 rounded-md text-sm font-medium bg-red-500 text-white hover:bg-red-600 focus:outline-none"
-                >
-                  로그아웃
-                </button>
               )}
-              <div className="ml-4">
+              {/* <div className="ml-4">
                 <div className="relative">
                   <input
                     type="text"
@@ -109,7 +98,7 @@ export default function Navbar() {
                     </svg>
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

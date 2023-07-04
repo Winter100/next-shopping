@@ -20,7 +20,7 @@ export default async function ProductDetailPage({
   const { detailData, iswish } = await getData(id);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="flex min-h-screen flex-col items-center justify-between">
       {detailData && <ProductDetail data={detailData} iswish={iswish} />}
       {!detailData && <p>존재 하지 않는 제품입니다.</p>}
     </div>

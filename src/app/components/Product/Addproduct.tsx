@@ -105,11 +105,10 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       return;
     }
 
-    const imageSrc = await uploadStart(files);
-
     let response;
 
     if (method === "POST") {
+      const imageSrc = await uploadStart(files);
       const addData = {
         title,
         description,
@@ -132,7 +131,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         description,
         price,
         selectedValue,
-        imageSrc: imageSrc,
+        imageSrc: image,
         _id: editData._id,
       };
       response = await fetch(`/api/editproduct/edit/${editData._id}`, {
