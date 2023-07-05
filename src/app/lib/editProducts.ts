@@ -13,10 +13,10 @@ export async function MongoDbAddProducts(req: ProductsType) {
     const db = client.db();
 
     await db.collection(collectionAllProducts).insertOne({
-      _id: id,
       date: date,
       soldout: false,
       ...req,
+      _id: id,
     });
 
     return { status: 201, message: "등록성공" };
@@ -29,7 +29,7 @@ export async function MongoDbAddProducts(req: ProductsType) {
 }
 
 export async function MongoDbEditProducts(
-  req: ProductsType,
+  data: ProductsType,
   email: string,
   name: string
 ) {
@@ -37,16 +37,17 @@ export async function MongoDbEditProducts(
   try {
     const db = client.db();
 
-    const query = { _id: req._id, email: email, name: name };
+    const query = { _id: data._id, email: email, name: name };
     const response = await db.collection(collectionAllProducts).findOne(query);
 
     if (!response) {
       return { status: 404, message: "권한 또는 제품이 없습니다." };
     }
-    const { title, description, price, selectedValue, imageSrc } = req;
+    const { title, description, price, selectedValue, imageSrc, contact } =
+      data;
 
     await db.collection(collectionAllProducts).updateOne(query, {
-      $set: { title, description, price, selectedValue, imageSrc },
+      $set: { title, description, price, selectedValue, imageSrc, contact },
     });
 
     return { status: 200, message: "등록제품 수정 성공" };

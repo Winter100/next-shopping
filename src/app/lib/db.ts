@@ -59,12 +59,12 @@ export async function checkName(checkValue: string) {
   }
 }
 
-export async function getDetailProduct(id: any) {
+export async function getDetailProduct(productid: any) {
   const client = await connectDatabase();
   try {
     const db = client.db();
 
-    const query = { _id: id };
+    const query = { _id: productid };
     const response = await db.collection(collectionAllProducts).findOne(query);
 
     if (!response) {
@@ -81,6 +81,7 @@ export async function getDetailProduct(id: any) {
       _id,
       email,
       description,
+      contact,
     } = response;
 
     const data: ProductsType = {
@@ -93,6 +94,7 @@ export async function getDetailProduct(id: any) {
       _id,
       selectedValue,
       date,
+      contact,
     };
 
     return data;

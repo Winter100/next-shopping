@@ -40,7 +40,6 @@ async function getData(
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
     {
-      cache: "no-cache",
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { useUploadThing } from "@/utils/uploadthing";
+import { isFieldEmpty } from "@/utils/utils";
 
 interface AddProductProps {
   editData: any;
@@ -12,7 +13,6 @@ interface AddProductProps {
 }
 
 export default function AddProcuct({ editData = "", method }: AddProductProps) {
-  const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
   }, []);
@@ -24,11 +24,12 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {
+      //이미지 업로드 완료시
       const suc = "성공";
       return suc;
     },
     onUploadError: () => {
-      alert("error occurred while uploading");
+      //이미지 업로드 실패시
     },
   });
 
@@ -39,8 +40,12 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   const [message, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
-  const [price, setPrice] = useState(editData?.price || 0);
-  const [title, setTitle] = useState(editData?.title || "");
+  const [files, setFiles] = useState<File[]>(null);
+  const [price, setPrice] = useState<number | null>(editData?.price || 0);
+  const [title, setTitle] = useState<string | null>(editData?.title || "");
+  const [contact, setContact] = useState<string | null>(
+    editData?.contact || ""
+  );
 
   const [selectedValue, setSelectedValue] = useState({
     random: editData?.selectedValue?.random || "yes",
@@ -63,6 +68,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       ...selectedValue,
       [name]: value,
     });
+  }
+  function contactChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setContact(e.target.value);
   }
   function titleChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value);
@@ -94,59 +102,50 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     setMessage("등록중...");
 
     if (
-      !image ||
-      !title ||
-      !price ||
-      !description ||
-      title.trim().length === 0 ||
-      description.trim().length === 0 ||
-      data?.user === null
+      isFieldEmpty(image) ||
+      isFieldEmpty(title) ||
+      isFieldEmpty(price) ||
+      isFieldEmpty(description) ||
+      isFieldEmpty(contact) ||
+      !data?.user
     ) {
+      setMessage("모든 내용을 채워주세요.");
+      return;
+    }
+    if (title.trim().length > 20) {
       return;
     }
 
-    let response;
+    let imageSrc = files ? await uploadStart(files) : image;
 
-    if (method === "POST") {
-      const imageSrc = await uploadStart(files);
-      const addData = {
-        title,
-        description,
-        price,
-        selectedValue,
-        imageSrc: imageSrc,
-        email: data?.user?.email,
-        name: data?.user?.name,
-      };
-      response = await fetch(`/api/editproduct/edit/${addData.name}`, {
-        method: method,
+    const requestData = {
+      title,
+      description,
+      price,
+      selectedValue,
+      imageSrc,
+      contact,
+      email: data?.user?.email,
+      name: data?.user?.name,
+      _id: method === "PATCH" ? editData._id : null,
+    };
+
+    try {
+      const response = await fetch("/api/editproduct/edit/addoredit", {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(addData),
+        body: JSON.stringify(requestData),
       });
-    } else if (method === "PATCH") {
-      const PatchData = {
-        title,
-        description,
-        price,
-        selectedValue,
-        imageSrc: image,
-        _id: editData._id,
-      };
-      response = await fetch(`/api/editproduct/edit/${editData._id}`, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(PatchData),
-      });
-    }
 
-    if (response.status === 200) {
-      window.location.href = "/";
-    } else {
-      setMessage("잠시 후 다시 시도해주세요.");
+      if (response.status === 200) {
+        window.location.href = "/";
+      } else {
+        setMessage("잠시 후 다시 시도해주세요.");
+      }
+    } catch (error) {
+      setMessage("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   }
 
@@ -160,10 +159,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 <Image src={image} alt="이미지" width={400} height={300} />
               )}
             </div>
-            {/* {...getRootProps()} */}
             <div className="text-center mt-2 ">
               <input
-                // {...getInputProps()}
                 type="file"
                 onChange={handleImageChange}
                 className="hidden"
@@ -192,6 +189,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 id="title"
                 name="title"
                 type="text"
+                placeholder="최대 20자"
+                maxLength={20}
                 className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -251,6 +250,21 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                         <option value="yes">가능</option>
                         <option value="no">불가능</option>
                       </select>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className=" font-semibold text-sm w-1/4">카카오톡</td>
+                    <td>
+                      <input
+                        required
+                        onChange={contactChangeHandler}
+                        value={contact}
+                        type="text"
+                        placeholder="카톡 아이디"
+                        name="contact"
+                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
+                      />
                     </td>
                   </tr>
 

@@ -3,6 +3,7 @@ export interface ProductsType {
   title: string;
   description: string;
   price: number;
+  contact: string;
   selectedValue: {
     random: string;
     isMeet: string;

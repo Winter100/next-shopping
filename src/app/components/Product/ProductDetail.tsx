@@ -34,9 +34,19 @@ export default function ProductDetail({
                 <p className="text-blue-500 text-xl text-center font-semibold">{` ${data.name}`}</p>
               </div>
             </div>
-            <div className="mt-16">
+
+            <div className="mt-8">
               <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-                제품 설명
+                카카오톡 아이디
+              </h2>
+              <p className="font-semibold text-center text-xl text-blue-500">
+                {data?.contact}
+              </p>
+            </div>
+
+            <div className="mt-12">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+                판매 방법
               </h2>
               <table className="border-collapse">
                 <tbody>
@@ -103,7 +113,8 @@ export default function ProductDetail({
                 </tbody>
               </table>
             </div>
-            <div className="flex items-center mb-4 mt-[100px]">
+
+            <div className="flex items-center mb-4 mt-[50px]">
               <span className="text-gray-800 font-bold text-xl">
                 {`${data.price?.toLocaleString()}원`}
               </span>

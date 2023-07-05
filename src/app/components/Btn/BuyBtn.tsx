@@ -20,7 +20,6 @@ export default function BuyBtn({
 
   const [isWish, setIsWish] = useState(iswish);
   const [btn, setBtn] = useState(false);
-  const [isNote, setIsNote] = useState(false);
 
   async function addWishList(addId: string) {
     setIsWish((is) => !is);
@@ -38,44 +37,28 @@ export default function BuyBtn({
     setBtn(false);
   }
 
-  async function buyHandler() {
-    setIsNote(true);
-  }
-
   const isSameUser = data?.user.email === email;
 
   return (
-    <>
-      {isSameUser ? (
+    <div>
+      {isSameUser && (
         <Link
           href={`/product/edit/${id}`}
           className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
         >
           수정
         </Link>
-      ) : isNote && data?.user ? (
-        <Note setIsNote={setIsNote} />
-      ) : (
-        <>
-          <button
-            onClick={buyHandler}
-            className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
-          >
-            연락 요청 하기
-          </button>
-          {data?.user && (
-            <button disabled={btn} onClick={() => addWishList(id)}>
-              {isWish ? (
-                <>
-                  <HeartIcon className="w-6 h-6 text-red-500" />
-                </>
-              ) : (
-                <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
-              )}
-            </button>
-          )}
-        </>
       )}
-    </>
+
+      {data?.user && !isSameUser && (
+        <button disabled={btn} onClick={() => addWishList(id)}>
+          {isWish ? (
+            <HeartIcon className="w-6 h-6 text-red-500" />
+          ) : (
+            <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
+          )}
+        </button>
+      )}
+    </div>
   );
 }

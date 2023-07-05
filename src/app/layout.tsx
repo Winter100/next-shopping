@@ -22,7 +22,7 @@ export default function RootLayout({
         <NextAuthProvider>
           <Navbar />
           <Providers>
-            <main>{children}</main>
+            <main className="pt-16">{children}</main>
           </Providers>
         </NextAuthProvider>
       </body>
