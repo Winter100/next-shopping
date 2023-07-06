@@ -1,6 +1,8 @@
 import { User } from "../type/type";
 import { hashPassword } from "./auth";
-import { checkEmail, checkName, connectDatabase, usersCollection } from "./db";
+import { checkEmail, checkName, connectDatabase } from "./db";
+
+const usersCollection = process.env.NEXT_PUBLIC_DATABASE_COL_USERS;
 
 export async function MongoDbSignUp(req: User) {
   const client = await connectDatabase();
