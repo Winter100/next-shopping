@@ -95,6 +95,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any, req) {
         const client = await connectDatabase();
+        console.log(credentials);
         const userCollection = client.db().collection(usersCollection);
 
         const findUser = await userCollection.findOne({
@@ -140,7 +141,6 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, token }) => {
       // console.log("Session Callback", { session, token });
       const email = session.user.email;
-
       return {
         ...session,
         user: {

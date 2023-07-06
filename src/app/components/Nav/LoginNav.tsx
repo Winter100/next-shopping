@@ -34,10 +34,7 @@ export default function LoginNav() {
         </Link>
       </div>
       <div className="py-2">
-        <span
-          onClick={() => signOut({ callbackUrl: "/allproducts/1" })}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer"
-        >
+        <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer">
           로그아웃
         </span>
       </div>
