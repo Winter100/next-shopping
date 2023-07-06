@@ -107,12 +107,10 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       isFieldEmpty(price) ||
       isFieldEmpty(description) ||
       isFieldEmpty(contact) ||
+      title.trim().length > 20 ||
       !data?.user
     ) {
       setMessage("모든 내용을 채워주세요.");
-      return;
-    }
-    if (title.trim().length > 20) {
       return;
     }
 

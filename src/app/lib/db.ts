@@ -1,15 +1,15 @@
 import { MongoClient } from "mongodb";
-import {
-  collectionAllProducts,
-  collectionProductNote,
-  collectionUsers,
-} from "./collectionName";
 import { ProductsType } from "../type/type";
+
+const mongodbName = process.env.NEXT_PUBLIC_MONGODB_NAME;
+const mognodbPassword = process.env.NEXT_PUBLIC_MONGODB_PASSWORD;
+const productsCollection = process.env.NEXT_PUBLIC_DATABASE_COL_PRODUCTS;
+const usersCollection = process.env.NEXT_PUBLIC_DATABASE_COL_USERS;
 
 export async function connectDatabase() {
   try {
     const client = await MongoClient.connect(
-      `mongodb+srv://${process.env.NEXT_PUBLIC_MONGODB_NAME}:${process.env.NEXT_PUBLIC_MONGODB_PASSWORD}@cluster0.bj3zudb.mongodb.net/?retryWrites=true&w=majority`
+      `mongodb+srv://${mongodbName}:${mognodbPassword}@cluster0.bj3zudb.mongodb.net/?retryWrites=true&w=majority`
     );
     return client;
   } catch (error) {
@@ -21,8 +21,7 @@ export async function checkEmail(checkValue: string) {
   const client = await connectDatabase();
   try {
     const db = client.db();
-
-    const existingMail = await db.collection(collectionUsers).findOne({
+    const existingMail = await db.collection(usersCollection).findOne({
       email: checkValue,
     });
 
@@ -43,7 +42,7 @@ export async function checkName(checkValue: string) {
   try {
     const db = client.db();
 
-    const existingName = await db.collection(collectionUsers).findOne({
+    const existingName = await db.collection(usersCollection).findOne({
       name: checkValue,
     });
 
@@ -65,7 +64,7 @@ export async function getDetailProduct(productid: any) {
     const db = client.db();
 
     const query = { _id: productid };
-    const response = await db.collection(collectionAllProducts).findOne(query);
+    const response = await db.collection(productsCollection).findOne(query);
 
     if (!response) {
       return { status: 404, message: "존재하지 않는 상품입니다." };
@@ -123,7 +122,7 @@ export async function getAllProducts(pageNumber: number) {
     const skipItems = (pageNumber - 1) * itemsPerPage;
 
     const documents = await db
-      .collection(collectionAllProducts)
+      .collection(productsCollection)
       .find({}, { projection })
       .skip(skipItems)
       .limit(itemsPerPage)
@@ -148,7 +147,7 @@ export async function getAllProducts(pageNumber: number) {
 
     return transFormedData;
   } catch (e) {
-    throw new Error("Error retrieving all data");
+    throw new Error("모든 제품가져오기 실패!");
   } finally {
     client.close();
   }
@@ -161,7 +160,7 @@ export async function getMyProducts(email: string, name: string) {
     const query = { email: email, name: name };
 
     const response = await db
-      .collection(collectionAllProducts)
+      .collection(productsCollection)
       .find(query)
       .toArray();
 
@@ -184,7 +183,7 @@ export async function addMyWishList(
     const db = client.db();
     const query = { email, name };
 
-    const response = await db.collection(collectionUsers).findOne(query);
+    const response = await db.collection(usersCollection).findOne(query);
 
     if (!response) {
       return { message: "존재하지 않는 사용자입니다." };
@@ -195,12 +194,12 @@ export async function addMyWishList(
     const wishlistExists = wishlist.includes(productId);
 
     if (wishlistExists) {
-      await db.collection(collectionUsers).updateOne(query, {
+      await db.collection(usersCollection).updateOne(query, {
         $pull: { wishlist: productId },
       });
       return { message: "Wishlist에서 제거되었습니다." };
     } else {
-      await db.collection(collectionUsers).updateOne(query, {
+      await db.collection(usersCollection).updateOne(query, {
         $push: { wishlist: productId },
       });
       return { message: "Wishlist에 추가되었습니다." };
@@ -226,7 +225,7 @@ export async function deleteMyWishList(
     const db = client.db();
     const query = { email, name };
 
-    const response = await db.collection(collectionUsers).findOne(query);
+    const response = await db.collection(usersCollection).findOne(query);
 
     if (!response) {
       return { message: "존재하지 않는 사용자입니다." };
@@ -238,7 +237,7 @@ export async function deleteMyWishList(
       (productId: string) => !ids.includes(productId)
     );
 
-    await db.collection(collectionUsers).updateOne(query, {
+    await db.collection(usersCollection).updateOne(query, {
       $set: { wishlist: updatedWishlist },
     });
 
@@ -258,8 +257,8 @@ export async function getMyWishList(userEmail: string) {
   const client = await connectDatabase();
   try {
     const db = client.db();
-    const userCollection = db.collection(collectionUsers);
-    const allProductsCollection = db.collection(collectionAllProducts);
+    const userCollection = db.collection(usersCollection);
+    const allProductsCollection = db.collection(productsCollection);
 
     const user = await userCollection.findOne({ email: userEmail });
 
@@ -286,7 +285,7 @@ export async function checkMyWishList(userEmail: string, id: string) {
   const client = await connectDatabase();
   try {
     const db = client.db();
-    const userCollection = db.collection(collectionUsers);
+    const userCollection = db.collection(usersCollection);
 
     const user = await userCollection.findOne({ email: userEmail });
 
@@ -314,7 +313,7 @@ export async function productAddNote(
   const client = await connectDatabase();
   try {
     const db = client.db();
-    const userCollection = db.collection(collectionAllProducts);
+    const userCollection = db.collection(productsCollection);
     const { v4: uuidv4 } = require("uuid");
     const id = uuidv4();
 
@@ -342,25 +341,6 @@ export async function productAddNote(
   }
 }
 
-export async function getProductMessage(productId: any) {
-  const client = await connectDatabase();
-  try {
-    const db = client.db();
-    const userCollection = db.collection(collectionProductNote);
-
-    const filter = { _id: productId };
-
-    const result = await userCollection.findOne(filter);
-
-    return result;
-  } catch (error) {
-    console.log(error);
-    return false;
-  } finally {
-    client.close();
-  }
-}
-
 export async function soldOutProduct(id: any, email: string, name: string) {
   const client = await connectDatabase();
   try {
@@ -368,7 +348,7 @@ export async function soldOutProduct(id: any, email: string, name: string) {
     const query = { _id: id, email: email, name: name };
 
     const response = await db
-      .collection(collectionAllProducts)
+      .collection(productsCollection)
       .updateOne(query, { $set: { soldout: true } });
 
     if (response.modifiedCount === 0) {
