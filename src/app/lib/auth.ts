@@ -1,8 +1,7 @@
 import { hash, compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDatabase, getMyWishList } from "./db";
-import { collectionUsers } from "./collectionName";
+import { connectDatabase, usersCollection } from "./db";
 
 export interface PasswordType {
   oldPassword: string;
@@ -50,7 +49,7 @@ export async function changePassword(
     const db = client.db();
     const query = { email: userEmail, name: userName };
 
-    const user = await db.collection(collectionUsers).findOne(query);
+    const user = await db.collection(usersCollection).findOne(query);
 
     if (!user) {
       return { Message: "존재하지 않는 회원입니다." };
@@ -69,7 +68,7 @@ export async function changePassword(
     const hashedPassword = await hashPassword(newPassword);
 
     const result = await db
-      .collection(collectionUsers)
+      .collection(usersCollection)
       .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
 
     return { message: "비밀번호 변경 성공" };
@@ -94,7 +93,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any, req) {
         const client = await connectDatabase();
-        const userCollection = client.db().collection(collectionUsers);
+        const userCollection = client.db().collection(usersCollection);
 
         const findUser = await userCollection.findOne({
           email: credentials.email,

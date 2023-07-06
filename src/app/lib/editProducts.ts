@@ -1,6 +1,5 @@
 import { ProductsType } from "../type/type";
-import { collectionAllProducts } from "./collectionName";
-import { connectDatabase } from "./db";
+import { connectDatabase, productsCollection } from "./db";
 
 export async function MongoDbAddProducts(req: ProductsType) {
   const client = await connectDatabase();
@@ -12,7 +11,7 @@ export async function MongoDbAddProducts(req: ProductsType) {
 
     const db = client.db();
 
-    await db.collection(collectionAllProducts).insertOne({
+    await db.collection(productsCollection).insertOne({
       date: date,
       soldout: false,
       ...req,
@@ -38,7 +37,7 @@ export async function MongoDbEditProducts(
     const db = client.db();
 
     const query = { _id: data._id, email: email, name: name };
-    const response = await db.collection(collectionAllProducts).findOne(query);
+    const response = await db.collection(productsCollection).findOne(query);
 
     if (!response) {
       return { status: 404, message: "권한 또는 제품이 없습니다." };
@@ -46,7 +45,7 @@ export async function MongoDbEditProducts(
     const { title, description, price, selectedValue, imageSrc, contact } =
       data;
 
-    await db.collection(collectionAllProducts).updateOne(query, {
+    await db.collection(productsCollection).updateOne(query, {
       $set: { title, description, price, selectedValue, imageSrc, contact },
     });
 
@@ -70,7 +69,7 @@ export async function MongoDbDeleteProducts(
 
     const query = { _id: id, email: email, name: name };
 
-    const result = await db.collection(collectionAllProducts).deleteOne(query);
+    const result = await db.collection(productsCollection).deleteOne(query);
 
     if (result.deletedCount === 1) {
       return { status: 200, message: "삭제되었습니다." };

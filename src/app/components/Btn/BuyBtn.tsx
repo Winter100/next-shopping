@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
-import Note from "../Note/Note";
 
 export default function BuyBtn({
   email,

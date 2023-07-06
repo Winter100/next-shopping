@@ -4,7 +4,6 @@ import { ProductsType } from "@/app/type/type";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
-//동적으로 수정하기?
 export const metadata: Metadata = {
   title: "제품 상세보기",
   description: "...",

@@ -5,7 +5,6 @@ import { useCallback, useState } from "react";
 // Note: `useUploadThing` is IMPORTED FROM YOUR CODEBASE using the `generateReactHelpers` function
 import { useDropzone } from "react-dropzone";
 import type { FileWithPath } from "react-dropzone";
-import { generateClientDropzoneAccept } from "uploadthing/client";
 
 export function MultiUploader() {
   const [files, setFiles] = useState<File[]>([]);

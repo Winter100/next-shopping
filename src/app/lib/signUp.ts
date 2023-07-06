@@ -1,7 +1,6 @@
 import { User } from "../type/type";
 import { hashPassword } from "./auth";
-import { collectionUsers } from "./collectionName";
-import { checkEmail, checkName, connectDatabase } from "./db";
+import { checkEmail, checkName, connectDatabase, usersCollection } from "./db";
 
 export async function MongoDbSignUp(req: User) {
   const client = await connectDatabase();
@@ -34,7 +33,7 @@ export async function MongoDbSignUp(req: User) {
 
     const hashedPassword = await hashPassword(password);
 
-    await db.collection(collectionUsers).insertOne({
+    await db.collection(usersCollection).insertOne({
       email: email,
       name: name,
       password: hashedPassword,
