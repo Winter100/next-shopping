@@ -141,6 +141,7 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, token }) => {
       // console.log("Session Callback", { session, token });
       const email = session.user.email;
+
       return {
         ...session,
         user: {
