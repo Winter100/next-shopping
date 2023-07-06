@@ -1,7 +1,9 @@
 import { hash, compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDatabase, usersCollection } from "./db";
+import { connectDatabase } from "./db";
+
+const usersCollection = process.env.NEXT_PUBLIC_DATABASE_COL_USERS;
 
 export interface PasswordType {
   oldPassword: string;

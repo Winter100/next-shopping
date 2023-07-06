@@ -3,8 +3,8 @@ import { ProductsType } from "../type/type";
 
 const mongodbName = process.env.NEXT_PUBLIC_MONGODB_NAME;
 const mognodbPassword = process.env.NEXT_PUBLIC_MONGODB_PASSWORD;
-export const productsCollection = process.env.NEXT_PUBLIC_DATABASE_COL_PRODUCTS;
-export const usersCollection = process.env.NEXT_PUBLIC_DATABASE_COL_USERS;
+const productsCollection = process.env.NEXT_PUBLIC_DATABASE_COL_PRODUCTS;
+const usersCollection = process.env.NEXT_PUBLIC_DATABASE_COL_USERS;
 
 export async function connectDatabase() {
   try {

@@ -1,5 +1,7 @@
 import { ProductsType } from "../type/type";
-import { connectDatabase, productsCollection } from "./db";
+import { connectDatabase } from "./db";
+
+const productsCollection = process.env.NEXT_PUBLIC_DATABASE_COL_PRODUCTS;
 
 export async function MongoDbAddProducts(req: ProductsType) {
   const client = await connectDatabase();
