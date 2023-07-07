@@ -6,17 +6,17 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { email = "" } = await req.json();
+    // const { email = "" } = await req.json();
     const id = params.id;
 
-    let iswish = false;
+    // let iswish = false;
     const findProduct = await getDetailProduct(id);
 
-    if (email) {
-      iswish = await checkMyWishList(email, id);
-    }
+    // if (email) {
+    //   iswish = await checkMyWishList(email, id);
+    // }
 
-    return NextResponse.json({ detailData: findProduct, iswish });
+    return NextResponse.json({ detailData: findProduct });
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ message: e.message }, { status: 500 });

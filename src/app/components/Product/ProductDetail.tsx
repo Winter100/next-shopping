@@ -2,13 +2,7 @@ import Image from "next/image";
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
 
-export default function ProductDetail({
-  data,
-  iswish,
-}: {
-  data: ProductsType;
-  iswish: boolean;
-}) {
+export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
     <div className="container mx-auto py-8 mt-15">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -119,7 +113,7 @@ export default function ProductDetail({
                 {`${data.price?.toLocaleString()}원`}
               </span>
               <div className="flex justify-center items-center">
-                <BuyBtn email={data.email} id={data._id} iswish={iswish} />
+                <BuyBtn email={data.email} id={data._id} />
               </div>
             </div>
           </div>

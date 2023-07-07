@@ -281,7 +281,7 @@ export async function getMyWishList(userEmail: string) {
   }
 }
 
-export async function checkMyWishList(userEmail: string, id: string) {
+export async function getMywishListId(userEmail: string) {
   const client = await connectDatabase();
   try {
     const db = client.db();
@@ -292,50 +292,13 @@ export async function checkMyWishList(userEmail: string, id: string) {
     if (user && user.wishlist && user.wishlist.length > 0) {
       const wishlistIds = user.wishlist;
 
-      return wishlistIds.includes(id);
+      return wishlistIds;
     }
 
-    return false;
+    return [];
   } catch (error) {
     console.log(error);
-    return false;
-  } finally {
-    client.close();
-  }
-}
-
-export async function productAddNote(
-  productId: any,
-  note: string,
-  messenger: string,
-  fromUser: string
-) {
-  const client = await connectDatabase();
-  try {
-    const db = client.db();
-    const userCollection = db.collection(productsCollection);
-    const { v4: uuidv4 } = require("uuid");
-    const id = uuidv4();
-
-    const filter = { _id: productId };
-    const update = {
-      $push: { message: { id, sender: fromUser, messenger, message: note } },
-    };
-
-    const result = await userCollection.updateOne(filter, update, {
-      upsert: true,
-    });
-
-    if (result.modifiedCount === 1 || result.upsertedCount === 1) {
-      console.log("성공1");
-      return true;
-    } else {
-      console.log("실패1");
-      return false;
-    }
-  } catch (error) {
-    console.log(error);
-    return false;
+    return;
   } finally {
     client.close();
   }

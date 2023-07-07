@@ -42,7 +42,7 @@ export default function WishList({ wishData }: { wishData: ProductsType[] }) {
       <h1 className="text-3xl font-bold mb-8">찜 목록</h1>
       {wishData?.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {wishData.map((product) => (
+          {wishData?.map((product) => (
             <li key={product._id} className="bg-white shadow-lg rounded-lg p-4">
               <div onClick={() => handleItemClick(product._id)}>
                 <input

@@ -1,7 +1,8 @@
+import { generateComponents } from "@uploadthing/react";
 import { hash, compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDatabase } from "./db";
+import { getMywishListId, connectDatabase } from "./db";
 
 const usersCollection = process.env.NEXT_PUBLIC_DATABASE_COL_USERS;
 
@@ -119,34 +120,25 @@ export const authOptions: NextAuthOptions = {
         }
         client.close();
 
-        if (!findUser) {
-          return null;
-        }
-
-        const user = {
-          id: findUser.email,
-          name: findUser.name,
+        const wish = await getMywishListId(findUser.email);
+        return {
+          id: wish,
           email: findUser.email,
+          name: findUser.name,
+          wishId: wish,
         };
-
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
       },
     }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
+    session: ({ session, token, user }) => {
       // console.log("Session Callback", { session, token });
-      const email = session.user.email;
-
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
+          wishId: token.wish,
         },
       };
     },
@@ -157,7 +149,7 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           id: u.id,
-          randomKey: u.randomKey,
+          wishId: u.wish,
         };
       }
       return token;
