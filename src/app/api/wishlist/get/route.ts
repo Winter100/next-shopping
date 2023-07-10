@@ -5,6 +5,10 @@ export async function POST(req: Request) {
   try {
     const { email } = await req.json();
 
+    if (!email) {
+      return NextResponse.json([]);
+    }
+
     const response = await getMyWishList(email);
 
     return NextResponse.json(response);
