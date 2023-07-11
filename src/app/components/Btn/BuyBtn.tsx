@@ -79,7 +79,7 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
 
       {data?.user && !isSameUser && (
         <button
-          disabled={addWishlistItemMutation.isLoading}
+          // disabled={addWishlistItemMutation.isLoading}
           onClick={() => handleAddToWishlist(id)}
         >
           {getwish ? (

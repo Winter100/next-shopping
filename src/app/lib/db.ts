@@ -26,10 +26,10 @@ export async function checkEmail(checkValue: string) {
     });
 
     if (existingMail) {
-      return { message: "이미 가입된 메일입니다." };
+      return true;
     }
 
-    return;
+    return false;
   } catch (error) {
     console.log("이메일 중복확인 중 에러", error);
   } finally {

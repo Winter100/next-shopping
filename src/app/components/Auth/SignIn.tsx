@@ -82,14 +82,14 @@ export default function SignIn() {
                 >
                   비밀번호
                 </label>
-                <div className="text-sm">
+                {/* <div className="text-sm">
                   <a
                     href="#"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     비밀번호 찾기
                   </a>
-                </div>
+                </div> */}
               </div>
               <div className="mt-2">
                 <input

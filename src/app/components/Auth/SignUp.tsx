@@ -55,6 +55,26 @@ export default function SignUp() {
       return;
     }
   }
+
+  async function CheckEmailDuplicate(email: string) {
+    const response = await fetch("/api/signup", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+    if (!data) {
+      setCheckOutput("가입이 가능한 이메일입니다.");
+      return;
+    } else {
+      setCheckOutput("중복된 이메일입니다.");
+      return;
+    }
+  }
+
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -73,7 +93,16 @@ export default function SignUp() {
               >
                 이메일
               </label>
-              <div className="text-sm">
+              <div
+                hidden={
+                  userValue.email.trim().length >= 4 &&
+                  userValue.email.includes("@")
+                    ? false
+                    : true
+                }
+                className="text-sm"
+                onClick={() => CheckEmailDuplicate(userValue.email)}
+              >
                 <button className="font-semibold text-indigo-600 hover:text-indigo-500">
                   이메일 중복 확인
                 </button>

@@ -40,8 +40,8 @@ export default async function AllProductsPage({ params }: ParamsType) {
         <ProductList />
       </Hydrate> */}
       {allData && <ProductList products={allData} />}
-      <Pagination />
       {!allData && <p>등록된 제품이 없습니다.</p>}
+      <Pagination />
     </div>
   );
 }
