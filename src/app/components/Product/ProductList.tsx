@@ -41,7 +41,7 @@ export default function ProductList({
                       src={
                         product.soldout === true
                           ? process.env.NEXT_PUBLIC_SOLDOUT_IMAGE
-                          : product.imageSrc
+                          : product.mainImageSrc
                       }
                       alt={product.title}
                       fill

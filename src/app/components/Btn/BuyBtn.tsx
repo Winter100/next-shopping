@@ -2,7 +2,6 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -43,8 +42,6 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
     queryKey: ["wishlist"],
     queryFn: () => getWish(data?.user?.email),
   });
-
-  const [btn, setBtn] = useState(false);
 
   const queryClient = useQueryClient();
 

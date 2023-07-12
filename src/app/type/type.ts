@@ -9,7 +9,8 @@ export interface ProductsType {
     isMeet: string;
     bargaining: string;
   };
-  imageSrc: string;
+  mainImageSrc: string;
+  subImageSrc: string[];
   email: string | null | undefined;
   name: string | null | undefined;
   date: {

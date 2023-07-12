@@ -33,14 +33,14 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     },
   });
 
-  async function uploadStart(files: any) {
-    const result = await startUpload(files);
-    return result[0].fileUrl;
-  }
-
   const [message, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
+  const [subImage, setSubImage] = useState<string[] | null>(
+    editData?.subImageSrc || []
+  );
+
   const [files, setFiles] = useState<File[]>(null);
+  const [subfiles, setSubFiles] = useState<File[]>(null);
   const [price, setPrice] = useState<number | null>(editData?.price || 0);
   const [title, setTitle] = useState<string | null>(editData?.title || "");
   const [contact, setContact] = useState<string | null>(
@@ -82,6 +82,17 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     setDescription(e.target.value);
   }
 
+  async function mainUploadStart(image: any) {
+    const images = await startUpload(image);
+
+    return images[0]?.fileUrl;
+  }
+  async function subUploadStart(image: any) {
+    const images = await startUpload(image);
+    const subImageSrc = images?.map((item) => item?.fileUrl);
+    return subImageSrc;
+  }
+
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     setFiles([file]);
@@ -95,6 +106,33 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     } else {
       setImage(null);
     }
+
+    return;
+  }
+
+  function handleSubImageChage(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    const selectedImageUrls: any[] = [];
+    const addFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      addFiles.push(file);
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        selectedImageUrls.push(reader.result);
+        if (selectedImageUrls.length === files.length) {
+          setSubImage(selectedImageUrls);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+    setSubFiles(addFiles);
+
+    return;
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -114,14 +152,16 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       return;
     }
 
-    let imageSrc = files ? await uploadStart(files) : image;
+    const mainImageSrc = files ? await mainUploadStart(files) : image;
+    const subImageSrc = subfiles ? await subUploadStart(subfiles) : subImage;
 
     const requestData = {
       title,
       description,
       price,
       selectedValue,
-      imageSrc,
+      mainImageSrc,
+      subImageSrc,
       contact,
       email: data?.user?.email,
       name: data?.user?.name,
@@ -285,6 +325,41 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
             <div className="flex items-center mb-4">
               <span>{price.toLocaleString()}원</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 border-2">
+          <div className="m-auto">
+            <div className="flex items-center justify-center w-full h-full">
+              {subImage.map((imageUrl, index) => (
+                <div key={index} className="border-2">
+                  <Image
+                    width={300}
+                    height={300}
+                    src={imageUrl}
+                    alt={`Image ${index}`}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <input
+                type="file"
+                multiple
+                onChange={handleSubImageChage}
+                className="hidden"
+                id="subImage"
+                accept="image/*"
+                name="subimageSrc"
+              />
+              <label
+                htmlFor="subImage"
+                className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold"
+              >
+                그 외 이미지 업로드
+              </label>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           <div className="md:w-1/2">
             <Image
               className="w-full rounded-lg"
-              src={data.imageSrc}
+              src={data.mainImageSrc}
               alt={data.title}
               width={500}
               height={300}
@@ -116,6 +116,14 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                 <BuyBtn email={data.email} id={data._id} />
               </div>
             </div>
+          </div>
+        </div>
+        <div className="mt-6 mb-6">
+          서브이미지 들어갈 자리?
+          <div>
+            {data.subImageSrc.map((item, indexs) => {
+              return <p key={indexs}>{item}</p>;
+            })}
           </div>
         </div>
         <div

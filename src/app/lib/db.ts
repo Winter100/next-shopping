@@ -76,7 +76,8 @@ export async function getDetailProduct(productid: any) {
       title,
       name,
       price,
-      imageSrc,
+      mainImageSrc,
+      subImageSrc,
       _id,
       email,
       description,
@@ -87,7 +88,8 @@ export async function getDetailProduct(productid: any) {
       title,
       name,
       price,
-      imageSrc,
+      mainImageSrc,
+      subImageSrc,
       email,
       description,
       _id,
@@ -115,7 +117,8 @@ export async function getAllProducts(pageNumber: number) {
       date: 1,
       name: 1,
       _id: 1,
-      imageSrc: 1,
+      mainImageSrc: 1,
+      subImageSrc: 1,
       soldout: 1,
     };
     const itemsPerPage = 20;
@@ -140,7 +143,8 @@ export async function getAllProducts(pageNumber: number) {
         date: { year, month, day },
         name: item.name,
         _id: item._id,
-        imageSrc: item.imageSrc,
+        mainImageSrc: item.mainImageSrc,
+        subImageSrc: item.subImageSrc,
         soldout: item.soldout,
       };
     });
