@@ -44,11 +44,26 @@ export async function MongoDbEditProducts(
     if (!response) {
       return { status: 404, message: "권한 또는 제품이 없습니다." };
     }
-    const { title, description, price, selectedValue, imageSrc, contact } =
-      data;
+    const {
+      title,
+      description,
+      price,
+      selectedValue,
+      mainImageSrc,
+      subImageSrc,
+      contact,
+    } = data;
 
     await db.collection(productsCollection).updateOne(query, {
-      $set: { title, description, price, selectedValue, imageSrc, contact },
+      $set: {
+        title,
+        description,
+        price,
+        selectedValue,
+        mainImageSrc,
+        subImageSrc,
+        contact,
+      },
     });
 
     return { status: 200, message: "등록제품 수정 성공" };

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
+import DetailMoreImages from "../Images/DetailMoreImages";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
@@ -118,11 +119,14 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             </div>
           </div>
         </div>
-        <div className="mt-6 mb-6">
-          서브이미지 들어갈 자리?
-          <div>
+        <div className="mt-4 mb-4">
+          <div className="flex">
             {data.subImageSrc.map((item, indexs) => {
-              return <p key={indexs}>{item}</p>;
+              return (
+                <div key={indexs}>
+                  <DetailMoreImages src={item} indexs={indexs} />
+                </div>
+              );
             })}
           </div>
         </div>

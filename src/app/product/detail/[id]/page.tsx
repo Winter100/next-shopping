@@ -38,6 +38,7 @@ async function getData(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
     {
       method: "POST",
+      cache: "no-store",
       // headers: {
       //   "Content-Type": "application/json",
       // },

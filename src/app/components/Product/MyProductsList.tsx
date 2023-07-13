@@ -51,7 +51,7 @@ export default function MyProductsList({
                 src={
                   product.soldout === true
                     ? process.env.NEXT_PUBLIC_SOLDOUT_IMAGE
-                    : product.imageSrc
+                    : product.mainImageSrc
                 }
                 alt={product.title}
                 width={300}

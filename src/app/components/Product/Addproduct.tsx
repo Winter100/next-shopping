@@ -34,7 +34,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   });
 
   const [message, setMessage] = useState("");
-  const [image, setImage] = useState<string | null>(editData?.imageSrc || "");
+  const [image, setImage] = useState<string | null>(
+    editData?.mainImageSrc || ""
+  );
   const [subImage, setSubImage] = useState<string[] | null>(
     editData?.subImageSrc || []
   );

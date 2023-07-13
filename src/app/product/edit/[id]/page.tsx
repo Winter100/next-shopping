@@ -31,7 +31,7 @@ export default async function EditProductsPage({
 
 async function getData(
   detailId: string
-): Promise<{ detailData: ProductsType; iswish: boolean }> {
+): Promise<{ detailData: ProductsType }> {
   const session = await getServerSession(authOptions);
 
   let email = "";
@@ -50,9 +50,9 @@ async function getData(
     }
   );
 
-  const { detailData, iswish } = await response.json();
+  const { detailData } = await response.json();
 
-  return { detailData, iswish };
+  return { detailData };
 }
 
 // async function getData(detailId: string) {
