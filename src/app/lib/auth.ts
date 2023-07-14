@@ -84,6 +84,8 @@ export async function changePassword(
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60 * 3,
+    updateAge: 24 * 60 * 60,
   },
   providers: [
     CredentialsProvider({
