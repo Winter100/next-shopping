@@ -52,7 +52,7 @@ export default function WishList({ wishData }: { wishData: ProductsType[] }) {
                   onChange={() => {}}
                 />
                 <Image
-                  src={product.imageSrc}
+                  src={product.mainImageSrc}
                   alt={product.title}
                   width={300}
                   height={200}
