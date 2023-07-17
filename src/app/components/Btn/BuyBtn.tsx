@@ -6,6 +6,12 @@ import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+interface PropsType {
+  email: string;
+  id: string;
+  soldout: boolean;
+}
+
 async function getWish(email: string) {
   const res = await fetch(`/api/wishlist/getid`, {
     method: "POST",
@@ -30,7 +36,7 @@ async function addWishlistItem(itemId: string) {
   return result;
 }
 
-export default function BuyBtn({ email, id }: { email: string; id: string }) {
+export default function BuyBtn({ email, id, soldout }: PropsType) {
   const { data } = useSession();
 
   const {
@@ -65,7 +71,7 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
 
   return (
     <div>
-      {isSameUser && (
+      {!soldout && isSameUser && (
         <Link
           href={`/product/edit/${id}`}
           className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
@@ -75,10 +81,7 @@ export default function BuyBtn({ email, id }: { email: string; id: string }) {
       )}
 
       {data?.user && !isSameUser && (
-        <button
-          // disabled={addWishlistItemMutation.isLoading}
-          onClick={() => handleAddToWishlist(id)}
-        >
+        <button onClick={() => handleAddToWishlist(id)}>
           {getwish ? (
             <HeartIcon className="w-6 h-6 text-red-500" />
           ) : (

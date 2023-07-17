@@ -42,7 +42,6 @@ export async function changePassword(
     oldPassword.trim().length < 6 ||
     !userEmail
   ) {
-    //메시지 추가하기
     return;
   }
 

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import Modal from "./DeleteModeal";
+import Modal from "./DeleteModal";
 
 export default function MyProductMenu({
   productId,

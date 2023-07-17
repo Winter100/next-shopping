@@ -54,17 +54,3 @@ async function getData(
 
   return { detailData };
 }
-
-// async function getData(detailId: string) {
-//   const response = await fetch(
-//     `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
-//     {
-//       cache: "no-store",
-//       method: "POST",
-//     }
-//   );
-
-//   const { detailData }: { detailData: ProductsType } = await response.json();
-
-//   return detailData;
-// }

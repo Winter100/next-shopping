@@ -82,6 +82,7 @@ export async function getDetailProduct(productid: any) {
       email,
       description,
       contact,
+      soldout,
     } = response;
 
     const data: ProductsType = {
@@ -96,6 +97,7 @@ export async function getDetailProduct(productid: any) {
       selectedValue,
       date,
       contact,
+      soldout,
     };
 
     return data;

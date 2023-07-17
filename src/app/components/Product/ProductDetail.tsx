@@ -114,7 +114,11 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                 {`${data.price?.toLocaleString()}원`}
               </span>
               <div className="flex justify-center items-center">
-                <BuyBtn email={data.email} id={data._id} />
+                <BuyBtn
+                  email={data.email}
+                  id={data._id}
+                  soldout={data.soldout}
+                />
               </div>
             </div>
           </div>
