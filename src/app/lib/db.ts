@@ -26,7 +26,7 @@ export async function checkEmail(checkValue: string) {
     });
 
     if (existingMail) {
-      return true;
+      return { message: "이미 생성된 이메일입니다." };
     }
 
     return false;
