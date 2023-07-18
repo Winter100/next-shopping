@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface userInfoType {
   email: string;
@@ -13,6 +14,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
     newPassword: "",
   });
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function chagePasswordHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setPassword({
@@ -23,6 +25,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
 
   async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setIsLoading(true);
 
     if (
       !password.newPassword ||
@@ -37,7 +40,6 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
       oldPassword: password.oldPassword,
       newPassword: password.newPassword,
     };
-    // const response = await ChangePassword(passwordData, userInfo);
     const response = await fetch("/api/chagepassword", {
       method: "POST",
       headers: {
@@ -47,8 +49,11 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
     });
 
     if (response.status === 200) {
-      return setMessage("비밀번호가 변경되었습니다.");
+      setIsLoading(false);
+      setMessage("비밀번호가 변경되었습니다.");
+      return;
     } else {
+      setIsLoading(false);
       return;
     }
   }
@@ -137,17 +142,21 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
           </div>
           {message && (
             <div className="text-center">
-              <p> {message}</p>
+              <p className="text-red-600">{message}</p>
             </div>
           )}
-          <div>
+          {!isLoading ? (
             <button
-              type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              type="submit"
             >
               비밀번호 변경
             </button>
-          </div>
+          ) : (
+            <div className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              <LoadingSpinner />
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
 import DetailMoreImages from "../Images/DetailMoreImages";
@@ -9,13 +8,13 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">
-            <Image
-              className="w-full rounded-lg"
-              src={data.mainImageSrc}
-              alt={data.title}
-              width={500}
-              height={300}
-            />
+            <div>
+              <DetailMoreImages
+                imageType="main"
+                src={data.mainImageSrc}
+                indexs={99}
+              />
+            </div>
           </div>
           <div className="md:w-1/2 md:ml-8">
             <h1 className="text-4xl font-semibold text-gray-800 text-center mb-10">
@@ -127,8 +126,12 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           <div className="flex">
             {data.subImageSrc.map((item, indexs) => {
               return (
-                <div key={indexs}>
-                  <DetailMoreImages src={item} indexs={indexs} />
+                <div className="mt-4" key={indexs}>
+                  <DetailMoreImages
+                    imageType="sub"
+                    src={item}
+                    indexs={indexs}
+                  />
                 </div>
               );
             })}

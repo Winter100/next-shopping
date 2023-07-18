@@ -6,6 +6,7 @@ import { redirect, useRouter } from "next/navigation";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { useUploadThing } from "@/utils/uploadthing";
 import { isFieldEmpty } from "@/utils/utils";
+import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface AddProductProps {
   editData: any;
@@ -40,6 +41,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   const [subImage, setSubImage] = useState<string[] | null>(
     editData?.subImageSrc || []
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const [files, setFiles] = useState<File[]>(null);
   const [subfiles, setSubFiles] = useState<File[]>(null);
@@ -139,7 +141,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage("등록중...");
+    setIsLoading(true);
 
     if (
       isFieldEmpty(image) ||
@@ -183,8 +185,10 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         window.location.href = "/";
       } else {
         setMessage("잠시 후 다시 시도해주세요.");
+        setIsLoading(false);
       }
     } catch (error) {
+      setIsLoading(false);
       setMessage("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   }
@@ -196,7 +200,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           <div className="md:w-[528px] md:mr-8">
             <div className="border-2 h-[792px]">
               {image && (
-                <Image src={image} alt="이미지" width={400} height={300} />
+                <Image
+                  className="w-full h-full"
+                  src={image}
+                  alt="이미지"
+                  width={400}
+                  height={300}
+                />
               )}
             </div>
             <div className="text-center mt-2 ">
@@ -380,12 +390,19 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           />
         </div>
         <div className="text-center">
-          <button
-            type="submit"
-            className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
-          >
-            {method === "PATCH" ? "수정하기" : "등록"}
-          </button>
+          {!isLoading && (
+            <button
+              type="submit"
+              className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
+            >
+              {method === "PATCH" ? "수정하기" : "등록"}
+            </button>
+          )}
+          {isLoading && (
+            <button className="w-fit mx-auto ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
+              <LoadingSpinner />
+            </button>
+          )}
           <p>{message}</p>
         </div>
       </div>

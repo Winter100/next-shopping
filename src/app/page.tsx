@@ -1,17 +1,15 @@
 import { Metadata } from "next";
+import HomePage from "./components/Home/HomePage";
 
 export const metadata: Metadata = {
-  title: "싹다팜의 HomePage",
+  title: "싹다팜",
   description: "...",
 };
 
 export default function Home() {
   return (
-    <div className="min-h-screen mt-20">
-      <div>
-        <h2 className="text-5xl text-center">사용 설명서</h2>
-      </div>
-      <div></div>
+    <div className=" min-h-screen bg-base-200">
+      <HomePage />
     </div>
   );
 }
