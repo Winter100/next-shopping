@@ -5,6 +5,7 @@ import { useState } from "react";
 import { checkUser } from "./use/check-user";
 import { useRouter } from "next/navigation";
 import { User } from "../../type/type";
+import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 export default function SignUp() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function SignUp() {
   });
   const [checkPassword, setCheckPassword] = useState("");
   const [checkOutput, setCheckOutput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function changeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setUserValue({
@@ -28,7 +30,7 @@ export default function SignUp() {
   }
   async function signUpHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setCheckOutput("가입중...");
+    setIsLoading(true);
 
     const data = checkUser(userValue, checkPassword);
 
@@ -51,6 +53,7 @@ export default function SignUp() {
       //가입완료
     } else {
       //가입실패
+      setIsLoading(false);
       setCheckOutput(result.message);
       return;
     }
@@ -202,7 +205,7 @@ export default function SignUp() {
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              회원가입
+              {!isLoading ? "회원가입" : <LoadingSpinner />}
             </button>
           </div>
         </form>

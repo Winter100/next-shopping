@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface LoginType {
   email: string;
@@ -13,6 +14,7 @@ interface LoginType {
 export default function SignIn() {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [userValue, setUserValue] = useState<LoginType>({
     email: "",
@@ -26,7 +28,7 @@ export default function SignIn() {
   }
   async function signInHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage("로그인중...");
+    setIsLoading(true);
 
     const response = await signIn("credentials", {
       redirect: false,
@@ -36,6 +38,7 @@ export default function SignIn() {
 
     if (response?.error) {
       setMessage(response.error);
+      setIsLoading(false);
     } else {
       router.push("/");
     }
@@ -112,7 +115,7 @@ export default function SignIn() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                로그인
+                {!isLoading ? "로그인" : <LoadingSpinner />}
               </button>
             </div>
           </form>
