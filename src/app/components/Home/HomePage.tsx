@@ -10,7 +10,7 @@ export default function HomePage() {
           <div className="mb-10">
             <p className="py-4">안녕하세요! 싹다팜입니다.</p>
             <p className="py-4">
-              싹담팜은 내가 가진 물품을 자유롭게 파는 곳 입니다.
+              싹다팜은 내가 가진 물품을 자유롭게 파는 곳 입니다.
             </p>
           </div>
           <Link href={`/allproducts/1`} className="btn btn-primary">

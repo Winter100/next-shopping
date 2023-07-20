@@ -2,26 +2,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ProductsType } from "../../type/type";
-// import { useQuery } from "@tanstack/react-query";
-
-// async function getAllProduct() {
-//   const res = await fetch(
-//     `${process.env.NEXT_PUBLIC_BASE_URL}/api/allproducts`
-//   );
-//   const allProducts = (await res.json()) as ProductsType[];
-//   return allProducts;
-// }
 
 export default function ProductList({
   products = [],
 }: {
   products: ProductsType[];
 }) {
-  // const { data, isLoading, isFetching, error } = useQuery({
-  //   queryKey: ["all-product"],
-  //   queryFn: () => getAllProduct(),
-  // });
-
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 mt-10">
@@ -61,7 +47,6 @@ export default function ProductList({
           ))}
         </div>
       </div>
-      {products.length === 0 && <h2>해당 페이지에는 물품이 없습니다.</h2>}
     </div>
   );
 }

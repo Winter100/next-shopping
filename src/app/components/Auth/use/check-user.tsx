@@ -1,7 +1,7 @@
-import { User } from "@/app/type/type";
+import { signUpInput } from "@/app/type/type";
 
-export function checkUser(data: User, checkPassword: string) {
-  const { email, password, name } = data;
+export function checkUser(data: signUpInput) {
+  const { email, password, name, checkPassword } = data;
 
   if (!email.includes("@")) {
     return { isValid: false, message: "이메일은 @가 포함되어야 합니다." };

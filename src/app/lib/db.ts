@@ -13,6 +13,7 @@ export async function connectDatabase() {
     );
     return client;
   } catch (error) {
+    console.log(error);
     console.log("몽고 DB연결 중 에러");
   }
 }

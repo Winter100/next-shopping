@@ -13,9 +13,11 @@ export async function GET(
     return NextResponse.json(allProducts);
   } catch (e) {
     if (e instanceof Error) {
-      return NextResponse.json({ message: e.message }, { status: 500 });
+      console.log({ message: e.message }, { status: 500 });
+      return NextResponse.json([]);
     } else {
-      return NextResponse.json({ message: String(e) });
+      console.log({ message: String(e) });
+      return NextResponse.json([]);
     }
   }
 }

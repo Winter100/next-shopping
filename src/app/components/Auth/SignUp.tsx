@@ -4,17 +4,18 @@ import Link from "next/link";
 import { useState } from "react";
 import { checkUser } from "./use/check-user";
 import { useRouter } from "next/navigation";
-import { User } from "../../type/type";
+import { signUpInput } from "../../type/type";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 export default function SignUp() {
   const router = useRouter();
-  const [userValue, setUserValue] = useState<User>({
+  const [userValue, setUserValue] = useState<signUpInput>({
     email: "",
     password: "",
+    checkPassword: "",
     name: "",
   });
-  const [checkPassword, setCheckPassword] = useState("");
+
   const [checkOutput, setCheckOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,41 +26,42 @@ export default function SignUp() {
     });
   }
 
-  function checkPasswordHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    setCheckPassword(e.target.value);
-  }
   async function signUpHandler(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsLoading(true);
+    try {
+      e.preventDefault();
+      setIsLoading(true);
 
-    const data = checkUser(userValue, checkPassword);
+      const data = checkUser(userValue);
 
-    if (!data.isValid) {
-      return setCheckOutput(data.message);
-    }
+      if (!data.isValid) {
+        setIsLoading(false);
+        setCheckOutput(data.message);
+        return;
+      }
 
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userValue),
-    });
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userValue),
+      });
 
-    const result = await response.json();
-    if (result.status === 201) {
-      router.push("/");
-      return;
-      //가입완료
-    } else {
-      //가입실패
+      const result = await response.json();
+      if (result.status === 201) {
+        router.push("/");
+        return;
+        //가입완료
+      }
       setIsLoading(false);
       setCheckOutput(result.message);
-      return;
+    } catch (e) {
+      console.log(e);
     }
   }
 
   async function CheckEmailDuplicate(email: string) {
+    setIsLoading(true);
     const response = await fetch("/api/signup", {
       method: "PATCH",
       headers: {
@@ -71,11 +73,11 @@ export default function SignUp() {
     const data = await response.json();
     if (!data) {
       setCheckOutput("가입이 가능한 이메일입니다.");
-      return;
     } else {
       setCheckOutput("중복된 이메일입니다.");
-      return;
     }
+    setIsLoading(false);
+    return;
   }
 
   return (
@@ -104,9 +106,12 @@ export default function SignUp() {
                     : true
                 }
                 className="text-sm"
-                onClick={() => CheckEmailDuplicate(userValue.email)}
               >
-                <button className="font-semibold text-indigo-600 hover:text-indigo-500">
+                <button
+                  type="button"
+                  onClick={() => CheckEmailDuplicate(userValue.email)}
+                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                >
                   이메일 중복 확인
                 </button>
               </div>
@@ -162,7 +167,6 @@ export default function SignUp() {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -172,7 +176,7 @@ export default function SignUp() {
           <div>
             <div className="flex items-center justify-between">
               <label
-                htmlFor="password2"
+                htmlFor="checkPassword"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 비밀번호 확인
@@ -180,12 +184,11 @@ export default function SignUp() {
             </div>
             <div className="mt-2">
               <input
-                value={checkPassword}
-                onChange={checkPasswordHandler}
-                id="password2"
-                name="password2"
+                value={userValue.checkPassword}
+                onChange={changeHandler}
+                id="checkPassword"
+                name="checkPassword"
                 type="password"
-                autoComplete="current-password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -202,6 +205,7 @@ export default function SignUp() {
 
           <div>
             <button
+              disabled={isLoading}
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >

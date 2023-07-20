@@ -26,3 +26,10 @@ export interface User {
   password: string;
   name: string;
 }
+
+export interface signUpInput {
+  email: string;
+  password: string;
+  name: string;
+  checkPassword: string;
+}
