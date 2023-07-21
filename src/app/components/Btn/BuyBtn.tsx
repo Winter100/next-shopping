@@ -66,8 +66,7 @@ export default function BuyBtn({ email, id, soldout }: PropsType) {
   }
 
   const isSameUser = data?.user?.email === email;
-
-  const getwish = wish.find((item) => item === id);
+  const wished = wish.find((item) => item === id);
 
   return (
     <div>
@@ -82,7 +81,7 @@ export default function BuyBtn({ email, id, soldout }: PropsType) {
 
       {data?.user && !isSameUser && (
         <button onClick={() => handleAddToWishlist(id)}>
-          {getwish ? (
+          {wished ? (
             <HeartIcon className="w-6 h-6 text-red-500" />
           ) : (
             <OutlineHeartIcon className="w-6 h-6 text-gray-500" />

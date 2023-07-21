@@ -1,16 +1,16 @@
 import { redirect } from "next/navigation";
 
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import { myGetServerSession } from "@/app/lib/getSession";
 import AddProcuct from "@/app/components/Product/Addproduct";
 import { ProductsType } from "@/app/type/type";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 
-export const metadata: Metadata = {
-  title: "수정 페이지",
-  description: "사용자가 올린 제품의 내용을 수정하는 페이지입니다.",
-};
+// export const metadata: Metadata = {
+//   title: "수정 페이지",
+//   description: "사용자가 올린 제품의 내용을 수정하는 페이지입니다.",
+// };
 
 export default async function EditProductsPage({
   params,

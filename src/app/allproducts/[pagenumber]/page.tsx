@@ -1,12 +1,12 @@
 import Pagination from "@/app/components/Pagination/Pagination";
 import ProductList from "@/app/components/Product/ProductList";
 import { ProductsType } from "@/app/type/type";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "모든 제품 보기",
-  description: "판매를 위해 등록한 모든 제품",
-};
+// export const metadata: Metadata = {
+//   title: "모든 제품 보기",
+//   description: "판매를 위해 등록한 모든 제품",
+// };
 
 interface ParamsType {
   params: { pagenumber: number };

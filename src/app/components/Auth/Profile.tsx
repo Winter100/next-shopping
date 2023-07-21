@@ -58,6 +58,8 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
     }
   }
 
+  const tagStyles = `block text-base font-bold leading-6 text-gray-900`;
+
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -70,10 +72,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
         <form className="space-y-6" onSubmit={submitHandler}>
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="email" className={`${tagStyles}`}>
                 이메일
               </label>
             </div>
@@ -84,10 +83,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
           </div>
 
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
+            <label htmlFor="name" className={`${tagStyles}`}>
               닉네임
             </label>
             <div className="mt-2">
@@ -97,10 +93,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
 
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="oldPassword"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="oldPassword" className={`${tagStyles}`}>
                 현재 비밀번호
               </label>
             </div>
@@ -120,10 +113,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
 
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="newPassword"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="newPassword" className={`${tagStyles}`}>
                 변경 할 비밀번호
               </label>
             </div>
