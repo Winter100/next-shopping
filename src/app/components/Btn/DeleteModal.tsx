@@ -73,8 +73,8 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
   } else if (method === "POST") {
     modalMessage.title = "등록한 물품의 판매를 완료하겠습니까?";
     modalMessage.checkMessage =
-      "판매완료한 물품은 되돌릴 수 없습니다. 판매완료 하시겠습니까?";
-    modalMessage.lastCheckMessage = "네, 판매완료 하겠습니다.";
+      "판매 완료한 물품은 되돌릴 수 없습니다. 판매 완료하시겠습니까?";
+    modalMessage.lastCheckMessage = "네, 판매 완료하겠습니다.";
   }
 
   return (

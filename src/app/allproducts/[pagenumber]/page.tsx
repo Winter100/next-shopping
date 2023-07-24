@@ -20,7 +20,7 @@ export default async function AllProductsPage({ params }: ParamsType) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
       {allData && <ProductList products={allData} />}
-      {!allData && <p>등록된 제품이 없습니다.</p>}
+      {allData.length <= 0 && <p>등록된 제품이 없습니다.</p>}
       <Pagination />
     </div>
   );

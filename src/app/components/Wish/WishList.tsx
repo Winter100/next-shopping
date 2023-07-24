@@ -58,18 +58,13 @@ export default function WishList({ wishData }: { wishData: ProductsType[] }) {
                   height={200}
                   className="w-full h-48 object-cover rounded-md mb-4"
                 />
-                <h2 className="text-lg text-center font-semibold">
-                  {product.title}
-                </h2>
               </div>
-              <div className="mt-4 flex justify-evenly items-center">
-                <Link
-                  href={`/product/detail/${product._id}`}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                >
-                  보기
-                </Link>
-              </div>
+              <Link
+                href={`/product/detail/${product._id}`}
+                className="text-base text-center font-semibold hover:text-lime-600"
+              >
+                {product.title}
+              </Link>
             </li>
           ))}
         </ul>

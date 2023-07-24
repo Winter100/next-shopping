@@ -17,7 +17,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             </div>
           </div>
           <div className="md:w-1/2 md:ml-8">
-            <h1 className="text-4xl font-semibold text-gray-800 text-center mb-10">
+            <h1 className=" text-3xl font-semibold text-gray-800 text-center mb-10">
               {data.title}
             </h1>
             <div className="mt-12 mb-12">
@@ -45,7 +45,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               <table className="border-collapse">
                 <tbody>
                   <tr className="border-b">
-                    <td className="font-semibold py-2 px-4">흥정여부</td>
+                    <td className="font-semibold py-2 px-4">흥정 여부</td>
                     <td className="py-2 px-4">
                       <div className="flex items-center">
                         {data.selectedValue?.bargaining === "yes" ? (
@@ -65,7 +65,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                     </td>
                   </tr>
                   <tr className="border-b">
-                    <td className="font-semibold py-2 px-4">직거래여부</td>
+                    <td className="font-semibold py-2 px-4">직 거래</td>
                     <td className="py-2 px-4">
                       <div className="flex items-center">
                         {data.selectedValue?.isMeet === "yes" ? (
@@ -85,7 +85,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                     </td>
                   </tr>
                   <tr>
-                    <td className="font-semibold py-2 px-4">지역선택</td>
+                    <td className="font-semibold py-2 px-4">택배 거래</td>
                     <td className="py-2 px-4">
                       <div className="flex items-center">
                         {data.selectedValue?.random === "yes" ? (

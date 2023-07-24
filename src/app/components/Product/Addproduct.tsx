@@ -230,7 +230,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           <div className="md:w-1/2 md:ml-8">
             <div className="text-4xl font-semibold text-gray-800 text-center mt-10 mb-10">
               <label className="block font-bold mb-1" htmlFor="title">
-                제품명
+                제목
               </label>
               <input
                 onChange={titleChangeHandler}
@@ -247,12 +247,12 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
             <div>
               <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-                옵션
+                판매 정보
               </h2>
               <table>
                 <tbody>
                   <tr>
-                    <td className="font-semibold text-sm w-1/4">흥정여부</td>
+                    <td className="font-semibold text-sm w-1/4">흥정 여부</td>
                     <td>
                       <select
                         onChange={selectedChangeHandler}
@@ -269,7 +269,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                     </td>
                   </tr>
                   <tr>
-                    <td className="font-semibold text-sm w-1/4">직거래</td>
+                    <td className="font-semibold text-sm w-1/4">직 거래</td>
                     <td>
                       <select
                         onChange={selectedChangeHandler}
@@ -286,7 +286,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                     </td>
                   </tr>
                   <tr>
-                    <td className="font-semibold text-sm w-1/4">지역선택</td>
+                    <td className="font-semibold text-sm w-1/4">택배 거래</td>
                     <td>
                       <select
                         value={selectedValue.random}
@@ -378,7 +378,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
         <div className="mt-10">
           <label htmlFor="description" className="block text-center text-2xl">
-            설명
+            내용
           </label>
           <textarea
             required

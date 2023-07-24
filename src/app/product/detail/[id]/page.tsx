@@ -19,30 +19,19 @@ export default async function ProductDetailPage({
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
       {detailData && <ProductDetail data={detailData} />}
-      {!detailData && <p>존재 하지 않는 제품입니다.</p>}
+      {!detailData && <p>존재하지 않는 제품입니다.</p>}
     </div>
   );
 }
 
 async function getData(
   detailId: string
-): Promise<{ detailData: ProductsType /*iswish: boolean*/ }> {
-  // const session = await getServerSession(authOptions);
-
-  // let email = "";
-  // if (session?.user?.email) {
-  //   email = session.user.email;
-  // }
-
+): Promise<{ detailData: ProductsType }> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
     {
       method: "POST",
       cache: "no-store",
-      // headers: {
-      //   "Content-Type": "application/json",
-      // },
-      // body: JSON.stringify({ email }),
     }
   );
 

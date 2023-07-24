@@ -20,7 +20,7 @@ export default async function MyProductsPage() {
       {data ? (
         <MyProductsList products={data} />
       ) : (
-        <p className="text-gray-600 text-lg">등록된 물건이 없습니다.123</p>
+        <p className="text-gray-600 text-lg">등록된 물건이 없습니다.</p>
       )}
     </>
   );
