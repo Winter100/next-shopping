@@ -130,6 +130,7 @@ export async function getAllProducts(pageNumber: number) {
     const documents = await db
       .collection(productsCollection)
       .find({}, { projection })
+      .sort({ date: -1 })
       .skip(skipItems)
       .limit(itemsPerPage)
       .toArray();
