@@ -1,9 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
@@ -12,18 +14,14 @@ export default function SearchBar() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const inputValue = searchTerm.trim();
+    const inputValue = searchTerm.replace(/(\s*)/g, "");
 
     if (inputValue.length < 1) {
       //검색 입력 단어가 0자 일때
       return;
     }
 
-    const response = await fetch(`/api/search/${inputValue}`, {
-      method: "POST",
-    });
-
-    console.log(response);
+    return router.push(`/product/search?keyword=${inputValue}`);
   }
 
   return (

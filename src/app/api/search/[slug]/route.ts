@@ -1,6 +1,6 @@
+import { getSearchProducts } from "@/app/lib/db";
 import { NextResponse } from "next/server";
 
-//상품 등록
 export async function POST(
   req: Request,
   { params }: { params: { slug: string } }
@@ -8,7 +8,9 @@ export async function POST(
   try {
     const searchValue = params.slug;
 
-    return NextResponse.json({});
+    const searchData = await getSearchProducts(searchValue);
+
+    return NextResponse.json(searchData);
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ message: e.message });

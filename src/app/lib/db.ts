@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { ProductsType } from "../type/type";
+import { transFormedData } from "./utill";
 
 const mongodbName = process.env.NEXT_PUBLIC_MONGODB_NAME;
 const mognodbPassword = process.env.NEXT_PUBLIC_MONGODB_PASSWORD;
@@ -135,27 +136,35 @@ export async function getAllProducts(pageNumber: number) {
       .limit(itemsPerPage)
       .toArray();
 
-    const transFormedData = documents.map((item) => {
-      const dateObj = new Date(item.date);
-      const year = dateObj.getFullYear();
-      const month = dateObj.getMonth() + 1;
-      const day = dateObj.getDate();
+    const transData = await transFormedData(documents);
 
-      return {
-        title: item.title,
-        price: item.price,
-        date: { year, month, day },
-        name: item.name,
-        _id: item._id,
-        mainImageSrc: item.mainImageSrc,
-        subImageSrc: item.subImageSrc,
-        soldout: item.soldout,
-      };
-    });
-
-    return transFormedData;
+    return transData;
   } catch (e) {
     throw new Error("모든 제품가져오기 실패!");
+  } finally {
+    client.close();
+  }
+}
+
+export async function getSearchProducts(search: string) {
+  const client = await connectDatabase();
+  try {
+    const db = client.db();
+
+    const regexSearch = new RegExp(search, "i");
+    const query = { title: { $regex: regexSearch } };
+
+    const documents = await db
+      .collection(productsCollection)
+      .find(query)
+      .toArray();
+
+    const transData = await transFormedData(documents);
+
+    return transData;
+  } catch (e) {
+    console.log(e);
+    throw new Error("검색실패");
   } finally {
     client.close();
   }

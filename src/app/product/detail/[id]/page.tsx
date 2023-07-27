@@ -12,7 +12,7 @@ export default async function ProductDetailPage({
 }: {
   params: { id: string };
 }) {
-  const id = params.id;
+  const id = encodeURIComponent(params.id);
 
   const { detailData } = await getData(id);
 
