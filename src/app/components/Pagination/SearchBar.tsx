@@ -1,9 +1,10 @@
 "use client";
 
+import { PaginationProps } from "@/app/type/type";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-export default function SearchBar() {
+export default function SearchBar({ setCurrentPage }: PaginationProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
@@ -21,7 +22,10 @@ export default function SearchBar() {
       return;
     }
 
-    return router.push(`/product/search?keyword=${inputValue}`);
+    // return router.push(`/product/search?keyword=${inputValue}`);
+
+    setCurrentPage(1);
+    return router.push(`/product/search?keyword=${inputValue}&page=${1}`);
   }
 
   return (

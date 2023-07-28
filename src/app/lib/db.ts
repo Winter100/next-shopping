@@ -111,7 +111,7 @@ export async function getDetailProduct(productid: any) {
   }
 }
 
-export async function getAllProducts(pageNumber: number) {
+export async function getAllProducts(page: number) {
   const client = await connectDatabase();
   try {
     const db = client.db();
@@ -126,7 +126,7 @@ export async function getAllProducts(pageNumber: number) {
       soldout: 1,
     };
     const itemsPerPage = 20;
-    const skipItems = (pageNumber - 1) * itemsPerPage;
+    const skipItems = (page - 1) * itemsPerPage;
 
     const documents = await db
       .collection(productsCollection)
@@ -146,17 +146,22 @@ export async function getAllProducts(pageNumber: number) {
   }
 }
 
-export async function getSearchProducts(search: string) {
+export async function getSearchProducts(keyword: string, page: number) {
   const client = await connectDatabase();
   try {
     const db = client.db();
 
-    const regexSearch = new RegExp(search, "i");
+    const regexSearch = new RegExp(keyword, "i");
     const query = { title: { $regex: regexSearch } };
+    const itemsPerPage = 20;
+    const skipItems = (page - 1) * itemsPerPage;
 
     const documents = await db
       .collection(productsCollection)
       .find(query)
+      .sort({ date: -1 })
+      .skip(skipItems)
+      .limit(itemsPerPage)
       .toArray();
 
     const transData = await transFormedData(documents);

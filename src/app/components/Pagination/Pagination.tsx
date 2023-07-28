@@ -1,20 +1,27 @@
 "use client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { useState } from "react";
+import Search from "./Search";
 
 export default function Pagination() {
-  const params = useParams();
+  // const router = useRouter();
+
+  const searchUrl = useSearchParams();
+
+  const searchParams = searchUrl?.get("keyword");
+  const pageNum = Number(searchUrl?.get("page"));
+
   const totalPages = 100;
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);
-  const pageNumber = Number(params.pagenumber);
+  // const pageNumber = Number(params.pagenumber);
 
-  const [currentPage, setCurrentPage] = useState(pageNumber || 1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   async function handleClick(pageNumber: number) {
-    // router.push(`/allproducts/${pageNumber}`);
+    // router.push(`/product/search?keyword=${searchParams}&page=${pageNumber}`);
     setCurrentPage(pageNumber);
   }
 
@@ -33,7 +40,7 @@ export default function Pagination() {
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
         <li key={i}>
-          <Link href={`allproducts/${i}`}>
+          <Link href={`/product/search?keyword=${searchParams}&page=${i}`}>
             <div
               className={`px-3 py-2 leading-tight hover:cursor-pointer ${
                 i === currentPage
@@ -54,10 +61,12 @@ export default function Pagination() {
 
   return (
     <nav aria-label="Page navigation">
+      <Search setCurrentPage={setCurrentPage} />
       <ul className="inline-flex items-center -space-x-px">
         <li>
           <Link
-            href={`/allproducts/${pageNumber - 1}`}
+            // href={`${pageNumber - 1}`}
+            href={`/product/search?keyword=${searchParams}&page=${pageNum - 1}`}
             className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <span className="sr-only">Previous</span>
@@ -80,7 +89,8 @@ export default function Pagination() {
         {renderPageNumbers()}
         <li>
           <Link
-            href={`/allproducts/${pageNumber + 1}`}
+            // href={`${pageNumber + 1}`}
+            href={`/product/search?keyword=${searchParams}&page=${pageNum + 1}`}
             className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <span className="sr-only">Next</span>

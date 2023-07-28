@@ -1,8 +1,8 @@
 import { addMyWishList } from "@/app/lib/db";
 import { myGetServerSession } from "@/app/lib/getSession";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { id } = await req.json();
 

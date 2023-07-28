@@ -1,5 +1,4 @@
 import Pagination from "@/app/components/Pagination/Pagination";
-import Search from "@/app/components/Pagination/Search";
 import ProductList from "@/app/components/Product/ProductList";
 import { ProductsType } from "@/app/type/type";
 // import { Metadata } from "next";
@@ -22,7 +21,6 @@ export default async function AllProductsPage({ params }: ParamsType) {
     <div className="flex min-h-screen flex-col items-center justify-between">
       {allData && <ProductList products={allData} />}
       {allData.length <= 0 && <p>등록된 제품이 없습니다.</p>}
-      <Search />
       <Pagination />
     </div>
   );

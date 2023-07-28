@@ -2,11 +2,11 @@ import { authOptions } from "@/app/lib/auth";
 import { soldOutProduct } from "@/app/lib/db";
 import { MongoDbDeleteProducts } from "@/app/lib/editProducts";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 //등록 상품 삭제
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {

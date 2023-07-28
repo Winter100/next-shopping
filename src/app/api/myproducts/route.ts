@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getMyProducts } from "../../lib/db";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { email, name } = await req.json();
 

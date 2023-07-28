@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { MongoDbSignUp } from "../../lib/signUp";
 import { User } from "../../type/type";
 import { checkEmail } from "@/app/lib/db";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const data: User = await req.json();
 

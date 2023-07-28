@@ -33,3 +33,7 @@ export interface signUpInput {
   name: string;
   checkPassword: string;
 }
+
+export interface PaginationProps {
+  setCurrentPage: (pageNumber: number) => void;
+}

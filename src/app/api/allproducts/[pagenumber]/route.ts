@@ -1,8 +1,8 @@
 import { getAllProducts } from "@/app/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { pagenumber: number } }
 ) {
   try {
