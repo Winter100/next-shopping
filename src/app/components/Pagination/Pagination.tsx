@@ -6,8 +6,6 @@ import { useState } from "react";
 import Search from "./Search";
 
 export default function Pagination() {
-  // const router = useRouter();
-
   const searchUrl = useSearchParams();
 
   const searchParams = searchUrl?.get("keyword");
@@ -16,12 +14,10 @@ export default function Pagination() {
   const totalPages = 100;
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);
-  // const pageNumber = Number(params.pagenumber);
 
   const [currentPage, setCurrentPage] = useState(1);
 
   async function handleClick(pageNumber: number) {
-    // router.push(`/product/search?keyword=${searchParams}&page=${pageNumber}`);
     setCurrentPage(pageNumber);
   }
 
@@ -65,7 +61,6 @@ export default function Pagination() {
       <ul className="inline-flex items-center -space-x-px">
         <li>
           <Link
-            // href={`${pageNumber - 1}`}
             href={`/product/search?keyword=${searchParams}&page=${pageNum - 1}`}
             className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >

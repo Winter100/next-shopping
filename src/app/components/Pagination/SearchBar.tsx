@@ -18,11 +18,8 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
     const inputValue = searchTerm.replace(/(\s*)/g, "");
 
     if (inputValue.length < 1) {
-      //검색 입력 단어가 0자 일때
       return;
     }
-
-    // return router.push(`/product/search?keyword=${inputValue}`);
 
     setCurrentPage(1);
     return router.push(`/product/search?keyword=${inputValue}&page=${1}`);
