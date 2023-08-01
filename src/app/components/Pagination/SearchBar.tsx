@@ -8,7 +8,7 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
 
@@ -20,9 +20,8 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
     if (inputValue.length < 1) {
       return;
     }
-
-    setCurrentPage(1);
-    return router.push(`/product/search?keyword=${inputValue}&page=${1}`);
+    router.push(`/product/search?keyword=${inputValue}&page=${1}`);
+    return setCurrentPage(1);
   }
 
   return (

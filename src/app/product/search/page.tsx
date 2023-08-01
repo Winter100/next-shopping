@@ -14,8 +14,11 @@ export default async function SearchPage({
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
-      {searchData && <ProductList products={searchData} />}
-      {!searchData && <p>결과가 없습니다.</p>}
+      {searchData?.length > 1 ? (
+        <ProductList products={searchData} />
+      ) : (
+        <p className=" mt-56">결과가 없습니다.</p>
+      )}
       <Pagination />
     </div>
   );

@@ -2,12 +2,6 @@ import MyProductsList from "@/app/components/Product/MyProductsList";
 
 import { myGetServerSession } from "@/app/lib/getSession";
 import { ProductsType } from "@/app/type/type";
-// import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   title: "내가 올린 제품 목록",
-//   description: "사용자가 판매를 위해 등록한 제품의 목록",
-// };
 
 export default async function MyProductsPage() {
   const session = await myGetServerSession();
@@ -20,7 +14,7 @@ export default async function MyProductsPage() {
       {data ? (
         <MyProductsList products={data} />
       ) : (
-        <p className="text-gray-600 text-lg">등록된 물건이 없습니다.</p>
+        <p className="text-gray-600 text-lg">등록된 제품이 없습니다.</p>
       )}
     </>
   );
