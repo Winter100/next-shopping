@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ProductsType } from "../../type/type";
 import MyProductMenu from "../Btn/DropMenu";
 import Link from "next/link";
-// ...
 
 export default function MyProductsList({
   products,
