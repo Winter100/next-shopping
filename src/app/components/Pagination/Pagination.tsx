@@ -15,7 +15,7 @@ export default function Pagination() {
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(pageNum || 1);
 
   async function handleClick(pageNumber: number) {
     setCurrentPage(pageNumber);
