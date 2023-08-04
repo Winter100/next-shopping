@@ -58,7 +58,7 @@ export default function Pagination() {
   return (
     <nav aria-label="Page navigation">
       <Search setCurrentPage={setCurrentPage} />
-      <ul className="inline-flex items-center -space-x-px">
+      <ul className="flex justify-center">
         <li>
           <Link
             href={`/product/search?keyword=${searchParams}&page=${pageNum - 1}`}

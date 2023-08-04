@@ -7,8 +7,8 @@ export default async function SearchPage({
 }: {
   searchParams?: { keyword?: string; page: number };
 }) {
-  const keyword = searchParams.keyword;
-  const pageNumber = Number(searchParams.page);
+  const keyword = searchParams?.keyword;
+  const pageNumber = Number(searchParams?.page);
 
   const searchData = await getData(keyword, pageNumber);
 
@@ -17,7 +17,9 @@ export default async function SearchPage({
       {searchData?.length > 1 ? (
         <ProductList products={searchData} />
       ) : (
-        <p className=" mt-56">결과가 없습니다.</p>
+        <div className="m-auto">
+          <span>등록된 상품이 없습니다.</span>
+        </div>
       )}
       <Pagination />
     </div>
