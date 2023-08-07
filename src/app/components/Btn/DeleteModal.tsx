@@ -34,18 +34,14 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
             method,
           });
           const datas = await response.json();
-          console.log(datas);
         } else if (method === "POST") {
           const response = await fetch(`/api/editproduct/delete/${id}`, {
             method,
           });
           const datas = await response.json();
-          console.log(datas);
         }
-        await new Promise((resolve) => {
-          window.addEventListener("load", resolve);
-          location.reload();
-        });
+        // 현재 페이지로 리다이렉트
+        window.location.href = window.location.href;
         setOpen;
         setIsModal(false);
         setIsLoading(false);
