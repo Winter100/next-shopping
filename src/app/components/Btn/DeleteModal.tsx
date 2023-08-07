@@ -2,7 +2,7 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface ModalProps {
@@ -16,6 +16,7 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const cancelButtonRef = useRef(null);
+  const router = useRouter();
 
   const { status, data } = useSession({
     required: true,
@@ -28,30 +29,28 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
     try {
       if (isConfirm) {
         setIsLoading(true);
-        //삭제 로직
+        // 삭제 로직
         if (method === "DELETE") {
           const response = await fetch(`/api/editproduct/delete/${id}`, {
             method,
           });
-          const datas = await response.json();
         } else if (method === "POST") {
           const response = await fetch(`/api/editproduct/delete/${id}`, {
             method,
           });
-          const datas = await response.json();
         }
-        // 현재 페이지로 리다이렉트
-        window.location.href = window.location.href;
         setOpen;
         setIsModal(false);
         setIsLoading(false);
+        window.location.replace("/profile/myproducts");
       } else {
-        //취소 로직
+        // 취소 로직
         setOpen;
         setIsModal(false);
       }
     } catch (error) {
       console.log(error);
+      router.push("/");
     }
   }
 

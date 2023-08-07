@@ -141,6 +141,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setMessage("");
     setIsLoading(true);
 
     if (
@@ -153,6 +154,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       !data?.user
     ) {
       setMessage("모든 내용을 채워주세요.");
+      setIsLoading(false);
       return;
     }
 
