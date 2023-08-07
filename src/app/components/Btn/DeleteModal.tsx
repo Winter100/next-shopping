@@ -41,8 +41,8 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
         }
         setOpen;
         setIsModal(false);
-        setIsLoading(false);
-        window.location.replace("/profile/myproducts");
+        router.refresh();
+        return;
       } else {
         // 취소 로직
         setOpen;
@@ -50,7 +50,6 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
       }
     } catch (error) {
       console.log(error);
-      router.push("/");
     }
   }
 
