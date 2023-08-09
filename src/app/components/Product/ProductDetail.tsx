@@ -1,6 +1,7 @@
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
 import DetailMoreImages from "../Images/DetailMoreImages";
+import Image from "next/image";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
@@ -122,26 +123,23 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 mb-4">
-          <div className="flex">
-            {data.subImageSrc.map((item, indexs) => {
-              return (
-                <div className="mt-4" key={indexs}>
-                  <DetailMoreImages
-                    imageType="sub"
-                    src={item}
-                    indexs={indexs}
-                  />
-                </div>
-              );
-            })}
-          </div>
+
+        <div className="flex items-center justify-center mt-12 mb-12">
+          {data?.subImageSrc.map((item, index) => (
+            <div
+              key={index}
+              className="justify-center items-center relative w-72 h-72"
+            >
+              <DetailMoreImages imageType="sub" src={item} indexs={index} />
+            </div>
+          ))}
         </div>
+
         <div
           className="bg-gray-200 bg-opacity-75 p-4 rounded-md shadow"
-          style={{ maxHeight: "600px", overflow: "auto" }}
+          style={{ overflow: "auto" }}
         >
-          <div style={{ whiteSpace: "pre-line" }}>{data.description}</div>
+          <div style={{ whiteSpace: "pre-line" }}>{data?.description}</div>
         </div>
       </div>
     </div>

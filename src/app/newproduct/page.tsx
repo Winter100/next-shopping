@@ -5,7 +5,7 @@ export default async function NewproductPage() {
   const session = await myGetServerSession();
 
   return (
-    <div>
+    <div className="mt-10">
       <AddProcuct editData={null} method="POST" />;
     </div>
   );

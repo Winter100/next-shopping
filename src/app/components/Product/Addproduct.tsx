@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
@@ -45,7 +45,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   const [files, setFiles] = useState<File[]>(null);
   const [subfiles, setSubFiles] = useState<File[]>(null);
-  const [price, setPrice] = useState<number | null>(editData?.price || 0);
+  const [price, setPrice] = useState<number | null>(editData?.price || "");
   const [title, setTitle] = useState<string | null>(editData?.title || "");
   const [contact, setContact] = useState<string | null>(
     editData?.contact || ""
@@ -153,7 +153,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       title.trim().length > 20 ||
       !data?.user
     ) {
-      setMessage("모든 내용을 채워주세요.");
+      // setMessage("모든 내용을 채워주세요.");
       setIsLoading(false);
       return;
     }
@@ -184,7 +184,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       });
 
       if (response.status === 200) {
-        window.location.href = "/";
+        window.location.href = "/product/search?keyword=all&page=1";
       } else {
         setMessage("잠시 후 다시 시도해주세요.");
         setIsLoading(false);
@@ -214,18 +214,18 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             <div className="text-center mt-2 ">
               <input
                 type="file"
+                required
                 onChange={handleImageChange}
-                className="hidden"
                 id="mainImage"
                 accept="image/*"
                 name="imageSrc"
               />
-              <label
+              {/* <label
                 htmlFor="mainImage"
                 className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold"
               >
                 대표 이미지 업로드
-              </label>
+              </label> */}
             </div>
           </div>
 
@@ -329,6 +329,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                         value={price}
                         type="number"
                         name="price"
+                        id="price"
                         className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
                       />
                     </td>
@@ -338,27 +339,25 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             </div>
 
             <div className="flex items-center mb-4">
-              <span>{price.toLocaleString()}원</span>
+              <span>{price?.toLocaleString()}원</span>
             </div>
           </div>
         </div>
 
         <div className="mt-12 border-2">
           <div className="m-auto">
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex items-center justify-center">
               {subImage.map((imageUrl, index) => (
-                <div key={index} className="border-2">
-                  <Image
-                    width={300}
-                    height={300}
-                    src={imageUrl}
-                    alt={`Image ${index}`}
-                  />
+                <div
+                  key={index}
+                  className="justify-center items-center relative w-72 h-72 m-1"
+                >
+                  <Image fill src={imageUrl} alt={`Image ${index}`} />
                 </div>
               ))}
             </div>
 
-            <div className="text-center">
+            <div className="text-center mt-2">
               <input
                 type="file"
                 multiple

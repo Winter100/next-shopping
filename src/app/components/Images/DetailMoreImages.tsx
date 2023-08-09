@@ -18,23 +18,18 @@ export default function DetailMoreImages({
       onClick={() => window.open(src, "_blank", "width=1000,height=1000")}
     >
       {imageType === "main" ? (
-        <div>
+        <div className="h-[700px]">
           <Image
             className="w-full h-full"
             alt={imageType}
             src={src}
-            width={300}
+            width={400}
             height={300}
           />
         </div>
       ) : (
-        <div className="m-2">
-          <Image
-            alt={indexs.toLocaleString()}
-            src={src}
-            width={250}
-            height={300}
-          />
+        <div className="justify-center items-center relative w-auto h-64 m-1">
+          <Image fill src={src} alt={`Image ${indexs}`} />
         </div>
       )}
     </div>
