@@ -6,8 +6,8 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    const searchValue = params.slug[0];
-    const searchPage = Number(params.slug[1]);
+    const searchValue = params?.slug[0];
+    const searchPage = Number(params?.slug[1]);
 
     if (searchValue === "all") {
       const allData = await getAllProducts(searchPage);

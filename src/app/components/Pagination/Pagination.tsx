@@ -4,14 +4,17 @@ import { useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 import Search from "./Search";
+import { PageInfoProps } from "@/app/type/type";
 
-export default function Pagination() {
+export default function Pagination({ pageInfo }: { pageInfo: PageInfoProps }) {
   const searchUrl = useSearchParams();
 
   const searchParams = searchUrl?.get("keyword");
   const pageNum = Number(searchUrl?.get("page"));
 
-  const totalPages = 100;
+  const totalPages = pageInfo?.totalPages;
+  const totalItems = pageInfo?.totalItems;
+
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);
 

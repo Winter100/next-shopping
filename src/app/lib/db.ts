@@ -138,7 +138,17 @@ export async function getAllProducts(page: number) {
 
     const transData = await transFormedData(documents);
 
-    return transData;
+    const totalItemCount = await db
+      .collection(productsCollection)
+      .countDocuments();
+    const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+
+    const pageInfo = {
+      totalItems: totalItemCount,
+      totalPages: totalPages,
+    };
+
+    return { transData, pageInfo };
   } catch (e) {
     throw new Error("모든 제품가져오기 실패!");
   } finally {
@@ -166,7 +176,17 @@ export async function getSearchProducts(keyword: string, page: number) {
 
     const transData = await transFormedData(documents);
 
-    return transData;
+    const totalItemCount = await db
+      .collection(productsCollection)
+      .countDocuments(query);
+    const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+
+    const pageInfo = {
+      totalItems: totalItemCount,
+      totalPages: totalPages,
+    };
+
+    return { transData, pageInfo };
   } catch (e) {
     console.log(e);
     throw new Error("검색실패");

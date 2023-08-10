@@ -1,6 +1,6 @@
 import Pagination from "@/app/components/Pagination/Pagination";
 import ProductList from "@/app/components/Product/ProductList";
-import { ProductsType } from "@/app/type/type";
+import { PageInfoProps, ProductsType } from "@/app/type/type";
 
 export default async function SearchPage({
   searchParams,
@@ -10,18 +10,20 @@ export default async function SearchPage({
   const keyword = searchParams?.keyword;
   const pageNumber = Number(searchParams?.page);
 
-  const searchData = await getData(keyword, pageNumber);
+  const data = await getData(keyword, pageNumber);
+  const searchData: ProductsType[] = await data.searchData;
+  const pageInfo: PageInfoProps = await data.pageInfo;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
-      {searchData?.length > 1 ? (
+      {searchData?.length >= 1 ? (
         <ProductList products={searchData} />
       ) : (
         <div className="m-auto">
           <span>등록된 상품이 없습니다.</span>
         </div>
       )}
-      <Pagination />
+      <Pagination pageInfo={pageInfo} />
     </div>
   );
 }
@@ -36,7 +38,11 @@ async function getData(keyword: string, page: number) {
     }
   );
 
-  const searchData: ProductsType[] = await response.json();
+  const result = await response.json();
+  const data = {
+    searchData: result.transData,
+    pageInfo: result.pageInfo,
+  };
 
-  return searchData;
+  return data;
 }

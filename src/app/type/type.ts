@@ -37,3 +37,8 @@ export interface signUpInput {
 export interface PaginationProps {
   setCurrentPage: (pageNumber: number) => void;
 }
+
+export interface PageInfoProps {
+  totalItems: number;
+  totalPages: number;
+}
