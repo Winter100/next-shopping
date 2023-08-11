@@ -111,85 +111,74 @@ export async function getDetailProduct(productid: any) {
   }
 }
 
-export async function getAllProducts(page: number) {
+export async function getAllProducts(keyword: string, page: number) {
   const client = await connectDatabase();
   try {
     const db = client.db();
-    const projection = {
-      title: 1,
-      price: 1,
-      date: 1,
-      name: 1,
-      _id: 1,
-      mainImageSrc: 1,
-      subImageSrc: 1,
-      soldout: 1,
-    };
     const itemsPerPage = 20;
     const skipItems = (page - 1) * itemsPerPage;
 
-    const documents = await db
-      .collection(productsCollection)
-      .find({}, { projection })
-      .sort({ date: -1 })
-      .skip(skipItems)
-      .limit(itemsPerPage)
-      .toArray();
+    if (keyword === "all") {
+      const projection = {
+        title: 1,
+        price: 1,
+        date: 1,
+        name: 1,
+        _id: 1,
+        mainImageSrc: 1,
+        subImageSrc: 1,
+        soldout: 1,
+      };
 
-    const transData = await transFormedData(documents);
+      const documents = await db
+        .collection(productsCollection)
+        .find({}, { projection })
+        .sort({ date: -1 })
+        .skip(skipItems)
+        .limit(itemsPerPage)
+        .toArray();
 
-    const totalItemCount = await db
-      .collection(productsCollection)
-      .countDocuments();
-    const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+      const transData = await transFormedData(documents);
 
-    const pageInfo = {
-      totalItems: totalItemCount,
-      totalPages: totalPages,
-    };
+      const totalItemCount = await db
+        .collection(productsCollection)
+        .countDocuments();
+      const totalPages = Math.ceil(totalItemCount / itemsPerPage);
 
-    return { transData, pageInfo };
+      const pageInfo = {
+        totalItems: totalItemCount,
+        totalPages: totalPages,
+      };
+
+      return { transData, pageInfo };
+    } else {
+      const regexSearch = new RegExp(keyword, "i");
+      const query = { title: { $regex: regexSearch } };
+
+      const documents = await db
+        .collection(productsCollection)
+        .find(query)
+        .sort({ date: -1 })
+        .skip(skipItems)
+        .limit(itemsPerPage)
+        .toArray();
+
+      const transData = await transFormedData(documents);
+
+      const totalItemCount = await db
+        .collection(productsCollection)
+        .countDocuments(query);
+      const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+
+      const pageInfo = {
+        totalItems: totalItemCount,
+        totalPages: totalPages,
+      };
+
+      return { transData, pageInfo };
+    }
   } catch (e) {
     throw new Error("모든 제품가져오기 실패!");
-  } finally {
-    client.close();
-  }
-}
-
-export async function getSearchProducts(keyword: string, page: number) {
-  const client = await connectDatabase();
-  try {
-    const db = client.db();
-
-    const regexSearch = new RegExp(keyword, "i");
-    const query = { title: { $regex: regexSearch } };
-    const itemsPerPage = 20;
-    const skipItems = (page - 1) * itemsPerPage;
-
-    const documents = await db
-      .collection(productsCollection)
-      .find(query)
-      .sort({ date: -1 })
-      .skip(skipItems)
-      .limit(itemsPerPage)
-      .toArray();
-
-    const transData = await transFormedData(documents);
-
-    const totalItemCount = await db
-      .collection(productsCollection)
-      .countDocuments(query);
-    const totalPages = Math.ceil(totalItemCount / itemsPerPage);
-
-    const pageInfo = {
-      totalItems: totalItemCount,
-      totalPages: totalPages,
-    };
-
-    return { transData, pageInfo };
-  } catch (e) {
-    console.log(e);
-    throw new Error("검색실패");
   } finally {
     client.close();
   }

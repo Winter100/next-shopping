@@ -8,15 +8,15 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data } = useSession();
 
-  const handleDropdownToggle = () => {
+  function handleDropdownToggle() {
     setIsDropdownOpen(!isDropdownOpen);
-  };
+  }
 
-  const handlerCloseMenu = () => {
+  function handlerCloseMenu() {
     if (isDropdownOpen) {
       setIsDropdownOpen(false);
     }
-  };
+  }
 
   return (
     <nav className="bg-gray-800 w-full fixed z-10" onClick={handlerCloseMenu}>
