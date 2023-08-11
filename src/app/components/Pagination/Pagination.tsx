@@ -12,8 +12,8 @@ export default function Pagination({ pageInfo }: { pageInfo: PageInfoProps }) {
   const searchParams = searchUrl?.get("keyword");
   const pageNum = Number(searchUrl?.get("page"));
 
-  const totalPages = pageInfo?.totalPages;
-  const totalItems = pageInfo?.totalItems;
+  const totalPages = pageInfo.totalPages;
+  // const totalItems = pageInfo?.pageInfo.totalItems;
 
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);
