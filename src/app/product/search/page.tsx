@@ -11,8 +11,8 @@ export default async function SearchPage({
   const pageNumber = Number(searchParams?.page);
 
   const data = await getData(keyword, pageNumber);
-  const searchData: ProductsType[] = await data.searchData;
-  const pageInfo: PageInfoProps = await data.pageInfo;
+  const searchData: ProductsType[] = await data?.searchData;
+  const pageInfo: PageInfoProps = await data?.pageInfo;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
