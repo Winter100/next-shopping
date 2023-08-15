@@ -6,10 +6,13 @@ import LoginNav from "./LoginNav";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const { data } = useSession();
 
   function handleDropdownToggle() {
-    setIsDropdownOpen(!isDropdownOpen);
+    if (data) {
+      setIsDropdownOpen(!isDropdownOpen);
+    }
   }
 
   function handlerCloseMenu() {

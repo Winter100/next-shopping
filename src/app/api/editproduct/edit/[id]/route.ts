@@ -27,9 +27,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "등록 성공" }, { status: 200 });
   } catch (e) {
     if (e instanceof Error) {
-      return NextResponse.json({ message: e.message });
+      return NextResponse.json({ message: e.message }, { status: 201 });
     } else {
-      return NextResponse.json({ message: String(e) });
+      return NextResponse.json({ message: String(e) }, { status: 201 });
     }
   }
 }

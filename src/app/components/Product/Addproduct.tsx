@@ -75,15 +75,19 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   }
   function contactChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setContact(e.target.value);
+    setMessage("");
   }
   function titleChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setTitle(e.target.value);
+    setMessage("");
   }
   function priceChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setPrice(Number(e.target.value));
+    setMessage("");
   }
   function descriptionChangeHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescription(e.target.value);
+    setMessage("");
   }
 
   async function mainUploadStart(image: any) {
@@ -100,6 +104,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     setFiles([file]);
+    setMessage("");
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -139,23 +144,34 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     return;
   }
 
+  const titleInputRef = useRef(null);
+  const priceInputRef = useRef(null);
+  const descriptionInputRef = useRef(null);
+  const contactInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage("");
     setIsLoading(true);
 
-    if (
-      isFieldEmpty(image) ||
-      isFieldEmpty(title) ||
-      isFieldEmpty(price) ||
-      isFieldEmpty(description) ||
-      isFieldEmpty(contact) ||
-      title.trim().length > 20 ||
-      !data?.user
-    ) {
-      // setMessage("모든 내용을 채워주세요.");
-      setIsLoading(false);
-      return;
+    const fields = [
+      { ref: titleInputRef, value: title, name: "제목" },
+      { ref: contactInputRef, value: contact, name: "카카오톡" },
+      { ref: priceInputRef, value: price, name: "가격" },
+      { ref: descriptionInputRef, value: description, name: "상품설명" },
+      { ref: imageInputRef, value: image, name: "대표 이미지" },
+    ];
+
+    if (data?.user) {
+      for (const field of fields) {
+        if (isFieldEmpty(field.value)) {
+          field.ref.current.focus();
+          setMessage(`${field.name} 을(를) 채워주세요.`);
+          setIsLoading(false);
+          return;
+        }
+      }
     }
 
     const mainImageSrc = files ? await mainUploadStart(files) : image;
@@ -175,7 +191,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     };
 
     try {
-      const response = await fetch("/api/editproduct/edit/addoredit", {
+      const response = await fetch("/api/editproduct/edit/addedit", {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -185,13 +201,15 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
       if (response.status === 200) {
         window.location.href = "/product/search?keyword=all&page=1";
+        return;
       } else {
         setMessage("잠시 후 다시 시도해주세요.");
+        router.push("/auth/in");
         setIsLoading(false);
       }
     } catch (error) {
+      router.push("/auth/in");
       setIsLoading(false);
-      setMessage("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   }
 
@@ -214,18 +232,19 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             <div className="text-center mt-2 ">
               <input
                 type="file"
-                required
+                className="hidden"
                 onChange={handleImageChange}
                 id="mainImage"
                 accept="image/*"
                 name="imageSrc"
+                ref={imageInputRef}
               />
-              {/* <label
+              <label
                 htmlFor="mainImage"
                 className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold"
               >
                 대표 이미지 업로드
-              </label> */}
+              </label>
             </div>
           </div>
 
@@ -236,7 +255,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               </label>
               <input
                 onChange={titleChangeHandler}
-                required
+                ref={titleInputRef}
                 value={title}
                 id="title"
                 name="title"
@@ -309,9 +328,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                     <td className=" font-semibold text-sm w-1/4">카카오톡</td>
                     <td>
                       <input
-                        required
                         onChange={contactChangeHandler}
                         value={contact}
+                        ref={contactInputRef}
                         type="text"
                         placeholder="카톡 아이디"
                         name="contact"
@@ -325,7 +344,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                     <td>
                       <input
                         onChange={priceChangeHandler}
-                        required
+                        ref={priceInputRef}
                         value={price}
                         type="number"
                         name="price"
@@ -382,8 +401,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             내용
           </label>
           <textarea
-            required
             onChange={descriptionChangeHandler}
+            ref={descriptionInputRef}
             value={description}
             name="description"
             id="description"

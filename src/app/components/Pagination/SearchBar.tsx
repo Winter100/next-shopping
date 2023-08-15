@@ -18,7 +18,8 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
     const inputValue = searchTerm.replace(/(\s*)/g, "");
 
     if (inputValue.length < 1) {
-      return;
+      router.push(`/product/search?keyword=all&page=1`);
+      return setCurrentPage(1);
     }
     router.push(`/product/search?keyword=${inputValue}&page=${1}`);
     return setCurrentPage(1);
