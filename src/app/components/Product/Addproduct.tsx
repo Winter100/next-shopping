@@ -163,6 +163,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       { ref: imageInputRef, value: image, name: "대표 이미지" },
     ];
 
+    //제목 최대 20자
+    title.trim().length > 20 && titleInputRef.current.focus();
+
     if (data?.user) {
       for (const field of fields) {
         if (isFieldEmpty(field.value)) {
