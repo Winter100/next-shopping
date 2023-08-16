@@ -12,11 +12,9 @@ export async function GET(
     const searchPage = Number(params?.slug[1]);
 
     const url = new URL(req.url);
-    console.log(url.href);
     const a = url.searchParams.get("keyword");
     const b = url.searchParams.get("page");
 
-    console.log(a, b);
     const allData = await getAllProducts(searchKeyword, searchPage);
     return NextResponse.json(allData);
   } catch (e) {
