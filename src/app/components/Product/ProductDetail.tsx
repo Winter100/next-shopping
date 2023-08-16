@@ -1,7 +1,6 @@
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
 import DetailMoreImages from "../Images/DetailMoreImages";
-import Image from "next/image";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
@@ -139,7 +138,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           className="bg-gray-200 bg-opacity-75 p-4 rounded-md shadow"
           style={{ overflow: "auto" }}
         >
-          <div style={{ whiteSpace: "pre-line" }}>{data?.description}</div>
+          <div className="whitespace-pre-wrap">{data?.description}</div>
         </div>
       </div>
     </div>

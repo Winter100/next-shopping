@@ -149,71 +149,76 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   const descriptionInputRef = useRef(null);
   const contactInputRef = useRef(null);
   const imageInputRef = useRef(null);
+  const MAXLENGTH = 20;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage("");
     setIsLoading(true);
 
-    const fields = [
-      { ref: titleInputRef, value: title, name: "제목" },
-      { ref: contactInputRef, value: contact, name: "카카오톡" },
+    const fieldsToValidate = [
+      { ref: titleInputRef, value: title, name: "제목", maxLength: MAXLENGTH },
+      {
+        ref: contactInputRef,
+        value: contact,
+        name: "카카오톡",
+        maxLength: MAXLENGTH,
+      },
       { ref: priceInputRef, value: price, name: "가격" },
       { ref: descriptionInputRef, value: description, name: "상품설명" },
       { ref: imageInputRef, value: image, name: "대표 이미지" },
     ];
 
-    //제목 최대 20자
-    title.trim().length > 20 && titleInputRef.current.focus();
+    for (const field of fieldsToValidate) {
+      if (field.maxLength && field.value.trim().length > field.maxLength) {
+        field.ref.current.focus();
+        setMessage(
+          `${field.name}은(는) ${field.maxLength}자 이하로 입력해주세요.`
+        );
+        setIsLoading(false);
+        return;
+      }
+      if (isFieldEmpty(field.value)) {
+        field.ref.current.focus();
+        setMessage(`${field.name}을(를) 채워주세요.`);
+        setIsLoading(false);
+        return;
+      }
+    }
 
     if (data?.user) {
-      for (const field of fields) {
-        if (isFieldEmpty(field.value)) {
-          field.ref.current.focus();
-          setMessage(`${field.name} 을(를) 채워주세요.`);
-          setIsLoading(false);
+      const requestData = {
+        title,
+        description,
+        price,
+        selectedValue,
+        mainImageSrc: files ? await mainUploadStart(files) : image,
+        subImageSrc: subfiles ? await subUploadStart(subfiles) : subImage,
+        contact,
+        email: data.user.email,
+        name: data.user.name,
+        _id: method === "PATCH" ? editData._id : null,
+      };
+
+      try {
+        const response = await fetch("/api/editproduct/edit/addedit", {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        if (response.status === 200) {
+          window.location.href = "/product/search?keyword=all&page=1";
           return;
         }
-      }
-    }
-
-    const mainImageSrc = files ? await mainUploadStart(files) : image;
-    const subImageSrc = subfiles ? await subUploadStart(subfiles) : subImage;
-
-    const requestData = {
-      title,
-      description,
-      price,
-      selectedValue,
-      mainImageSrc,
-      subImageSrc,
-      contact,
-      email: data?.user?.email,
-      name: data?.user?.name,
-      _id: method === "PATCH" ? editData._id : null,
-    };
-
-    try {
-      const response = await fetch("/api/editproduct/edit/addedit", {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (response.status === 200) {
-        window.location.href = "/product/search?keyword=all&page=1";
-        return;
-      } else {
-        setMessage("잠시 후 다시 시도해주세요.");
+      } catch (error) {
         router.push("/auth/in");
-        setIsLoading(false);
       }
-    } catch (error) {
-      router.push("/auth/in");
-      setIsLoading(false);
     }
+
+    router.push("/auth/in");
   }
 
   return (
@@ -264,7 +269,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 name="title"
                 type="text"
                 placeholder="최대 20자"
-                maxLength={20}
+                maxLength={MAXLENGTH}
                 className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -335,6 +340,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                         value={contact}
                         ref={contactInputRef}
                         type="text"
+                        maxLength={20}
                         placeholder="카톡 아이디"
                         name="contact"
                         className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
@@ -409,7 +415,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             value={description}
             name="description"
             id="description"
-            className="resize-none w-full h-[600px] "
+            className="resize-none w-full h-[600px] border rounded p-2"
           />
         </div>
         <div className="text-center">
