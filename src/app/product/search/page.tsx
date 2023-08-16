@@ -33,12 +33,19 @@ export default async function SearchPage({
 async function getData(keyword: string, page: number) {
   const encodedKeyword = encodeURIComponent(keyword);
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/${encodedKeyword}/${page}`,
+    `https://ssakdapam.netlify.app/api/search/${encodedKeyword}/${page}`,
     {
       method: "GET",
       cache: "no-store",
     }
   );
+  // const response = await fetch(
+  //   `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/${encodedKeyword}/${page}`,
+  //   {
+  //     method: "GET",
+  //     cache: "no-store",
+  //   }
+  // );
 
   const result = await response.json();
   const data = {
