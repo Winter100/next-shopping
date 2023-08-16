@@ -2,8 +2,6 @@ import Pagination from "@/app/components/Pagination/Pagination";
 import ProductList from "@/app/components/Product/ProductList";
 import { PageInfoProps, ProductsType } from "@/app/type/type";
 
-export const dynamic = "force-dynamic";
-
 export default async function SearchPage({
   searchParams,
 }: {
@@ -31,20 +29,24 @@ export default async function SearchPage({
 }
 
 async function getData(keyword: string, page: number) {
-  const encodedKeyword = encodeURIComponent(keyword);
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?keyword=${encodedKeyword}&page=${page}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  );
+  try {
+    const encodedKeyword = encodeURIComponent(keyword);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?keyword=${encodedKeyword}&page=${page}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
 
-  const result = await response.json();
-  const data = {
-    searchData: result.transData,
-    pageInfo: result.pageInfo,
-  };
+    const result = await response.json();
+    const data = {
+      searchData: result.transData,
+      pageInfo: result.pageInfo,
+    };
 
-  return data;
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
 }
