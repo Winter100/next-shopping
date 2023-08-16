@@ -8,13 +8,15 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    // const searchKeyword = params?.slug[0];
-    // const searchPage = Number(params?.slug[1]);
+    const searchKeyword = params?.slug[0];
+    const searchPage = Number(params?.slug[1]);
 
     const url = new URL(req.url);
-    const searchKeyword = url.searchParams.get("keyword");
-    const searchPage = Number(url.searchParams.get("page"));
+    console.log(url.href);
+    const a = url.searchParams.get("keyword");
+    const b = url.searchParams.get("page");
 
+    console.log(a, b);
     const allData = await getAllProducts(searchKeyword, searchPage);
     return NextResponse.json(allData);
   } catch (e) {

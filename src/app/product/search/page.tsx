@@ -33,7 +33,7 @@ export default async function SearchPage({
 async function getData(keyword: string, page: number) {
   const encodedKeyword = encodeURIComponent(keyword);
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/${encodedKeyword}/${page}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?keyword=${encodedKeyword}&page=${page}`,
     {
       method: "GET",
       cache: "no-store",
