@@ -34,7 +34,7 @@ async function getData(keyword: string, page: number) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/${encodedKeyword}/${page}`,
     {
       method: "GET",
-      cache: "no-store",
+      cache: "no-cache",
     }
   );
 
