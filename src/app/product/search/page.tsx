@@ -2,6 +2,8 @@ import Pagination from "@/app/components/Pagination/Pagination";
 import ProductList from "@/app/components/Product/ProductList";
 import { PageInfoProps, ProductsType } from "@/app/type/type";
 
+export const dynamic = "force-dynamic";
+
 export default async function SearchPage({
   searchParams,
 }: {
