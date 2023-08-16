@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
     appDir: true,
+    forceSwcTransforms: true,
   },
   images: {
     remotePatterns: [
