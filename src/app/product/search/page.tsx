@@ -32,7 +32,7 @@ async function getData(keyword: string, page: number) {
   try {
     const encodedKeyword = encodeURIComponent(keyword);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?keyword=${encodedKeyword}&page=${page}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/search/${encodedKeyword}/${page}`,
       {
         method: "GET",
         cache: "no-store",
