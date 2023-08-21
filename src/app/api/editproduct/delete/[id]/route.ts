@@ -21,7 +21,7 @@ export async function DELETE(
     const dbResponse = await MongoDbDeleteProducts(id, email, name);
 
     if (dbResponse.status !== 200) {
-      throw new Error("수정 실패");
+      throw new Error("삭제 실패");
     }
 
     return NextResponse.json({ message: "삭제 성공" }, { status: 200 });

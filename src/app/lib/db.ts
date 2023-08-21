@@ -20,8 +20,9 @@ export async function connectDatabase() {
 }
 
 export async function checkEmail(checkValue: string) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
     const existingMail = await db.collection(usersCollection).findOne({
       email: checkValue,
@@ -35,13 +36,16 @@ export async function checkEmail(checkValue: string) {
   } catch (error) {
     console.log("이메일 중복확인 중 에러", error);
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
 export async function checkName(checkValue: string) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
 
     const existingName = await db.collection(usersCollection).findOne({
@@ -56,13 +60,16 @@ export async function checkName(checkValue: string) {
   } catch (error) {
     console.log("닉네임 중복확인 중 에러", error);
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
 export async function getDetailProduct(productid: any) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
 
     const query = { _id: productid };
@@ -107,88 +114,152 @@ export async function getDetailProduct(productid: any) {
     console.log(error);
     return { message: "에러발생!" };
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
+// export async function getAllProducts(keyword: string, page: number) {
+//   const client = await connectDatabase();
+//   try {
+//     const db = client.db();
+//     const itemsPerPage = 20;
+//     const skipItems = (page - 1) * itemsPerPage;
+
+//     if (keyword === "all") {
+//       const projection = {
+//         title: 1,
+//         price: 1,
+//         date: 1,
+//         name: 1,
+//         _id: 1,
+//         mainImageSrc: 1,
+//         subImageSrc: 1,
+//         soldout: 1,
+//       };
+
+//       const documents = await db
+//         .collection(productsCollection)
+//         .find({}, { projection })
+//         .sort({ date: -1 })
+//         .skip(skipItems)
+//         .limit(itemsPerPage)
+//         .toArray();
+
+//       const transData = await transFormedData(documents);
+
+//       const totalItemCount = await db
+//         .collection(productsCollection)
+//         .countDocuments();
+//       const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+
+//       const pageInfo = {
+//         totalItems: totalItemCount,
+//         totalPages: totalPages,
+//       };
+
+//       return { transData, pageInfo };
+//     } else {
+//       const regexSearch = new RegExp(keyword, "i");
+//       const query = { title: { $regex: regexSearch } };
+
+//       const documents = await db
+//         .collection(productsCollection)
+//         .find(query)
+//         .sort({ date: -1 })
+//         .skip(skipItems)
+//         .limit(itemsPerPage)
+//         .toArray();
+
+//       const transData = await transFormedData(documents);
+
+//       const totalItemCount = await db
+//         .collection(productsCollection)
+//         .countDocuments(query);
+//       const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+
+//       const pageInfo = {
+//         totalItems: totalItemCount,
+//         totalPages: totalPages,
+//       };
+
+//       return { transData, pageInfo };
+//     }
+//   } catch (e) {
+//     throw new Error("모든 제품가져오기 실패!");
+//   } finally {
+//     client.close();
+//   }
+// }
+
 export async function getAllProducts(keyword: string, page: number) {
-  const client = await connectDatabase();
+  let client;
+
   try {
+    client = await connectDatabase();
     const db = client.db();
     const itemsPerPage = 20;
     const skipItems = (page - 1) * itemsPerPage;
 
-    if (keyword === "all") {
-      const projection = {
-        title: 1,
-        price: 1,
-        date: 1,
-        name: 1,
-        _id: 1,
-        mainImageSrc: 1,
-        subImageSrc: 1,
-        soldout: 1,
-      };
-
-      const documents = await db
-        .collection(productsCollection)
-        .find({}, { projection })
-        .sort({ date: -1 })
-        .skip(skipItems)
-        .limit(itemsPerPage)
-        .toArray();
-
-      const transData = await transFormedData(documents);
-
-      const totalItemCount = await db
-        .collection(productsCollection)
-        .countDocuments();
-      const totalPages = Math.ceil(totalItemCount / itemsPerPage);
-
-      const pageInfo = {
-        totalItems: totalItemCount,
-        totalPages: totalPages,
-      };
-
-      return { transData, pageInfo };
-    } else {
-      const regexSearch = new RegExp(keyword, "i");
-      const query = { title: { $regex: regexSearch } };
-
-      const documents = await db
-        .collection(productsCollection)
-        .find(query)
-        .sort({ date: -1 })
-        .skip(skipItems)
-        .limit(itemsPerPage)
-        .toArray();
-
-      const transData = await transFormedData(documents);
-
-      const totalItemCount = await db
-        .collection(productsCollection)
-        .countDocuments(query);
-      const totalPages = Math.ceil(totalItemCount / itemsPerPage);
-
-      const pageInfo = {
-        totalItems: totalItemCount,
-        totalPages: totalPages,
-      };
-
-      return { transData, pageInfo };
+    let query = {};
+    if (keyword !== "all") {
+      const regexSearch = new RegExp(
+        keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+        "i"
+      );
+      query = { title: { $regex: regexSearch } };
     }
-  } catch (e) {
-    throw new Error("모든 제품가져오기 실패!");
+
+    const projection = {
+      title: 1,
+      price: 1,
+      date: 1,
+      name: 1,
+      _id: 1,
+      mainImageSrc: 1,
+      subImageSrc: 1,
+      soldout: 1,
+    };
+
+    const documents = await db
+      .collection(productsCollection)
+      .find(query, { projection })
+      .sort({ date: -1 })
+      .skip(skipItems)
+      .limit(itemsPerPage)
+      .toArray();
+
+    const transData = await transFormedData(documents);
+
+    const totalItemCount = await db
+      .collection(productsCollection)
+      .countDocuments(query);
+    const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+
+    const pageInfo = {
+      totalItems: totalItemCount,
+      totalPages: totalPages,
+    };
+
+    return { transData, pageInfo };
+  } catch (error) {
+    console.log(error);
+    throw new Error("모든 제품 가져오기 실패!");
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
 export async function getMyProducts(email: string, name: string) {
-  const client = await connectDatabase();
+  let client;
+
   try {
+    client = await connectDatabase();
     const db = client.db();
-    const query = { email: email, name: name };
+    const query = { email, name };
 
     const response = await db
       .collection(productsCollection)
@@ -198,8 +269,11 @@ export async function getMyProducts(email: string, name: string) {
     return response;
   } catch (error) {
     console.log(error);
+    throw new Error("사용자 제품 가져오기 실패!");
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
@@ -208,9 +282,10 @@ export async function addMyWishList(
   name: string,
   productId: string
 ) {
-  const client = await connectDatabase();
+  let client;
 
   try {
+    client = await connectDatabase();
     const db = client.db();
     const query = { email, name };
 
@@ -242,7 +317,9 @@ export async function addMyWishList(
       return { message: String(e) };
     }
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
@@ -251,8 +328,9 @@ export async function deleteMyWishList(
   email: string,
   name: string
 ) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
     const query = { email, name };
 
@@ -280,13 +358,16 @@ export async function deleteMyWishList(
       return { message: String(e) };
     }
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
 export async function getMyWishList(userEmail: string) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
     const userCollection = db.collection(usersCollection);
     const allProductsCollection = db.collection(productsCollection);
@@ -308,13 +389,16 @@ export async function getMyWishList(userEmail: string) {
     console.log(error);
     return [];
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
 export async function getMywishListId(userEmail: string) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
     const userCollection = db.collection(usersCollection);
 
@@ -331,13 +415,16 @@ export async function getMywishListId(userEmail: string) {
     console.log(error);
     return;
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
 
 export async function soldOutProduct(id: any, email: string, name: string) {
-  const client = await connectDatabase();
+  let client;
   try {
+    client = await connectDatabase();
     const db = client.db();
     const query = { _id: id, email: email, name: name };
 
@@ -354,6 +441,8 @@ export async function soldOutProduct(id: any, email: string, name: string) {
     console.log(error);
     throw error;
   } finally {
-    client.close();
+    if (client) {
+      client.close();
+    }
   }
 }
