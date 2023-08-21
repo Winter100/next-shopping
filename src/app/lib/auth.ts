@@ -130,24 +130,28 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    session: async ({ session, token, user }) => {
+    session: ({ session, token, user }) => {
       // console.log("Session Callback", { session, token });
       return {
         ...session,
-        ...token,
         user: {
           ...session.user,
-          // id: token.id,
-          // wishId: token.wish,
-          token,
+          id: token.id,
+          wishId: token.wish,
         },
       };
     },
-    jwt: async ({ token, user }) => {
-      console.log("JWT Callback", { token, user });
+    jwt: ({ token, user }) => {
+      // console.log("JWT Callback", { token, user });
       if (user) {
-        return { ...token, ...user };
+        const u = user as unknown as any;
+        return {
+          ...token,
+          id: u.id,
+          wishId: u.wish,
+        };
       }
+      return token;
     },
   },
 };
