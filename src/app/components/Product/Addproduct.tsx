@@ -279,8 +279,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               />
             </div>
 
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+            <div className=" border-y-2 py-6 my-6">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
                 판매 정보
               </h2>
               <table>
@@ -371,19 +371,21 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               </table>
             </div>
 
-            <div className="flex items-center mb-4 justify-end">
-              <span>{price?.toLocaleString()}원</span>
+            <div className="flex items-center my-6 justify-end">
+              <span className="font-bold text-2xl">
+                {price?.toLocaleString()}원
+              </span>
             </div>
           </div>
         </div>
 
         <div className="mt-12 border-2">
           <div className="m-auto">
-            <div className="flex items-center justify-center">
+            <div className="flex flex-wrap items-center">
               {subImage.map((imageUrl, index) => (
                 <div
                   key={index}
-                  className="justify-center items-center relative w-28 h-28 m-1"
+                  className=" items-center relative w-1/5 h-44 border-2"
                 >
                   <Image fill src={imageUrl} alt={`Image ${index}`} />
                 </div>
@@ -420,7 +422,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             value={description}
             name="description"
             id="description"
-            className="resize-none w-full  border rounded p-2 lg:h-[800px]"
+            className="resize-none w-full  border rounded p-2 lg:h-[800px] h-[600px]"
           />
         </div>
         <div className="text-center">

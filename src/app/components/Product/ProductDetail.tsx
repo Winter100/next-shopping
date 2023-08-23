@@ -14,8 +14,8 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               indexs={99}
             />
           </div>
-          <div className="md:w-1/2 md:ml-8">
-            <div className="flex items-center justify-center h-16">
+          <div className="md:w-1/2 md:ml-2">
+            <div className="flex items-center justify-center h-16 my-2">
               <h1 className="text-3xl font-semibold text-center">
                 {data?.title}
               </h1>
@@ -108,7 +108,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               </table>
             </div>
 
-            <div className="flex items-center justify-end mt-3">
+            <div className="flex items-center justify-end my-3">
               <span className="text-gray-800 font-bold text-xl ">
                 {`${data.price?.toLocaleString()}원`}
               </span>
@@ -120,16 +120,21 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                 />
               </div>
             </div>
-            <div>거래완료, 거래가능 등</div>
+            <div className="text-center">
+              {data?.soldout ? (
+                <p className="text-red-600 text-sm">거래가 완료된 물품입니다</p>
+              ) : (
+                <p className=" text-green-600 text-sm">
+                  거래가 가능한 물품입니다
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-center mt-12 mb-12">
+        <div className="flex flex-wrap items-center mt-12 mb-12">
           {data?.subImageSrc?.map((item, index) => (
-            <div
-              key={index}
-              className="justify-center items-center relative w-28"
-            >
+            <div key={index} className="w-1/5 items-center  border-2">
               <DetailMoreImages imageType="sub" src={item} indexs={index} />
             </div>
           ))}
