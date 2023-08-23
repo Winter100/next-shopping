@@ -124,6 +124,12 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     const selectedImageUrls: any[] = [];
     const addFiles = [];
 
+    if (files.length > 10) {
+      alert("최대 10개의 이미지까지 업로드 가능합니다.");
+      e.target.value = "";
+      return;
+    }
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       addFiles.push(file);
@@ -226,14 +232,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8 h-full">
         <div className="flex flex-col md:flex-row">
           <div className="md:w-[528px] md:mr-8">
-            <div className="border-2 h-[792px]">
+            <div className="border-2 h-[600px] relative">
               {image && (
                 <Image
                   className="w-full h-full"
                   src={image}
                   alt="이미지"
-                  width={400}
-                  height={300}
+                  fill
                 />
               )}
             </div>
@@ -366,7 +371,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               </table>
             </div>
 
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 justify-end">
               <span>{price?.toLocaleString()}원</span>
             </div>
           </div>
@@ -378,7 +383,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               {subImage.map((imageUrl, index) => (
                 <div
                   key={index}
-                  className="justify-center items-center relative w-72 h-72 m-1"
+                  className="justify-center items-center relative w-28 h-28 m-1"
                 >
                   <Image fill src={imageUrl} alt={`Image ${index}`} />
                 </div>
@@ -415,7 +420,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             value={description}
             name="description"
             id="description"
-            className="resize-none w-full h-[600px] border rounded p-2"
+            className="resize-none w-full  border rounded p-2 lg:h-[800px]"
           />
         </div>
         <div className="text-center">

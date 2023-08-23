@@ -6,26 +6,26 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
     <div className="container mx-auto py-8 mt-15">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <div className="flex flex-col md:flex-row">
-          <div className="md:w-1/2">
-            <div>
-              <DetailMoreImages
-                imageType="main"
-                src={data.mainImageSrc}
-                indexs={99}
-              />
-            </div>
+        <div className=" flex flex-col md:flex-row border-2 rounded-lg p-2">
+          <div className="md:w-1/2 ">
+            <DetailMoreImages
+              imageType="main"
+              src={data?.mainImageSrc}
+              indexs={99}
+            />
           </div>
           <div className="md:w-1/2 md:ml-8">
-            <h1 className=" text-3xl font-semibold text-gray-800 text-center mb-10">
-              {data.title}
-            </h1>
-            <div className="mt-12 mb-12">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
-                판매자 정보
+            <div className="flex items-center justify-center h-16">
+              <h1 className="text-3xl font-semibold text-center">
+                {data?.title}
+              </h1>
+            </div>
+            <div className="border-t-2">
+              <h2 className="text-2xl font-semibold text-gray-800 mt-2 mb-2 text-center">
+                판매자 이름
               </h2>
               <div>
-                <p className="text-blue-500 text-xl text-center font-semibold">{` ${data.name}`}</p>
+                <p className="text-blue-500 text-xl text-center font-semibold">{` ${data?.name}`}</p>
               </div>
             </div>
 
@@ -38,7 +38,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               </p>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-12 border-b-2">
               <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
                 판매 방법
               </h2>
@@ -108,26 +108,27 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               </table>
             </div>
 
-            <div className="flex items-center mb-4 mt-[50px]">
-              <span className="text-gray-800 font-bold text-xl">
+            <div className="flex items-center justify-end mt-3">
+              <span className="text-gray-800 font-bold text-xl ">
                 {`${data.price?.toLocaleString()}원`}
               </span>
               <div className="flex justify-center items-center">
                 <BuyBtn
-                  email={data.email}
-                  id={data._id}
-                  soldout={data.soldout}
+                  email={data?.email}
+                  id={data?._id}
+                  soldout={data?.soldout}
                 />
               </div>
             </div>
+            <div>거래완료, 거래가능 등</div>
           </div>
         </div>
 
         <div className="flex items-center justify-center mt-12 mb-12">
-          {data?.subImageSrc.map((item, index) => (
+          {data?.subImageSrc?.map((item, index) => (
             <div
               key={index}
-              className="justify-center items-center relative w-72 h-72"
+              className="justify-center items-center relative w-28"
             >
               <DetailMoreImages imageType="sub" src={item} indexs={index} />
             </div>
