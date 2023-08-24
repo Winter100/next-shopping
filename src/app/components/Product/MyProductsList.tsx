@@ -18,9 +18,9 @@ export default function MyProductsList({
   }
 
   return (
-    <div className="container mx-auto px-4 ">
-      <h1 className="text-3xl font-bold my-4 ">내가 올린 물건</h1>
-      {products?.length > 0 ? (
+    <div className="container mx-auto px-4 my-4">
+      {/* <h1 className="text-3xl font-bold my-4 ">내 판매 목록</h1> */}
+      {products?.length > 0 && (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <li
@@ -79,8 +79,6 @@ export default function MyProductsList({
             </li>
           ))}
         </ul>
-      ) : (
-        <p className="text-gray-600 text-lg">등록된 물건이 없습니다.</p>
       )}
     </div>
   );

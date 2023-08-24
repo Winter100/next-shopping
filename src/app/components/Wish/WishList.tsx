@@ -38,9 +38,9 @@ export default function WishList({ wishData }: { wishData: ProductsType[] }) {
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold my-4">찜 목록</h1>
-      {wishData?.length > 0 ? (
+    <div className="container mx-auto px-4 my-4">
+      {/* <h1 className="text-3xl font-bold my-4">찜 목록</h1> */}
+      {wishData?.length > 0 && (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {wishData?.map((product) => (
             <li
@@ -71,8 +71,6 @@ export default function WishList({ wishData }: { wishData: ProductsType[] }) {
             </li>
           ))}
         </ul>
-      ) : (
-        <p className="text-gray-600 text-lg">찜 목록이 없습니다.</p>
       )}
       {selectedItems.length > 0 && (
         <button
