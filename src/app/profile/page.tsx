@@ -1,5 +1,4 @@
 import Profile from "../components/Auth/Profile";
-
 import { myGetServerSession } from "../lib/getSession";
 
 export default async function MyProfilePage() {
@@ -10,5 +9,9 @@ export default async function MyProfilePage() {
     name: session.user.name,
   };
 
-  return <Profile userInfo={userInfo} />;
+  return (
+    <div>
+      <Profile userInfo={userInfo} />
+    </div>
+  );
 }

@@ -18,25 +18,37 @@ export default function MyProductsList({
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 ">
-      <h1 className="text-3xl font-bold mb-8 mt-14">내가 올린 물건</h1>
+    <div className="container mx-auto px-4 ">
+      <h1 className="text-3xl font-bold my-4 ">내가 올린 물건</h1>
       {products?.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((product) => (
-            <li key={product._id} className="bg-white shadow-lg rounded-lg p-4">
+            <li
+              key={product._id}
+              className="bg-white shadow-lg rounded-lg p-4 border-2"
+            >
               <div className="relative">
                 <div className="absolute top-0 right-0">
                   <button
                     onClick={() => handleDropdownToggle(product._id)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-full"
+                    className="bg-black text-white  px-1 py-1 rounded-full"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="feather feather-align-justify"
                     >
-                      <path fillRule="evenodd" d="" clipRule="evenodd" />
+                      <line x1="21" y1="10" x2="3" y2="10"></line>
+                      <line x1="21" y1="6" x2="3" y2="6"></line>
+                      <line x1="21" y1="14" x2="3" y2="14"></line>
+                      <line x1="21" y1="18" x2="3" y2="18"></line>
                     </svg>
                   </button>
                   {isDropdownOpen === product._id && (

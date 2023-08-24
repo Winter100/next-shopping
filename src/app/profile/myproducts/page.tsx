@@ -10,13 +10,13 @@ export default async function MyProductsPage() {
   const data = await getData(email, name);
 
   return (
-    <>
-      {data ? (
+    <div className="m-auto my-20 max-w-2xl px-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8 border-2 shadow-lg rounded-md">
+      {data?.length > 0 ? (
         <MyProductsList products={data} />
       ) : (
         <p className="text-gray-600 text-lg">등록된 제품이 없습니다.</p>
       )}
-    </>
+    </div>
   );
 }
 
