@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
@@ -7,8 +7,7 @@ import { FileWithPath, useDropzone } from "react-dropzone";
 import { useUploadThing } from "@/utils/uploadthing";
 import { isFieldEmpty } from "@/utils/utils";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
-import Selector from "./Selector";
-import { InputIcon } from "./InputIcon";
+import LocationSelect from "./LocationSelector";
 
 interface AddProductProps {
   editData: any;
@@ -54,9 +53,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   );
 
   const [selectedValue, setSelectedValue] = useState({
-    random: editData?.selectedValue?.random || "",
-    isMeet: editData?.selectedValue?.isMeet || "",
-    bargaining: editData?.selectedValue?.bargaining || "",
+    random: editData?.selectedValue?.random || "yes",
+    isMeet: editData?.selectedValue?.isMeet || "yes",
+    bargaining: editData?.selectedValue?.bargaining || "yes",
   });
   const [description, setDescription] = useState(editData?.description || "");
 
@@ -68,24 +67,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     },
   });
 
-  useEffect(() => {
-    console.log("selectedValue", selectedValue);
-  }, [selectedValue]);
-
-  function selectedHandlChange(name: string, value: string) {
-    setSelectedValue((prevSelectedValue) => ({
-      ...prevSelectedValue,
+  function selectedChangeHandler(e: React.ChangeEvent<HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setSelectedValue({
+      ...selectedValue,
       [name]: value,
-    }));
+    });
   }
-
-  // function selectedChangeHandler(e: React.ChangeEvent<HTMLSelectElement>) {
-  //   const { name, value } = e.target;
-  //   setSelectedValue({
-  //     ...selectedValue,
-  //     [name]: value,
-  //   });
-  // }
   function contactChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setContact(e.target.value);
     setMessage("");
@@ -95,9 +83,6 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     setMessage("");
   }
   function priceChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    if (typeof e.target.value !== "number" && e.target.value.length > 10) {
-      return;
-    }
     setPrice(Number(e.target.value));
     setMessage("");
   }
@@ -297,9 +282,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
             <div className=" border-y-2 py-6 my-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
-                판매 옵션
+                판매 정보
               </h2>
-              {/* <table>
+              <table>
                 <tbody>
                   <tr>
                     <td className="font-semibold text-sm w-1/4">흥정 여부</td>
@@ -385,73 +370,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                     </td>
                   </tr>
                 </tbody>
-              </table> */}
-              {/* <input
-                onChange={contactChangeHandler}
-                ref={contactInputRef}
-                value={contact}
-                type="text"
-                maxLength={20}
-                placeholder="카톡 아이디"
-                name="contact"
-                className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
-              /> */}
-              <div className="flex justify-end">
-                <InputIcon
-                  ChangeHandler={contactChangeHandler}
-                  inputRef={contactInputRef}
-                  value={contact}
-                  maxLength={20}
-                  type="text"
-                  name="contact"
-                  id="contact"
-                  label="카카오톡 아이디"
-                  icon=""
-                />
-                <InputIcon
-                  ChangeHandler={priceChangeHandler}
-                  inputRef={priceInputRef}
-                  value={price}
-                  type="number"
-                  maxLength={20}
-                  name="price"
-                  id="price"
-                  label="가격"
-                  icon="원"
-                />
-              </div>
-              <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <Selector
-                  label={"직거래"}
-                  name={"isMeet"}
-                  option={[
-                    { keyword: "가능", value: "yes" },
-                    { keyword: "불가능", value: "no" },
-                  ]}
-                  selectedHandlChange={selectedHandlChange}
-                  selectedValue={selectedValue}
-                />
-                <Selector
-                  label={"택배거래"}
-                  name={"random"}
-                  option={[
-                    { keyword: "가능", value: "yes" },
-                    { keyword: "불가능", value: "no" },
-                  ]}
-                  selectedHandlChange={selectedHandlChange}
-                  selectedValue={selectedValue}
-                />
-                <Selector
-                  label={"흥정여부"}
-                  name={"bargaining"}
-                  option={[
-                    { keyword: "가능", value: "yes" },
-                    { keyword: "불가능", value: "no" },
-                  ]}
-                  selectedHandlChange={selectedHandlChange}
-                  selectedValue={selectedValue}
-                />
-              </div>
+              </table>
             </div>
 
             <div className="flex items-center my-6 justify-end">
