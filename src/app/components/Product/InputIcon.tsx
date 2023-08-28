@@ -4,7 +4,7 @@ import { Input } from "@material-tailwind/react";
 interface InputIconProps {
   inputRef: any;
   ChangeHandler: (e: any) => void;
-  type: string;
+
   name: string;
   id: string;
   label: string;
@@ -16,7 +16,7 @@ interface InputIconProps {
 export function InputIcon({
   inputRef,
   ChangeHandler,
-  type,
+
   name,
   label,
   id,
@@ -25,18 +25,17 @@ export function InputIcon({
   maxLength,
 }: InputIconProps) {
   return (
-    <div className="w-52 m-auto">
+    <div className=" w-52 m-auto">
       <Input
         inputRef={inputRef}
         onChange={ChangeHandler}
         name={name}
         value={value}
         id={id}
-        label={label}
         icon={icon}
-        size="lg"
-        type={type}
+        size="md"
         maxLength={maxLength}
+        label={label}
       />
     </div>
   );

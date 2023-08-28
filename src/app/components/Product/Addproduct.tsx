@@ -68,9 +68,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     },
   });
 
-  useEffect(() => {
-    console.log("selectedValue", selectedValue);
-  }, [selectedValue]);
+  useEffect(() => {}, [selectedValue]);
 
   function selectedHandlChange(name: string, value: string) {
     setSelectedValue((prevSelectedValue) => ({
@@ -95,11 +93,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     setMessage("");
   }
   function priceChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    if (typeof e.target.value !== "number" && e.target.value.length > 10) {
-      return;
+    const inputValue = e.target.value;
+    const numericValue = Number(inputValue);
+
+    if (!isNaN(numericValue) && inputValue.length <= 10) {
+      setPrice(numericValue);
+      setMessage("");
     }
-    setPrice(Number(e.target.value));
-    setMessage("");
   }
   function descriptionChangeHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setDescription(e.target.value);
@@ -396,13 +396,12 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 name="contact"
                 className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
               /> */}
-              <div className="flex justify-end">
+              <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8 border-b-2 py-4">
                 <InputIcon
                   ChangeHandler={contactChangeHandler}
                   inputRef={contactInputRef}
                   value={contact}
                   maxLength={20}
-                  type="text"
                   name="contact"
                   id="contact"
                   label="카카오톡 아이디"
@@ -412,7 +411,6 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   ChangeHandler={priceChangeHandler}
                   inputRef={priceInputRef}
                   value={price}
-                  type="number"
                   maxLength={20}
                   name="price"
                   id="price"
@@ -420,6 +418,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   icon="원"
                 />
               </div>
+
               <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <Selector
                   label={"직거래"}

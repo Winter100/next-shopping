@@ -12,10 +12,12 @@ export default async function ProductDetailPage({
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
-      {detailData ? (
+      {detailData._id === id ? (
         <ProductDetail data={detailData} />
       ) : (
-        <p>존재하지 않는 제품입니다.</p>
+        <p className="m-auto text-center text-2xl font-bold">
+          존재하지 않는 제품입니다.
+        </p>
       )}
     </div>
   );
