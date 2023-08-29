@@ -1,6 +1,7 @@
 import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
 import DetailMoreImages from "../Images/DetailMoreImages";
+import TagComponent from "./TagComponent";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   return (
@@ -38,74 +39,36 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               </p>
             </div>
 
-            <div className="mt-12 border-b-2">
+            <div className="mt-8 border-b-2">
               <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-                판매 방법
+                판매 옵션
               </h2>
-              <table className="border-collapse">
-                <tbody>
-                  <tr className="border-b">
-                    <td className="font-semibold py-2 px-4">흥정 여부</td>
-                    <td className="py-2 px-4">
-                      <div className="flex items-center">
-                        {data.selectedValue?.bargaining === "yes" ? (
-                          <>
-                            <div className="bg-blue-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
-                              <span>O</span>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="bg-red-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
-                              <span>X</span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="font-semibold py-2 px-4">직 거래</td>
-                    <td className="py-2 px-4">
-                      <div className="flex items-center">
-                        {data.selectedValue?.isMeet === "yes" ? (
-                          <>
-                            <div className="bg-blue-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
-                              <span>O</span>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="bg-red-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
-                              <span>X</span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="font-semibold py-2 px-4">택배 거래</td>
-                    <td className="py-2 px-4">
-                      <div className="flex items-center">
-                        {data.selectedValue?.random === "yes" ? (
-                          <>
-                            <div className="bg-blue-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
-                              <span>O</span>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="bg-red-300 text-white-500 font-bold py-2 px-4 rounded cursor-not-allowed">
-                              <span>X</span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="flex items-center justify-center my-4">
+                <TagComponent
+                  value={data.selectedValue?.bargaining}
+                  text={
+                    data.selectedValue?.bargaining === "yes"
+                      ? "흥정 가능"
+                      : "흥정 불가"
+                  }
+                />
+                <TagComponent
+                  value={data.selectedValue?.isMeet}
+                  text={
+                    data.selectedValue?.isMeet === "yes"
+                      ? "직거래 가능"
+                      : "직거래 불가"
+                  }
+                />
+                <TagComponent
+                  value={data.selectedValue?.random}
+                  text={
+                    data.selectedValue?.random === "yes"
+                      ? "택배 가능"
+                      : "택배 불가"
+                  }
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-end my-3">
