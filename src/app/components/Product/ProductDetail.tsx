@@ -4,6 +4,7 @@ import DetailMoreImages from "../Images/DetailMoreImages";
 import TagComponent from "./TagComponent";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
+  const headClassNameOption = "text-2xl font-semibold my-2 text-center";
   return (
     <div className="container mx-auto py-8 mt-15">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
@@ -17,32 +18,20 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           </div>
           <div className="md:w-1/2 md:ml-2">
             <div className="flex items-center justify-center h-16 my-2">
-              <h1 className="text-3xl font-semibold text-center">
-                {data?.title}
-              </h1>
+              <h1 className={`${headClassNameOption} `}>{data?.title}</h1>
             </div>
             <div className="border-t-2">
-              <h2 className="text-2xl font-semibold text-gray-800 mt-2 mb-2 text-center">
-                판매자 이름
-              </h2>
-              <div>
-                <p className="text-blue-500 text-xl text-center font-semibold">{` ${data?.name}`}</p>
-              </div>
+              <h2 className={`${headClassNameOption} `}>판매자 이름</h2>
+              <p className=" text-lg text-center font-semibold">{` ${data?.name}`}</p>
             </div>
-
-            <div className="mt-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-                카카오톡 아이디
-              </h2>
-              <p className="font-semibold text-center text-xl text-blue-500">
+            <div className="my-8">
+              <h2 className={`${headClassNameOption}`}>카카오톡 아이디</h2>
+              <p className="font-semibold text-center text-lg ">
                 {data?.contact}
               </p>
             </div>
-
-            <div className="mt-8 border-b-2">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-                판매 옵션
-              </h2>
+            <div className="my-8 border-b-2">
+              <h2 className={`${headClassNameOption}`}>판매 옵션</h2>
               <div className="flex items-center justify-center my-4">
                 <TagComponent
                   value={data.selectedValue?.bargaining}
@@ -69,9 +58,10 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                   }
                 />
               </div>
+              <div>서울</div>
             </div>
 
-            <div className="flex items-center justify-end my-3">
+            <div className="flex items-center justify-end my-4">
               <span className="text-gray-800 font-bold text-xl ">
                 {`${data.price?.toLocaleString()}원`}
               </span>
@@ -83,13 +73,11 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                 />
               </div>
             </div>
-            <div className="text-center">
+            <div className="text-center m-auto">
               {data?.soldout ? (
-                <p className="text-red-600 text-sm">거래가 완료된 물품입니다</p>
+                <p className="text-red-600 text-sm">거래 완료 물품입니다</p>
               ) : (
-                <p className=" text-green-600 text-sm">
-                  거래가 가능한 물품입니다
-                </p>
+                <p className=" text-green-600 text-sm">거래 가능 물품입니다</p>
               )}
             </div>
           </div>

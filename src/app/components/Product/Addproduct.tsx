@@ -9,6 +9,8 @@ import { isFieldEmpty } from "@/utils/utils";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 import Selector from "./Selector";
 import { InputIcon } from "./InputIcon";
+import { provinceList } from "./CityList";
+import CitySelector from "./CitySelector";
 
 interface AddProductProps {
   editData: any;
@@ -57,6 +59,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     random: editData?.selectedValue?.random || "",
     isMeet: editData?.selectedValue?.isMeet || "",
     bargaining: editData?.selectedValue?.bargaining || "",
+    region: editData?.selectedValue?.region || "",
+    city: editData?.selectedValue?.city || "",
   });
   const [description, setDescription] = useState(editData?.description || "");
 
@@ -68,7 +72,10 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     },
   });
 
-  useEffect(() => {}, [selectedValue]);
+  useEffect(() => {
+    console.log(selectedValue.region);
+    console.log(selectedValue.city);
+  }, [selectedValue]);
 
   function selectedHandlChange(name: string, value: string) {
     setSelectedValue((prevSelectedValue) => ({
@@ -77,13 +84,6 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     }));
   }
 
-  // function selectedChangeHandler(e: React.ChangeEvent<HTMLSelectElement>) {
-  //   const { name, value } = e.target;
-  //   setSelectedValue({
-  //     ...selectedValue,
-  //     [name]: value,
-  //   });
-  // }
   function contactChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setContact(e.target.value);
     setMessage("");
@@ -171,6 +171,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   const descriptionInputRef = useRef(null);
   const contactInputRef = useRef(null);
   const imageInputRef = useRef(null);
+  const selectIsMeetRef = useRef(null);
+  const selectIsbargaining = useRef(null);
+  const selectIsRandom = useRef(null);
   const MAXLENGTH = 20;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -189,6 +192,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       { ref: priceInputRef, value: price, name: "가격" },
       { ref: descriptionInputRef, value: description, name: "상품설명" },
       { ref: imageInputRef, value: image, name: "대표 이미지" },
+      { ref: selectIsMeetRef, value: selectedValue?.isMeet, name: "직거래" },
+      { ref: selectIsRandom, value: selectedValue?.random, name: "택배거래" },
+      {
+        ref: selectIsbargaining,
+        value: selectedValue?.bargaining,
+        name: "흥정여부",
+      },
     ];
 
     for (const field of fieldsToValidate) {
@@ -207,6 +217,11 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         return;
       }
     }
+
+    console.log(selectedValue.region);
+    console.log(selectedValue.city);
+
+    return;
 
     if (data?.user) {
       const requestData = {
@@ -299,103 +314,6 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
                 판매 옵션
               </h2>
-              {/* <table>
-                <tbody>
-                  <tr>
-                    <td className="font-semibold text-sm w-1/4">흥정 여부</td>
-                    <td>
-                      <select
-                        onChange={selectedChangeHandler}
-                        value={selectedValue.bargaining}
-                        name="bargaining"
-                        className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="" disabled>
-                          -- 선택 --
-                        </option>
-                        <option value="yes">가능</option>
-                        <option value="no">불가능</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr></tr>
-                  <tr>
-                    <td className="font-semibold text-sm w-1/4">직 거래</td>
-                    <td>
-                      <select
-                        onChange={selectedChangeHandler}
-                        value={selectedValue.isMeet}
-                        name="isMeet"
-                        className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="" disabled>
-                          -- 선택 --
-                        </option>
-                        <option value="yes">가능</option>
-                        <option value="no">불가능</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="font-semibold text-sm w-1/4">택배 거래</td>
-                    <td>
-                      <select
-                        value={selectedValue.random}
-                        onChange={selectedChangeHandler}
-                        name="random"
-                        className="block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="" disabled>
-                          -- 선택 --
-                        </option>
-                        <option value="yes">가능</option>
-                        <option value="no">불가능</option>
-                      </select>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className=" font-semibold text-sm w-1/4">카카오톡</td>
-                    <td>
-                      <input
-                        onChange={contactChangeHandler}
-                        value={contact}
-                        ref={contactInputRef}
-                        type="text"
-                        maxLength={20}
-                        placeholder="카톡 아이디"
-                        name="contact"
-                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
-                      />
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className=" font-semibold text-sm w-1/4">희망가격</td>
-                    <td>
-                      <input
-                        onChange={priceChangeHandler}
-                        ref={priceInputRef}
-                        value={price}
-                        type="number"
-                        name="price"
-                        id="price"
-                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table> */}
-              {/* <input
-                onChange={contactChangeHandler}
-                ref={contactInputRef}
-                value={contact}
-                type="text"
-                maxLength={20}
-                placeholder="카톡 아이디"
-                name="contact"
-                className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
-              /> */}
               <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8 border-b-2 py-4">
                 <InputIcon
                   ChangeHandler={contactChangeHandler}
@@ -421,8 +339,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
               <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <Selector
-                  label={"직거래"}
-                  name={"isMeet"}
+                  selectRef={selectIsbargaining}
+                  label={"흥정여부"}
+                  name={"bargaining"}
                   option={[
                     { keyword: "가능", value: "yes" },
                     { keyword: "불가능", value: "no" },
@@ -431,6 +350,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   selectedValue={selectedValue}
                 />
                 <Selector
+                  selectRef={selectIsRandom}
                   label={"택배거래"}
                   name={"random"}
                   option={[
@@ -441,8 +361,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   selectedValue={selectedValue}
                 />
                 <Selector
-                  label={"흥정여부"}
-                  name={"bargaining"}
+                  selectRef={selectIsMeetRef}
+                  label={"직거래"}
+                  name={"isMeet"}
                   option={[
                     { keyword: "가능", value: "yes" },
                     { keyword: "불가능", value: "no" },
@@ -450,6 +371,14 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   selectedHandlChange={selectedHandlChange}
                   selectedValue={selectedValue}
                 />
+                <div></div>
+                <div className="m-auto">
+                  {selectedValue.isMeet === "yes" ? (
+                    <CitySelector selectedHandlChange={selectedHandlChange} />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
 

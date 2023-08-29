@@ -7,6 +7,7 @@ interface SelectorProps {
   name: string;
   selectedHandlChange: (name: string, value: string) => void;
   selectedValue: any;
+  selectRef?: React.MutableRefObject<any>;
 }
 
 interface OptionItem {
@@ -20,13 +21,14 @@ export default function Selector({
   name,
   selectedHandlChange,
   selectedValue,
+  selectRef,
 }: SelectorProps) {
   function handleChange(value: string) {
     selectedHandlChange(name, value);
   }
 
   return (
-    <div className="w-52 m-auto">
+    <div className="w-52 m-auto" tabIndex={1} ref={selectRef}>
       <Select
         size="lg"
         label={label}
