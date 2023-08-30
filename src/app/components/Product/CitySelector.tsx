@@ -21,7 +21,6 @@ export default function CitySelector({
   selectedValue,
 }: SelectorProps) {
   const [cities, setCities] = useState<string[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<string>("");
 
   function handleCityChange(value: string) {
     const selectedKeyword = value;
@@ -43,7 +42,7 @@ export default function CitySelector({
   useEffect(() => {
     if (selectedValue["region"]?.length > 1) {
       handleCityChange(selectedValue["region"]);
-      handleSelectedCityChange(selectedValue["city"]);
+      // handleSelectedCityChange(selectedValue["city"]);
     }
   }, []);
 
@@ -55,7 +54,7 @@ export default function CitySelector({
       : { className: "" };
 
   return (
-    <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 py-2 gap-4 lg:py-4">
+    <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 py-4 gap-4 lg:py-2">
       <div className="w-52 m-auto " tabIndex={1} ref={selectRef}>
         <Select
           size="lg"
