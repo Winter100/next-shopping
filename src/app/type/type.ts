@@ -8,6 +8,8 @@ export interface ProductsType {
     random: string;
     isMeet: string;
     bargaining: string;
+    region?: string;
+    city?: string;
   };
   mainImageSrc: string;
   subImageSrc: string[];

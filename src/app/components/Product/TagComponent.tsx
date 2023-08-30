@@ -11,7 +11,7 @@ export default function TagComponent({ value, text }: TagComponentProps) {
   return (
     <div>
       <span
-        className={` ${bgColor} text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900`}
+        className={` ${bgColor} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900`}
       >
         {text}
       </span>

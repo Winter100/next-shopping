@@ -20,33 +20,25 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             <div className="flex items-center justify-center h-16 my-2">
               <h1 className={`${headClassNameOption} `}>{data?.title}</h1>
             </div>
-            <div className="border-t-2">
+            <div className="border-t-2 py-2">
               <h2 className={`${headClassNameOption} `}>판매자 이름</h2>
               <p className=" text-lg text-center font-semibold">{` ${data?.name}`}</p>
             </div>
-            <div className="my-8">
+            <div className="my-8 py-2">
               <h2 className={`${headClassNameOption}`}>카카오톡 아이디</h2>
               <p className="font-semibold text-center text-lg ">
                 {data?.contact}
               </p>
             </div>
-            <div className="my-8 border-b-2">
+            <div className="my-8 border-b-2 py-2">
               <h2 className={`${headClassNameOption}`}>판매 옵션</h2>
-              <div className="flex items-center justify-center my-4">
+              <div className="grid grid-cols-3 m-auto my-4 text-center w-full md:w-11/12">
                 <TagComponent
                   value={data.selectedValue?.bargaining}
                   text={
                     data.selectedValue?.bargaining === "yes"
                       ? "흥정 가능"
                       : "흥정 불가"
-                  }
-                />
-                <TagComponent
-                  value={data.selectedValue?.isMeet}
-                  text={
-                    data.selectedValue?.isMeet === "yes"
-                      ? "직거래 가능"
-                      : "직거래 불가"
                   }
                 />
                 <TagComponent
@@ -57,8 +49,29 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                       : "택배 불가"
                   }
                 />
+
+                <TagComponent
+                  value={data.selectedValue?.isMeet}
+                  text={
+                    data.selectedValue?.isMeet === "yes"
+                      ? "직거래 가능"
+                      : "직거래 불가"
+                  }
+                />
+
+                {data.selectedValue?.region?.length > 1 && (
+                  <>
+                    <TagComponent
+                      value={"yes"}
+                      text={data.selectedValue?.region}
+                    />
+                    <TagComponent
+                      value={"yes"}
+                      text={data.selectedValue?.city}
+                    />
+                  </>
+                )}
               </div>
-              <div>서울</div>
             </div>
 
             <div className="flex items-center justify-end my-4">

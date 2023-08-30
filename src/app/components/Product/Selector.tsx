@@ -8,6 +8,8 @@ interface SelectorProps {
   selectedHandlChange: (name: string, value: string) => void;
   selectedValue: any;
   selectRef?: React.MutableRefObject<any>;
+  selectedClassName?: string;
+  setSelectedClassName: any;
 }
 
 interface OptionItem {
@@ -22,15 +24,26 @@ export default function Selector({
   selectedHandlChange,
   selectedValue,
   selectRef,
+  selectedClassName,
+  setSelectedClassName,
 }: SelectorProps) {
   function handleChange(value: string) {
     selectedHandlChange(name, value);
+    setSelectedClassName("");
   }
+
+  const labelProps =
+    name === selectedClassName
+      ? {
+          className: `${""} text-red-600`,
+        }
+      : { className: "" };
 
   return (
     <div className="w-52 m-auto" tabIndex={1} ref={selectRef}>
       <Select
         size="lg"
+        labelProps={labelProps}
         label={label}
         color="blue"
         value={selectedValue[name]}

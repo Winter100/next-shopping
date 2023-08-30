@@ -9,7 +9,6 @@ import { isFieldEmpty } from "@/utils/utils";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 import Selector from "./Selector";
 import { InputIcon } from "./InputIcon";
-import { provinceList } from "./CityList";
 import CitySelector from "./CitySelector";
 
 interface AddProductProps {
@@ -62,6 +61,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     region: editData?.selectedValue?.region || "",
     city: editData?.selectedValue?.city || "",
   });
+  const [selectedClassName, setSelectedClassName] = useState("");
   const [description, setDescription] = useState(editData?.description || "");
 
   const router = useRouter();
@@ -72,12 +72,16 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     },
   });
 
-  useEffect(() => {
-    console.log(selectedValue.region);
-    console.log(selectedValue.city);
-  }, [selectedValue]);
+  useEffect(() => {}, [selectedValue]);
 
   function selectedHandlChange(name: string, value: string) {
+    if (name === "isMeet" && value === "no") {
+      setSelectedValue((prevSelectedValue) => ({
+        ...prevSelectedValue,
+        region: "",
+        city: "",
+      }));
+    }
     setSelectedValue((prevSelectedValue) => ({
       ...prevSelectedValue,
       [name]: value,
@@ -174,6 +178,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   const selectIsMeetRef = useRef(null);
   const selectIsbargaining = useRef(null);
   const selectIsRandom = useRef(null);
+  const selectIsRegion = useRef(null);
   const MAXLENGTH = 20;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -192,14 +197,42 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       { ref: priceInputRef, value: price, name: "가격" },
       { ref: descriptionInputRef, value: description, name: "상품설명" },
       { ref: imageInputRef, value: image, name: "대표 이미지" },
-      { ref: selectIsMeetRef, value: selectedValue?.isMeet, name: "직거래" },
-      { ref: selectIsRandom, value: selectedValue?.random, name: "택배거래" },
       {
         ref: selectIsbargaining,
         value: selectedValue?.bargaining,
         name: "흥정여부",
+        className: "bargaining",
+      },
+      {
+        ref: selectIsRandom,
+        value: selectedValue?.random,
+        name: "택배거래",
+        className: "random",
+      },
+      {
+        ref: selectIsMeetRef,
+        value: selectedValue?.isMeet,
+        name: "직거래",
+        className: "isMeet",
       },
     ];
+
+    if (selectedValue?.isMeet === "yes") {
+      fieldsToValidate.push(
+        {
+          ref: selectIsRegion,
+          value: selectedValue?.region,
+          name: "지역",
+          className: "region",
+        },
+        {
+          ref: selectIsRegion,
+          value: selectedValue?.city,
+          name: "시",
+          className: "region",
+        }
+      );
+    }
 
     for (const field of fieldsToValidate) {
       if (field.maxLength && field.value.trim().length > field.maxLength) {
@@ -214,14 +247,10 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         field.ref.current.focus();
         setMessage(`${field.name}을(를) 채워주세요.`);
         setIsLoading(false);
+        setSelectedClassName(field.className);
         return;
       }
     }
-
-    console.log(selectedValue.region);
-    console.log(selectedValue.city);
-
-    return;
 
     if (data?.user) {
       const requestData = {
@@ -256,6 +285,26 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     }
 
     router.push("/auth/in");
+  }
+
+  function renderSelector(
+    label: string,
+    name: string,
+    ref: React.MutableRefObject<any>,
+    option: any
+  ) {
+    return (
+      <Selector
+        selectRef={ref}
+        label={label}
+        name={name}
+        option={option}
+        selectedHandlChange={selectedHandlChange}
+        selectedValue={selectedValue}
+        selectedClassName={selectedClassName}
+        setSelectedClassName={setSelectedClassName}
+      />
+    );
   }
 
   return (
@@ -293,7 +342,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           </div>
 
           <div className="md:w-1/2 md:ml-8">
-            <div className="text-4xl font-semibold text-gray-800 text-center mt-10 mb-10">
+            <div className="text-4xl font-semibold text-gray-800 text-center my-4 lg:my-8">
               <label className="block font-bold mb-1" htmlFor="title">
                 제목
               </label>
@@ -310,11 +359,11 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               />
             </div>
 
-            <div className=" border-y-2 py-6 my-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
+            <div className=" border-y-2 py-4 my-2">
+              <h2 className="text-xl font-semibold text-gray-800 text-center">
                 판매 옵션
               </h2>
-              <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8 border-b-2 py-4">
+              <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-2 lg:py-4">
                 <InputIcon
                   ChangeHandler={contactChangeHandler}
                   inputRef={contactInputRef}
@@ -337,7 +386,39 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 />
               </div>
 
-              <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+              <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 border-y-2 py-2 lg:py-4">
+                {renderSelector("흥정여부", "bargaining", selectIsbargaining, [
+                  { keyword: "가능", value: "yes" },
+                  { keyword: "불가능", value: "no" },
+                ])}
+                {renderSelector("택배거래", "random", selectIsRandom, [
+                  { keyword: "가능", value: "yes" },
+                  { keyword: "불가능", value: "no" },
+                ])}
+              </div>
+              <div className="m-auto">
+                <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-2 mt-2 lg:py-4">
+                  {renderSelector("직거래", "isMeet", selectIsMeetRef, [
+                    { keyword: "가능", value: "yes" },
+                    { keyword: "불가능", value: "no" },
+                  ])}
+                  <div></div>
+                </div>
+              </div>
+              <div>
+                {selectedValue.isMeet === "yes" && (
+                  <CitySelector
+                    name="region"
+                    selectedValue={selectedValue}
+                    selectedHandlChange={selectedHandlChange}
+                    selectRef={selectIsRegion}
+                    selectedClassName={selectedClassName}
+                    setSelectedClassName={setSelectedClassName}
+                  />
+                )}
+              </div>
+
+              {/* <div className="m-auto grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <Selector
                   selectRef={selectIsbargaining}
                   label={"흥정여부"}
@@ -348,6 +429,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   ]}
                   selectedHandlChange={selectedHandlChange}
                   selectedValue={selectedValue}
+                  selectedClassName={selectedClassName}
+                  setSelectedClassName={setSelectedClassName}
                 />
                 <Selector
                   selectRef={selectIsRandom}
@@ -359,6 +442,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   ]}
                   selectedHandlChange={selectedHandlChange}
                   selectedValue={selectedValue}
+                  selectedClassName={selectedClassName}
+                  setSelectedClassName={setSelectedClassName}
                 />
                 <Selector
                   selectRef={selectIsMeetRef}
@@ -370,19 +455,27 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   ]}
                   selectedHandlChange={selectedHandlChange}
                   selectedValue={selectedValue}
+                  selectedClassName={selectedClassName}
+                  setSelectedClassName={setSelectedClassName}
                 />
                 <div></div>
                 <div className="m-auto">
                   {selectedValue.isMeet === "yes" ? (
-                    <CitySelector selectedHandlChange={selectedHandlChange} />
+                    <CitySelector
+                      name={"region"}
+                      selectedHandlChange={selectedHandlChange}
+                      selectRef={selectIsRegion}
+                      selectedClassName={selectedClassName}
+                      setSelectedClassName={setSelectedClassName}
+                    />
                   ) : (
                     ""
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            <div className="flex items-center my-6 justify-end">
+            <div className="flex items-center my-2 justify-end">
               <span className="font-bold text-2xl">
                 {price?.toLocaleString()}원
               </span>
@@ -390,7 +483,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           </div>
         </div>
 
-        <div className="mt-12 border-2">
+        <div className="mt-6 border-2">
           <div className="m-auto">
             <div className="flex flex-wrap items-center">
               {subImage.map((imageUrl, index) => (
