@@ -1,7 +1,7 @@
 "use client";
 import { Select, Option } from "@material-tailwind/react";
 import { provinceList } from "./CityList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface SelectorProps {
   selectedHandlChange: (name: string, value: string) => void;
@@ -21,30 +21,29 @@ export default function CitySelector({
   selectedValue,
 }: SelectorProps) {
   const [cities, setCities] = useState<string[]>([]);
+  const [citiess, setCitiess] = useState<string>("");
 
   function handleCityChange(value: string) {
     const selectedKeyword = value;
+
+    console.log("selectedKeyword", selectedKeyword);
     const selectedCities =
       provinceList.find((province) => province.keyword === selectedKeyword)
         ?.value || [];
 
     setCities(selectedCities);
-
+    setCitiess("");
+    handleSelectedCityChange("");
     selectedHandlChange("region", value);
     selectedHandlChange("city", "");
   }
 
   function handleSelectedCityChange(value: string) {
+    console.log("value", value);
     selectedHandlChange("city", value);
+    setCitiess(value);
     setSelectedClassName("");
   }
-
-  useEffect(() => {
-    if (selectedValue["region"]?.length > 1) {
-      handleCityChange(selectedValue["region"]);
-      // handleSelectedCityChange(selectedValue["city"]);
-    }
-  }, []);
 
   const labelProps =
     name === selectedClassName
@@ -62,7 +61,7 @@ export default function CitySelector({
           label={"지역"}
           color="blue"
           name="region"
-          value={selectedValue["region"] || ""}
+          value={selectedValue.region || ""}
           animate={{
             mount: { y: 0 },
             unmount: { y: 25 },
@@ -78,26 +77,47 @@ export default function CitySelector({
       </div>
 
       <div className="w-52 m-auto" tabIndex={1}>
+        {/* <Select
+            size="lg"
+            label={"시"}
+            name="city"
+            labelProps={labelProps}
+            color="blue"
+            value={citiess}
+            animate={{
+              mount: { y: 0 },
+              unmount: { y: 25 },
+            }}
+            onChange={(e) => handleSelectedCityChange(e)}
+          >
+            {cities?.map((city) => (
+              <Option key={city} value={city}>
+                {city}
+              </Option>
+            ))}
+          </Select> */}
+
         <Select
           size="lg"
           label={"시"}
           name="city"
           labelProps={labelProps}
           color="blue"
+          // value={cities.find((item) => item === citiess)}
           animate={{
             mount: { y: 0 },
             unmount: { y: 25 },
           }}
           onChange={(e) => handleSelectedCityChange(e)}
-          // value={selectedRegion}
         >
-          {cities?.map((city) => (
-            <Option key={city} value={city}>
+          {cities?.map((city, idx) => (
+            <Option key={city + idx} value={city}>
               {city}
             </Option>
           ))}
         </Select>
       </div>
+      {citiess}
     </div>
   );
 }
