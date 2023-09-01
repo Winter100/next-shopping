@@ -70,7 +70,11 @@ export default function CitySelector({
 
   return (
     <div className="m-auto">
-      <div className="w-52 z-10 " tabIndex={1} ref={selectIsRegion}>
+      <div
+        className="w-52 relative text-center  z-50"
+        tabIndex={1}
+        ref={selectIsRegion}
+      >
         <Select
           labelProps={labelClassName}
           size="lg"
@@ -91,33 +95,40 @@ export default function CitySelector({
             </Option>
           ))}
         </Select>
+        <></>
       </div>
 
-      {region?.length > 1 && (
-        <div
-          className={`m-auto bg-white grid grid-cols-2 md:grid-cols-6 gap-2 border-2 my-2 shadow-lg p-2 ${checkboxBorder}`}
-        >
-          {cities?.map((item, idx) => (
-            <div
-              key={`${item} ${idx}`}
-              className={`flex items-center justify-left space-x-2 text-xs`}
-            >
-              <input
-                type="checkbox"
-                className={`w-3 h-3 text-blue-500`}
-                id={item}
-                value={item}
-                name="city"
-                checked={checkedList?.includes(item)}
-                onChange={(e) => checkHandler(e, item)}
-              />
-              <label htmlFor={item} className="text-gray-700">
-                {item}
-              </label>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="lg:mb-48">
+        {region?.length > 1 && (
+          <div
+            className={`lg:absolute md:relative lg:w-96 bg-white grid lg:grid-cols-${
+              cities?.length >= 4 ? "4" : "2"
+            } grid-cols-${
+              cities?.length >= 2 ? "2" : "1"
+            } gap-2 border-2 shadow-lg p-2 ${checkboxBorder}`}
+          >
+            {cities?.map((item, idx) => (
+              <div
+                key={`${item} ${idx}`}
+                className={`flex items-center justify-left space-x-2 text-xs`}
+              >
+                <input
+                  type="checkbox"
+                  className={`w-3 h-3 text-blue-500`}
+                  id={item}
+                  value={item}
+                  name="city"
+                  checked={checkedList?.includes(item)}
+                  onChange={(e) => checkHandler(e, item)}
+                />
+                <label htmlFor={item} className="text-gray-700">
+                  {item}
+                </label>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

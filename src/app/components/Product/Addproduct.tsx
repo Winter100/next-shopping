@@ -54,7 +54,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     editData?.contact || ""
   );
 
-  const [region, setRegion] = useState(editData?.region || "");
+  const [region, setRegion] = useState(editData?.region || "서울특별시");
   const [checkedList, setCheckedList] = useState<string[]>(
     editData?.checkedList || []
   );
@@ -324,7 +324,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 />
               )}
             </div>
-            <div className="text-center mt-2 ">
+            <div className="text-center mt-1 ">
               <input
                 type="file"
                 className="hidden"
@@ -344,8 +344,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           </div>
 
           <div className="md:w-1/2 md:ml-8">
-            <div className="text-4xl font-semibold text-gray-800 text-center my-4 lg:my-8">
-              <label className="block font-bold mb-1" htmlFor="title">
+            <div className="text-4xl font-semibold text-gray-800 text-center my-2">
+              <label className="block font-bold" htmlFor="title">
                 제목
               </label>
               <input
@@ -361,11 +361,11 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
               />
             </div>
 
-            <div className=" border-y-2 py-4 my-2">
+            <div className=" border-t-2 pt-2 mt-2">
               <h2 className="text-xl font-semibold text-gray-800 text-center">
                 판매 옵션
               </h2>
-              <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-2 lg:py-4">
+              <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-3">
                 <InputIcon
                   ChangeHandler={contactChangeHandler}
                   inputRef={contactInputRef}
@@ -388,7 +388,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 />
               </div>
 
-              <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 border-y-2 py-2 lg:py-4">
+              <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 border-y-2 py-3">
                 {renderSelector("흥정여부", "bargaining", selectIsbargaining, [
                   { keyword: "가능", value: "yes" },
                   { keyword: "불가능", value: "no" },
@@ -399,11 +399,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 ])}
               </div>
               <div className="m-auto">
-                <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-2 mt-2 lg:py-4">
+                <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-3">
                   {renderSelector("직거래", "isMeet", selectIsMeetRef, [
                     { keyword: "가능", value: "yes" },
                     { keyword: "불가능", value: "no" },
                   ])}
+                </div>
+                <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4">
                   {selectedValue.isMeet === "yes" && (
                     <CitySelector
                       region={region}
@@ -417,11 +419,12 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                       setCities={setCities}
                     />
                   )}
+                  <></>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center my-2 justify-end">
+            <div className="flex items-center justify-end border-t-2 ">
               <span className="font-bold text-2xl">
                 {price?.toLocaleString()}원
               </span>
