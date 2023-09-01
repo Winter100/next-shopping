@@ -8,9 +8,11 @@ export interface ProductsType {
     random: string;
     isMeet: string;
     bargaining: string;
-    region?: string;
-    city?: string;
+    // region?: string;
+    // city?: string;
   };
+  region: string;
+  checkedList: string[];
   mainImageSrc: string;
   subImageSrc: string[];
   email: string | null | undefined;

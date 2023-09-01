@@ -9,7 +9,7 @@ import { isFieldEmpty } from "@/utils/utils";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 import Selector from "./Selector";
 import { InputIcon } from "./InputIcon";
-import CitySelector from "./TestCity";
+import CitySelector from "./CitySelector";
 
 interface AddProductProps {
   editData: any;
@@ -54,16 +54,17 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     editData?.contact || ""
   );
 
+  const [region, setRegion] = useState(editData?.region || "");
+  const [checkedList, setCheckedList] = useState<string[]>(
+    editData?.checkedList || []
+  );
+
   const [cities, setCities] = useState<string[]>([]);
-  const [checkedList, setCheckedList] = useState<string[]>([]);
-  const [isChecked, setIsChecked] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState({
     random: editData?.selectedValue?.random || "",
     isMeet: editData?.selectedValue?.isMeet || "",
     bargaining: editData?.selectedValue?.bargaining || "",
-    region: editData?.selectedValue?.region || "",
-    city: [editData?.selectedValue?.city] || [""],
   });
   const [selectedClassName, setSelectedClassName] = useState("");
   const [description, setDescription] = useState(editData?.description || "");
@@ -76,17 +77,10 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     },
   });
 
-  useEffect(() => {
-    console.log(selectedValue);
-  }, [selectedValue]);
-
   function selectedHandlChange(name: string, value: string) {
     if (name === "isMeet" && value === "no") {
-      setSelectedValue((prevSelectedValue) => ({
-        ...prevSelectedValue,
-        region: "",
-        city: [""],
-      }));
+      setRegion("");
+      setCheckedList([]);
     }
     setSelectedValue((prevSelectedValue) => ({
       ...prevSelectedValue,
@@ -223,42 +217,40 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       },
     ];
 
-    // if (selectedValue?.isMeet === "yes") {
-    //   fieldsToValidate.push(
-    //     {
-    //       ref: selectIsRegion,
-    //       value: selectedValue?.region,
-    //       name: "지역",
-    //       className: "region",
-    //     },
-    //     {
-    //       ref: selectIsRegion,
-    //       value: selectedValue?.city,
-    //       name: "시",
-    //       className: "region",
-    //     }
-    //   );
-    // }
+    if (selectedValue?.isMeet === "yes") {
+      fieldsToValidate.push(
+        {
+          ref: selectIsRegion,
+          value: region,
+          name: "지역",
+          className: "region",
+        },
+        {
+          ref: selectIsRegion,
+          value: checkedList.join(", "),
+          name: "시",
+          className: "region",
+        }
+      );
+    }
 
-    // for (const field of fieldsToValidate) {
-    //   if (field.maxLength && field.value.trim().length > field.maxLength) {
-    //     field.ref.current.focus();
-    //     setMessage(
-    //       `${field.name}은(는) ${field.maxLength}자 이하로 입력해주세요.`
-    //     );
-    //     setIsLoading(false);
-    //     return;
-    //   }
-    //   if (isFieldEmpty(field.value)) {
-    //     field.ref.current.focus();
-    //     setMessage(`${field.name}을(를) 채워주세요.`);
-    //     setIsLoading(false);
-    //     setSelectedClassName(field.className);
-    //     return;
-    //   }
-    // }
-
-    return;
+    for (const field of fieldsToValidate) {
+      if (field.maxLength && field.value.trim().length > field.maxLength) {
+        field.ref.current.focus();
+        setMessage(
+          `${field.name}은(는) ${field.maxLength}자 이하로 입력해주세요.`
+        );
+        setIsLoading(false);
+        return;
+      }
+      if (isFieldEmpty(field.value)) {
+        field.ref.current.focus();
+        setMessage(`${field.name}을(를) 채워주세요.`);
+        setIsLoading(false);
+        setSelectedClassName(field.className);
+        return;
+      }
+    }
 
     if (data?.user) {
       const requestData = {
@@ -268,6 +260,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         selectedValue,
         mainImageSrc: files ? await mainUploadStart(files) : image,
         subImageSrc: subfiles ? await subUploadStart(subfiles) : subImage,
+        region,
+        checkedList,
         contact,
         email: data.user.email,
         name: data.user.name,
@@ -410,17 +404,20 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                     { keyword: "가능", value: "yes" },
                     { keyword: "불가능", value: "no" },
                   ])}
-                  <div></div>
+                  {selectedValue.isMeet === "yes" && (
+                    <CitySelector
+                      region={region}
+                      selectIsRegion={selectIsRegion}
+                      selectedClassName={selectedClassName}
+                      setSelectedClassName={setSelectedClassName}
+                      setRegion={setRegion}
+                      checkedList={checkedList}
+                      setCheckedList={setCheckedList}
+                      cities={cities}
+                      setCities={setCities}
+                    />
+                  )}
                 </div>
-              </div>
-              <div>
-                {selectedValue.isMeet === "yes" && (
-                  <CitySelector
-                    selectedValue={selectedValue}
-                    selectedHandlChange={selectedHandlChange}
-                    setSelectedValue={setSelectedValue}
-                  />
-                )}
               </div>
             </div>
 

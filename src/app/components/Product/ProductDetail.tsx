@@ -59,16 +59,20 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                   }
                 />
 
-                {data.selectedValue?.region?.length > 1 && (
+                {data.region?.length > 1 && (
                   <>
                     <TagComponent
+                      key={data?.region}
                       value={"yes"}
-                      text={data.selectedValue?.region}
+                      text={data?.region}
                     />
-                    <TagComponent
-                      value={"yes"}
-                      text={data.selectedValue?.city}
-                    />
+                    {data.checkedList.map((item, idx) => (
+                      <TagComponent
+                        key={item + idx}
+                        value={"yes"}
+                        text={item}
+                      />
+                    ))}
                   </>
                 )}
               </div>

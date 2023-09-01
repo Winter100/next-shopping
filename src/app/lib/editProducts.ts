@@ -51,6 +51,8 @@ export async function MongoDbEditProducts(
       selectedValue,
       mainImageSrc,
       subImageSrc,
+      region,
+      checkedList,
       contact,
     } = data;
 
@@ -62,6 +64,8 @@ export async function MongoDbEditProducts(
         selectedValue,
         mainImageSrc,
         subImageSrc,
+        region,
+        checkedList,
         contact,
       },
     });
