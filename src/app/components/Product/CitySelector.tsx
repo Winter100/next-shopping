@@ -71,7 +71,7 @@ export default function CitySelector({
   return (
     <div className="m-auto">
       <div
-        className="w-52 relative text-center  z-50"
+        className="w-52 relative text-center z-10 "
         tabIndex={1}
         ref={selectIsRegion}
       >
@@ -103,9 +103,9 @@ export default function CitySelector({
           <div
             className={`lg:absolute md:relative lg:w-96 bg-white grid lg:grid-cols-${
               cities?.length >= 4 ? "4" : "2"
-            } grid-cols-${
+            }  gap-2 border-2 shadow-lg p-2 ${checkboxBorder} grid-cols-${
               cities?.length >= 2 ? "2" : "1"
-            } gap-2 border-2 shadow-lg p-2 ${checkboxBorder}`}
+            } `}
           >
             {cities?.map((item, idx) => (
               <div
