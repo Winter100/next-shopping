@@ -3,6 +3,7 @@
 interface TagComponentProps {
   value?: string;
   text: string;
+  valueColor?: string;
 }
 
 export default function TagComponent({ value, text }: TagComponentProps) {

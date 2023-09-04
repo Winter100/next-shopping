@@ -98,14 +98,14 @@ export default function CitySelector({
         <></>
       </div>
 
-      <div className="lg:mb-48">
+      <div className="lg:mb-48 mb-2">
         {region?.length > 1 && (
           <div
-            className={`lg:absolute md:relative lg:w-96 bg-white grid lg:grid-cols-${
+            className={`lg:absolute lg:w-96 w-52 bg-white grid lg:grid-cols-${
               cities?.length >= 4 ? "4" : "2"
-            }  gap-2 border-2 shadow-lg p-2 ${checkboxBorder} grid-cols-${
-              cities?.length >= 2 ? "2" : "1"
-            } `}
+            }  gap-2 border-2 shadow-lg p-2 ${checkboxBorder} ${
+              cities?.length < 4 ? "grid-cols-1" : "grid-cols-2"
+            }`}
           >
             {cities?.map((item, idx) => (
               <div

@@ -18,7 +18,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           </div>
           <div className="md:w-1/2 md:ml-2">
             <div className="flex items-center justify-center h-16 my-2">
-              <h1 className={`${headClassNameOption} `}>{data?.title}</h1>
+              <h1 className={`${headClassNameOption}`}>{data?.title}</h1>
             </div>
             <div className="border-t-2 py-2">
               <h2 className={`${headClassNameOption} `}>판매자 이름</h2>
@@ -33,6 +33,11 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             <div className="my-8 border-b-2 py-2">
               <h2 className={`${headClassNameOption}`}>판매 옵션</h2>
               <div className="grid grid-cols-3 m-auto my-4 text-center w-full md:w-11/12">
+                {data?.soldout ? (
+                  <TagComponent value={"no"} text={"거래완료"} />
+                ) : (
+                  <TagComponent value={"yes"} text={"거래가능"} />
+                )}
                 <TagComponent
                   value={data.selectedValue?.bargaining}
                   text={
@@ -78,7 +83,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               </div>
             </div>
 
-            <div className="flex items-center justify-end my-4">
+            <div className="flex items-center justify-end my-2">
               <span className="text-gray-800 font-bold text-xl ">
                 {`${data.price?.toLocaleString()}원`}
               </span>
@@ -89,13 +94,6 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                   soldout={data?.soldout}
                 />
               </div>
-            </div>
-            <div className="text-center m-auto">
-              {data?.soldout ? (
-                <p className="text-red-600 text-sm">거래 완료 물품입니다</p>
-              ) : (
-                <p className=" text-green-600 text-sm">거래 가능 물품입니다</p>
-              )}
             </div>
           </div>
         </div>

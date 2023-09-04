@@ -66,7 +66,8 @@ export default function BuyBtn({ email, id, soldout }: PropsType) {
   }
 
   const isSameUser = data?.user?.email === email;
-  const wished = wish.find((item) => item === id);
+  const wishList: string[] = wish;
+  const isWished = wishList?.includes(id);
 
   return (
     <div>
@@ -79,15 +80,17 @@ export default function BuyBtn({ email, id, soldout }: PropsType) {
         </Link>
       )}
 
-      {data?.user && !isSameUser && (
-        <button onClick={() => handleAddToWishlist(id)}>
-          {wished ? (
-            <HeartIcon className="w-6 h-6 text-red-500" />
-          ) : (
-            <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
-          )}
-        </button>
-      )}
+      <div>
+        {data?.user && !isSameUser && (
+          <button onClick={() => handleAddToWishlist(id)}>
+            {isWished ? (
+              <HeartIcon className="w-6 h-6 text-red-500" />
+            ) : (
+              <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
+            )}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
