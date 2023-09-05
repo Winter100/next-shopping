@@ -96,6 +96,14 @@ export async function getDetailProduct(productid: any) {
       soldout,
     } = response;
 
+    const dateObj = new Date(date);
+
+    const transFormedDate = {
+      year: dateObj.getFullYear(),
+      month: dateObj.getMonth() + 1,
+      day: dateObj.getDate(),
+    };
+
     const data: ProductsType = {
       title,
       name,
@@ -108,7 +116,7 @@ export async function getDetailProduct(productid: any) {
       description,
       _id,
       selectedValue,
-      date,
+      date: transFormedDate,
       contact,
       soldout,
     };
