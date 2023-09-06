@@ -5,6 +5,7 @@ import Link from "next/link";
 import { HeartIcon } from "@heroicons/react/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 interface PropsType {
   email: string;
@@ -46,7 +47,8 @@ export default function BuyBtn({ email, id, soldout }: PropsType) {
     error,
   } = useQuery({
     queryKey: ["wishlist"],
-    queryFn: () => getWish(data?.user?.email),
+    queryFn: async () => await getWish(data?.user?.email),
+    cacheTime: 0,
   });
 
   const queryClient = useQueryClient();
@@ -57,36 +59,45 @@ export default function BuyBtn({ email, id, soldout }: PropsType) {
     },
   });
 
+  const [isWished, setIsWished] = useState(false);
+
+  useEffect(() => {
+    const wishList: string[] = wish;
+    if (wish && wishList.includes(id)) {
+      setIsWished(true);
+    }
+  }, [wish, id]);
+
   const handleAddToWishlist = (itemId: string) => {
+    setIsWished((pre) => !pre);
     addWishlistItemMutation.mutate(itemId);
+    return;
   };
 
   if (isLoading) {
-    return <p></p>;
+    return <div></div>;
   }
 
   const isSameUser = data?.user?.email === email;
-  const wishList: string[] = wish;
-  const isWished = wishList?.includes(id);
 
   return (
-    <div>
+    <div className="m-auto text-center w-2/3">
       {!soldout && isSameUser && (
         <Link
           href={`/product/edit/${id}`}
-          className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
+          className="px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
         >
           수정
         </Link>
       )}
 
-      <div>
+      <div className="w-6 h-6 text-center m-auto">
         {data?.user && !isSameUser && (
           <button onClick={() => handleAddToWishlist(id)}>
             {isWished ? (
-              <HeartIcon className="w-6 h-6 text-red-500" />
+              <HeartIcon className="w-full h-full text-red-500" />
             ) : (
-              <OutlineHeartIcon className="w-6 h-6 text-gray-500" />
+              <OutlineHeartIcon className="w-full h-full text-gray-500" />
             )}
           </button>
         )}

@@ -101,7 +101,7 @@ export async function getDetailProduct(productid: any) {
     const transFormedDate = {
       year: dateObj.getFullYear(),
       month: dateObj.getMonth() + 1,
-      day: dateObj.getDate(),
+      day: dateObj.getDate() + 1,
     };
 
     const data: ProductsType = {

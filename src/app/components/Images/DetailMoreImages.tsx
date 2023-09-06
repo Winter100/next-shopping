@@ -18,11 +18,11 @@ export default function DetailMoreImages({
       onClick={() => window.open(src, "_blank", "width=1000,height=1000")}
     >
       {imageType === "main" ? (
-        <div className="w-auto h-[600px]">
+        <div className="md:h-[430px] h-[380px]">
           <Image fill src={src} alt={imageType} />
         </div>
       ) : (
-        <div className=" h-44 ">
+        <div className="md:h-44 h-16  ">
           <Image fill src={src} alt={`Image ${indexs}`} quality={90} />
         </div>
       )}
