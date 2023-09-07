@@ -23,7 +23,7 @@ export default function RootLayout({
         <NextAuthProvider>
           <Navbar />
           <Providers>
-            <main className="pt-16">{children}</main>
+            <main className="pt-16 overflow-y-scroll h-screen">{children}</main>
           </Providers>
         </NextAuthProvider>
       </body>

@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { ProductsType } from "../type/type";
+import { MongoDbQueryType, ProductsType } from "../type/type";
 import { transFormedData } from "./utill";
 
 const mongodbName = process.env.NEXT_PUBLIC_MONGODB_NAME;
@@ -132,7 +132,11 @@ export async function getDetailProduct(productid: any) {
   }
 }
 
-export async function getAllProducts(keyword: string, page: number) {
+export async function getAllProducts(
+  keyword: string,
+  page: number,
+  filterValue: string
+) {
   let client;
 
   try {
@@ -141,13 +145,19 @@ export async function getAllProducts(keyword: string, page: number) {
     const itemsPerPage = 20;
     const skipItems = (page - 1) * itemsPerPage;
 
-    let query = {};
+    let query: MongoDbQueryType = {
+      soldout: false,
+    };
     if (keyword !== "all") {
       const regexSearch = new RegExp(
         keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
         "i"
       );
-      query = { title: { $regex: regexSearch } };
+      query.title = { $regex: regexSearch };
+    }
+
+    if (filterValue === "completed") {
+      query.soldout = true;
     }
 
     const projection = {
@@ -173,11 +183,14 @@ export async function getAllProducts(keyword: string, page: number) {
 
     const totalItemCount = await db
       .collection(productsCollection)
-      .countDocuments(query);
-    const totalPages = Math.ceil(totalItemCount / itemsPerPage);
+      .find(query)
+      .toArray();
+
+    const totalItemLength = totalItemCount?.length;
+    const totalPages = Math.ceil(totalItemLength / itemsPerPage);
 
     const pageInfo = {
-      totalItems: totalItemCount,
+      totalItems: totalItemLength,
       totalPages: totalPages,
     };
 

@@ -8,8 +8,13 @@ export async function GET(
   try {
     const searchKeyword = String(params?.slug[0]);
     const searchPage = Number(params?.slug[1]);
+    const filterValue = params?.slug[2];
 
-    const allData = await getAllProducts(searchKeyword, searchPage);
+    const allData = await getAllProducts(
+      searchKeyword,
+      searchPage,
+      filterValue
+    );
     return NextResponse.json(allData);
   } catch (e) {
     if (e instanceof Error) {

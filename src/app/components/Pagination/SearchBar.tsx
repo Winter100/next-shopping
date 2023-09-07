@@ -1,12 +1,14 @@
 "use client";
 
 import { PaginationProps } from "@/app/type/type";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 export default function SearchBar({ setCurrentPage }: PaginationProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const filter = searchParams?.get("filter") || "available";
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
@@ -18,10 +20,12 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
     const inputValue = searchTerm.replace(/(\s*)/g, "");
 
     if (inputValue.length < 1) {
-      router.push(`/product/search?keyword=all&page=1`);
+      router.push(`/product/search?keyword=all&page=${1}&filter=${filter}`);
       return setCurrentPage(1);
     }
-    router.push(`/product/search?keyword=${inputValue}&page=${1}`);
+    router.push(
+      `/product/search?keyword=${inputValue}&page=${1}&filter=${filter}`
+    );
     return setCurrentPage(1);
   }
 

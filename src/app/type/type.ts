@@ -46,3 +46,10 @@ export interface PageInfoProps {
   totalItems: number;
   totalPages: number;
 }
+
+export interface MongoDbQueryType {
+  title?: string | any;
+  soldout?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+}
