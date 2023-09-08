@@ -19,9 +19,9 @@ export default function MyProductsList({
 
   return (
     <div className="container mx-auto px-4 my-4">
-      {/* <h1 className="text-3xl font-bold my-4 ">내 판매 목록</h1> */}
+      <h1 className="hidden ">내 판매 목록</h1>
       {products?.length > 0 && (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
             <li
               key={product._id}

@@ -1,4 +1,3 @@
-import Filters from "@/app/components/Pagination/Filters";
 import Pagination from "@/app/components/Pagination/Pagination";
 import ProductList from "@/app/components/Product/ProductList";
 import { PageInfoProps, ProductsType } from "@/app/type/type";
@@ -19,18 +18,9 @@ export default async function SearchPage({
   const dataLength = data.searchData?.length;
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center ">
+      <ProductList products={searchData} pageInfo={pageInfo} />
       <Pagination pageInfo={pageInfo} dataLength={dataLength} />
-      <div className="flex items-center justify-end">
-        <Filters pageInfo={pageInfo} />
-      </div>
-      {dataLength >= 1 ? (
-        <ProductList products={searchData} pageInfo={pageInfo} />
-      ) : (
-        <div className="mx-auto my-8">
-          <span>등록된 상품이 없습니다.</span>
-        </div>
-      )}
     </div>
   );
 }

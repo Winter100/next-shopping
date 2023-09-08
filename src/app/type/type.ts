@@ -53,3 +53,7 @@ export interface MongoDbQueryType {
   minPrice?: number;
   maxPrice?: number;
 }
+
+export interface SortCriteria {
+  [field: string]: 1 | -1;
+}

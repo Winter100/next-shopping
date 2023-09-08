@@ -19,11 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-y-scroll h-full`}>
         <NextAuthProvider>
           <Navbar />
           <Providers>
-            <main className="pt-16 overflow-y-scroll h-screen">{children}</main>
+            <main className="pt-16">{children}</main>
           </Providers>
         </NextAuthProvider>
       </body>

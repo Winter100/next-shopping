@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 export default function SearchBar({ setCurrentPage }: PaginationProps) {
-  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const filter = searchParams?.get("filter") || "available";
+  // const keyword = searchParams?.get("keyword") || "";
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
@@ -30,7 +32,7 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
   }
 
   return (
-    <div className="my-4">
+    <div className="my-1">
       <form
         onSubmit={handleSubmit}
         className="flex items-center border-2 w-full rounded-md"

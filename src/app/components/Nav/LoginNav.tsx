@@ -11,7 +11,7 @@ export default function LoginNav() {
   const linkClassName =
     "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100";
   return (
-    <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 divide-y divide-gray-200 rounded-md shadow-lg">
+    <div className="absolute right-0 mt-1 w-44 bg-white border border-gray-200 divide-y divide-gray-200 rounded-md shadow-lg">
       <div className={divClassName}>
         <Link href="/profile" className={linkClassName}>
           My Page

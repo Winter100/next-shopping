@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { MongoDbQueryType, ProductsType } from "../type/type";
+import { MongoDbQueryType, ProductsType, SortCriteria } from "../type/type";
 import { transFormedData } from "./utill";
 
 const mongodbName = process.env.NEXT_PUBLIC_MONGODB_NAME;
@@ -148,6 +148,8 @@ export async function getAllProducts(
     let query: MongoDbQueryType = {
       soldout: false,
     };
+    let sortCriteria: SortCriteria = { date: -1 };
+
     if (keyword !== "all") {
       const regexSearch = new RegExp(
         keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
@@ -158,6 +160,12 @@ export async function getAllProducts(
 
     if (filterValue === "completed") {
       query.soldout = true;
+    }
+
+    if (filterValue === "lowprice") {
+      sortCriteria = { price: 1 };
+    } else if (filterValue === "highprice") {
+      sortCriteria = { price: -1 };
     }
 
     const projection = {
@@ -174,7 +182,7 @@ export async function getAllProducts(
     const documents = await db
       .collection(productsCollection)
       .find(query, { projection })
-      .sort({ date: -1 })
+      .sort(sortCriteria)
       .skip(skipItems)
       .limit(itemsPerPage)
       .toArray();
