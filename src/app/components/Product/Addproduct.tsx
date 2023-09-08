@@ -324,7 +324,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 />
               )}
             </div>
-            <div className="text-center mt-1 ">
+            <div className="text-center my-2 md:mt-1 border-2 ">
               <input
                 type="file"
                 className="hidden"

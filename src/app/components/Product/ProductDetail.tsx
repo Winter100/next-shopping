@@ -8,9 +8,9 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
     data?.date?.month < 10 ? `0${data?.date?.month}` : data?.date?.month
   }-${data?.date?.day < 10 ? `0${data?.date?.day}` : data?.date?.day}`;
 
-  const tableTr = `table-row`;
+  const tableTr = `table-row border-b`;
 
-  const tableThTd = `${
+  const tableThTd = ` w-16 ${
     data.checkedList?.length > 1 ? "py-1.5" : "py-2.5"
   } text-sm font-medium text-center `;
 
@@ -28,7 +28,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
               indexs={99}
             />
           </div>
-          <div className="md:w-1/2 md:ml-1  my-auto">
+          <div className="md:w-1/2 w- md:ml-1  my-auto">
             <div className="mb-2 border-b-2 text-center ">
               <h1 className="font-serif text-4xl font-bold py-2 mb-2 m-auto  w-4/5 ">
                 {data?.title}
@@ -38,12 +38,12 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
             <table className=" m-auto w-2/3 text-center">
               <tbody>
                 <tr className={`${tableTr}`}>
-                  <th scope="row" className={`${tableThTd} `}>
+                  <th scope="row" className={`${tableThTd}  `}>
                     판매자
                   </th>
                   <td className={`${tableThTd} `}>{data?.name}</td>
                 </tr>
-                <tr className={`${tableTr}`}>
+                <tr className={`${tableTr} `}>
                   <th scope="row" className={`${tableThTd} `}>
                     카카오톡
                   </th>

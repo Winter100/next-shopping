@@ -46,7 +46,7 @@ export default function ProductList({
                     </div>
                   </div>
                 </Link>
-                <h3 className="text-center border-b-2 py-0.5 font-sans text-xs md:text-sm">
+                <h3 className="text-center truncate border-b-2 py-0.5 font-sans text-xs md:text-sm">
                   {product?.title}
                 </h3>
                 <div className="text-sm py-0.5">
