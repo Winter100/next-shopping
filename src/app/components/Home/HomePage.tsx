@@ -1,4 +1,5 @@
 "use clinet";
+import { available } from "@/app/lib/constants-url";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -13,10 +14,7 @@ export default function HomePage() {
               싹다팜은 내가 가진 물품을 자유롭게 파는 곳입니다.
             </p>
           </div>
-          <Link
-            href={`/product/search?keyword=all&page=1`}
-            className="btn btn-primary"
-          >
+          <Link href={available} className="btn btn-primary">
             물품 보러가기
           </Link>
         </div>

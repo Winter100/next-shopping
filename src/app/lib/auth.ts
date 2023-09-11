@@ -63,7 +63,7 @@ export async function changePassword(
     );
 
     if (!passwordsAreEqual) {
-      return { Message: "입력한 비밀번호가 다릅니다." };
+      return { message: "현재 비밀번호가 다릅니다.", status: 401 };
     }
 
     const hashedPassword = await hashPassword(newPassword);
@@ -72,7 +72,7 @@ export async function changePassword(
       .collection(usersCollection)
       .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
 
-    return { message: "비밀번호 변경 성공" };
+    return { message: "비밀번호를 변경했습니다.", status: 201 };
   } catch (error) {
     console.log(error);
   } finally {

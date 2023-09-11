@@ -24,7 +24,11 @@ export async function POST(req: NextRequest) {
 
     const result = await changePassword(passwordData, userInfo);
 
-    return NextResponse.json({ message: result.message }, { status: 200 });
+    const resultData = {
+      message: result.message,
+      status: result.status,
+    };
+    return NextResponse.json(resultData);
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ message: e.message }, { status: 500 });

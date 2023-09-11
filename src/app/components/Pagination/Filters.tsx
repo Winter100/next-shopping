@@ -11,7 +11,7 @@ export default function Filters({ pageInfo }: { pageInfo: PageInfoProps }) {
 
   const searchKeyword = searchParams?.get("keyword");
   // const pageNum = Number(searchParams?.get("page"));
-  // const filterValue = searchParams?.get("filter");
+  const filterValue = searchParams?.get("filter");
 
   const handleFilterChange = (e: string) => {
     const selectedFilter = e;
@@ -44,7 +44,7 @@ export default function Filters({ pageInfo }: { pageInfo: PageInfoProps }) {
         <Select
           label="filter"
           onChange={handleFilterChange}
-          value={searchParams?.get("filter") || ""}
+          value={filterValue || "available"}
         >
           <Option value="available">거래가능</Option>
           <Option value="completed">거래완료</Option>

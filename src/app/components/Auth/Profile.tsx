@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
+import { signOut } from "next-auth/react";
 
 interface userInfoType {
   email: string;
@@ -26,14 +27,16 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
   async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
+    setMessage("");
 
     if (
       !password.newPassword ||
       !password.oldPassword ||
-      password.newPassword.trim().length <= 6 ||
-      password.oldPassword.trim().length <= 6
+      password.newPassword.trim().length < 6 ||
+      password.oldPassword.trim().length < 6
     ) {
-      return setMessage("비밀번호가 다르거나 6자 이하입니다.");
+      setIsLoading(false);
+      return setMessage("비밀번호가 다르거나 6자 이상이어야 합니다.");
     }
 
     const passwordData = {
@@ -48,13 +51,17 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
       body: JSON.stringify(passwordData),
     });
 
-    if (response.status === 200) {
-      setIsLoading(false);
-      setMessage("비밀번호가 변경되었습니다.");
+    const data = await response.json();
+
+    setIsLoading(false);
+    if (data.status === 201) {
+      setMessage(data.message + "다시 로그인해주세요.");
+      setTimeout(() => {
+        signOut();
+      }, 2000);
       return;
     } else {
-      setIsLoading(false);
-      return;
+      setMessage(data.message);
     }
   }
 

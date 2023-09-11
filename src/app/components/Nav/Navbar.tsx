@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import LoginNav from "./LoginNav";
+import { available } from "@/app/lib/constants-url";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -38,7 +39,7 @@ export default function Navbar() {
                   Home
                 </Link>
                 <Link
-                  href="/product/search?keyword=all&page=1&filter=available"
+                  href={available}
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   상품리스트

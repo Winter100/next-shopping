@@ -27,11 +27,11 @@ export default function MyProductMenu({
   }
 
   return (
-    <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 divide-y divide-gray-200 rounded-md shadow-lg">
+    <div className="absolute z-10 right-0 mt-2 w-28 bg-white border border-gray-200 divide-y divide-gray-200 rounded-md shadow-lg">
       {modalId === productId && isModal && (
         <Modal setIsModal={setIsModal} id={modalId} method={method} />
       )}
-      <div className="py-1">
+      <div className="py-1 ">
         {!soldout && (
           <>
             <Link

@@ -38,35 +38,38 @@ export default function WishList({ wishData }: { wishData: ProductsType[] }) {
   }
 
   return (
-    <div className="container mx-auto px-4 my-4">
+    <div className="container mx-auto p-2">
       <h1 className="hidden">찜 목록</h1>
       {wishData?.length > 0 && (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {wishData?.map((product) => (
             <li
               key={product._id}
-              className="bg-white shadow-lg rounded-lg p-4 border-2"
+              className="bg-white shadow-lg rounded-lg p-2 border-2"
             >
               <div onClick={() => handleItemClick(product._id)}>
                 <input
                   type="checkbox"
                   value={product._id}
                   checked={selectedItems.includes(product._id)}
-                  onChange={() => {}}
                 />
-                <Image
-                  src={product.mainImageSrc}
-                  alt={product.title}
-                  width={300}
-                  height={200}
-                  className="w-full h-48 object-cover rounded-md mb-4"
-                />
+                <div className=" w-full h-[170px] md:h-[230px] relative ">
+                  <div className="w-full h-full relative">
+                    <Image
+                      src={product?.mainImageSrc}
+                      alt={product?.title}
+                      fill
+                      quality={80}
+                      className="group-hover:opacity-75 "
+                    />
+                  </div>
+                </div>
               </div>
               <Link
-                href={`/product/detail/${product._id}`}
-                className="text-base text-center font-semibold hover:text-lime-600"
+                href={`/product/detail/${product?._id}`}
+                className=" text-sm  font-semibold hover:text-lime-600"
               >
-                {product.title}
+                <div className=" mt-1 truncate">{product?.title}</div>
               </Link>
             </li>
           ))}

@@ -29,7 +29,7 @@ export default function ProductList({
                   href={`/product/detail/${product?._id}`}
                   className="group"
                 >
-                  <div className=" w-full h-[170px] relative md:h-[230px] ">
+                  <div className=" w-full h-[170px] md:h-[230px] relative ">
                     <div className="w-full h-full relative">
                       {product?.soldout && (
                         <span className="p-1 bg-black top-0 right-0 text-xs absolute font-sans text-white z-10">

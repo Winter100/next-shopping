@@ -29,6 +29,7 @@ export default function SignIn() {
   async function signInHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
+    setMessage("");
 
     const response = await signIn("credentials", {
       redirect: false,
@@ -37,7 +38,7 @@ export default function SignIn() {
     });
 
     if (response?.error) {
-      setMessage(response.error);
+      setMessage("잠시후 다시 시도해주세요.");
       setIsLoading(false);
     } else {
       router.push("/");

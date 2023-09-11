@@ -123,14 +123,14 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                   </th>
                   <td
                     className={`${
-                      data.checkedList?.length > 1 ? "py-1.5" : "py-2.5"
+                      data.checkedList?.length >= 1 ? "py-1.5" : "py-2.5"
                     } text-sm font-bold text-center `}
                   >{`${data.price?.toLocaleString()}원`}</td>
                 </tr>
               </tbody>
             </table>
 
-            {data.checkedList?.length > 1 && (
+            {data.checkedList?.length >= 1 && (
               <div className=" border-t-2 py-2">
                 <h2 className={`text-2xl font-semibold mb-2 text-center`}>
                   직거래 장소
