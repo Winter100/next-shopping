@@ -29,10 +29,10 @@ export async function checkEmail(checkValue: string) {
     });
 
     if (existingMail) {
-      return { message: "이미 생성된 이메일입니다." };
+      return { message: "이미 생성된 이메일입니다.", valid: true };
     }
 
-    return false;
+    return { message: "생성 가능한 이메일입니다.", valid: false };
   } catch (error) {
     console.log("이메일 중복확인 중 에러", error);
   } finally {
@@ -53,10 +53,10 @@ export async function checkName(checkValue: string) {
     });
 
     if (existingName) {
-      return { message: "이미 생성된 닉네임입니다." };
+      return { message: "이미 생성된 닉네임입니다.", valid: true };
     }
 
-    return;
+    return { message: "생성 가능한 이메일입니다.", valid: false };
   } catch (error) {
     console.log("닉네임 중복확인 중 에러", error);
   } finally {

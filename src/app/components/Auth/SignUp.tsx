@@ -16,7 +16,7 @@ export default function SignUp() {
     name: "",
   });
 
-  const [checkOutput, setCheckOutput] = useState("");
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function changeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -24,18 +24,20 @@ export default function SignUp() {
       ...userValue,
       [e.target.name]: e.target.value,
     });
+    setMessage("");
   }
 
   async function signUpHandler(e: React.FormEvent<HTMLFormElement>) {
     try {
       e.preventDefault();
+      setMessage("");
       setIsLoading(true);
 
       const data = checkUser(userValue);
 
       if (!data.isValid) {
         setIsLoading(false);
-        setCheckOutput(data.message);
+        setMessage(data.message);
         return;
       }
 
@@ -49,18 +51,22 @@ export default function SignUp() {
 
       const result = await response.json();
       if (result.status === 201) {
-        router.push("/");
+        setMessage("가입완료, 로그인페이지로 이동합니다.");
+        setIsLoading(false);
+        setTimeout(() => {
+          router.push("/auth/in");
+        }, 3000);
         return;
-        //가입완료
       }
       setIsLoading(false);
-      setCheckOutput(result.message);
+      setMessage(result?.message);
     } catch (e) {
       console.log(e);
     }
   }
 
   async function CheckEmailDuplicate(email: string) {
+    setMessage("");
     setIsLoading(true);
     const response = await fetch("/api/signup", {
       method: "PATCH",
@@ -71,11 +77,8 @@ export default function SignUp() {
     });
 
     const data = await response.json();
-    if (!data) {
-      setCheckOutput("가입이 가능한 이메일입니다.");
-    } else {
-      setCheckOutput("중복된 이메일입니다.");
-    }
+
+    setMessage(data?.message);
     setIsLoading(false);
     return;
   }
@@ -196,10 +199,8 @@ export default function SignUp() {
           </div>
 
           <div>
-            {checkOutput && (
-              <p className="text-center text-red-500 font-bold">
-                {checkOutput}
-              </p>
+            {message && (
+              <p className="text-center text-red-500 font-bold">{message}</p>
             )}
           </div>
 

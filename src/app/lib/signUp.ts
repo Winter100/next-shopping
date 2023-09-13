@@ -26,10 +26,10 @@ export async function MongoDbSignUp(req: User) {
     const checkedEmail = await checkEmail(email);
     const checkedName = await checkName(name);
 
-    if (checkedEmail) {
+    if (checkedEmail.valid) {
       throw new Error(checkedEmail.message);
     }
-    if (checkedName) {
+    if (checkedName.valid) {
       throw new Error(checkedName.message);
     }
 

@@ -25,6 +25,7 @@ export default function SignIn() {
       ...userValue,
       [e.target.name]: e.target.value,
     });
+    setMessage("");
   }
   async function signInHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,7 +39,7 @@ export default function SignIn() {
     });
 
     if (response?.error) {
-      setMessage("잠시후 다시 시도해주세요.");
+      setMessage(response?.error || "잠시후 다시 시도해주세요.");
       setIsLoading(false);
     } else {
       router.push("/");

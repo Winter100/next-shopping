@@ -30,10 +30,10 @@ export async function PATCH(req: Request) {
     const dbResponse = await checkEmail(email);
 
     if (dbResponse) {
-      throw new Error("중복된 메일입니다.");
+      throw new Error(dbResponse.message);
     }
 
-    return NextResponse.json(false);
+    return NextResponse.json(dbResponse.message);
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ message: e.message });
