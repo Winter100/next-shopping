@@ -20,7 +20,6 @@ export default function Pagination({
   const filterValue = searchParams?.get("filter");
 
   const totalPages = pageInfo?.totalPages;
-  // const totalItems = pageInfo?.totalItems; 검색한 keyword의 총 아이템 수
 
   const maxDisplayedPages = 5;
   const halfDisplayedPages = Math.floor(maxDisplayedPages / 2);

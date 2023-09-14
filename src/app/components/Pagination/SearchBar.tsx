@@ -8,7 +8,6 @@ export default function SearchBar({ setCurrentPage }: PaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const filter = searchParams?.get("filter") || "available";
-  // const keyword = searchParams?.get("keyword") || "";
 
   const [searchTerm, setSearchTerm] = useState("");
 

@@ -22,8 +22,8 @@ export default function Error({
   }, [router]);
 
   return (
-    <p className=" m-auto">
+    <div className="m-auto">
       알 수 없는 오류가 발생했습니다. 잠시 후 HOME으로 이동됩니다.
-    </p>
+    </div>
   );
 }

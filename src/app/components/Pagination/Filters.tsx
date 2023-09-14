@@ -10,7 +10,6 @@ export default function Filters({ pageInfo }: { pageInfo: PageInfoProps }) {
   const searchParams = useSearchParams();
 
   const searchKeyword = searchParams?.get("keyword");
-  // const pageNum = Number(searchParams?.get("page"));
   const filterValue = searchParams?.get("filter");
 
   const handleFilterChange = (e: string) => {
