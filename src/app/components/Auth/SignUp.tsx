@@ -52,7 +52,6 @@ export default function SignUp() {
       const result = await response.json();
       if (result.status === 201) {
         setMessage("가입완료, 로그인페이지로 이동합니다.");
-        setIsLoading(false);
         setTimeout(() => {
           router.push("/auth/in");
         }, 3000);
@@ -112,8 +111,11 @@ export default function SignUp() {
               >
                 <button
                   type="button"
+                  disabled={isLoading}
                   onClick={() => CheckEmailDuplicate(userValue.email)}
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  className={`font-semibold ${
+                    isLoading ? "text-gray-500" : "text-indigo-600"
+                  } `}
                 >
                   이메일 중복 확인
                 </button>
@@ -123,11 +125,12 @@ export default function SignUp() {
             <div className="mt-2">
               <input
                 value={userValue.email}
+                disabled={isLoading}
                 onChange={changeHandler}
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
+                autoComplete="off"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -144,6 +147,8 @@ export default function SignUp() {
             <div className="mt-2">
               <input
                 value={userValue.name}
+                disabled={isLoading}
+                autoComplete="off"
                 onChange={changeHandler}
                 id="name"
                 name="name"
@@ -165,6 +170,8 @@ export default function SignUp() {
             </div>
             <div className="mt-2">
               <input
+                disabled={isLoading}
+                autoComplete="off"
                 value={userValue.password}
                 onChange={changeHandler}
                 id="password"
@@ -187,6 +194,8 @@ export default function SignUp() {
             </div>
             <div className="mt-2">
               <input
+                disabled={isLoading}
+                autoComplete="off"
                 value={userValue.checkPassword}
                 onChange={changeHandler}
                 id="checkPassword"
@@ -208,21 +217,25 @@ export default function SignUp() {
             <button
               disabled={isLoading}
               type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={`flex w-full justify-center rounded-md ${
+                isLoading ? " bg-gray-500" : "bg-indigo-600"
+              }  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm `}
             >
               {!isLoading ? "회원가입" : <LoadingSpinner />}
             </button>
           </div>
         </form>
 
-        <p className="mt-10 text-center text-sm text-gray-600">
-          <Link
-            href="/auth/in"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            로그인
-          </Link>
-        </p>
+        {!isLoading && (
+          <p className="mt-10 text-center text-sm text-gray-600">
+            <Link
+              href="/auth/in"
+              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
+              로그인
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

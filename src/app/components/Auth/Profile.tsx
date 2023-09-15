@@ -29,6 +29,12 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
     setIsLoading(true);
     setMessage("");
 
+    if (userInfo.name === "테스트계정") {
+      setMessage("테스트 계정은 비밀번호 변경이 불가능합니다.");
+      setIsLoading(false);
+      return;
+    }
+
     if (
       !password.newPassword ||
       !password.oldPassword ||
@@ -106,6 +112,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
             </div>
             <div className="mt-2">
               <input
+                disabled={isLoading}
                 value={password.oldPassword}
                 onChange={chagePasswordHandler}
                 id="oldPassword"
@@ -126,6 +133,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
             </div>
             <div className="mt-2">
               <input
+                disabled={isLoading}
                 value={password.newPassword}
                 onChange={chagePasswordHandler}
                 id="newPassword"
@@ -150,7 +158,11 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
               비밀번호 변경
             </button>
           ) : (
-            <div className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <div
+              className={`flex w-full justify-center rounded-md ${
+                isLoading ? "bg-gray-500" : "bg-indigo-600"
+              } px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm`}
+            >
               <LoadingSpinner />
             </div>
           )}
