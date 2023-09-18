@@ -23,7 +23,9 @@ export default function RootLayout({
         <NextAuthProvider>
           <Navbar />
           <Providers>
-            <main className="pt-16">{children}</main>
+            <main className="w-full max-w-4xl m-auto">
+              <section>{children}</section>
+            </main>
           </Providers>
         </NextAuthProvider>
       </body>
