@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
-import Search from "./Search";
 import { PageInfoProps } from "@/app/type/type";
 
 export default function Pagination({
@@ -83,8 +82,7 @@ export default function Pagination({
   }
 
   return (
-    <nav aria-label="Page navigation ">
-      <Search setCurrentPage={setCurrentPage} />
+    <nav aria-label="Page navigation" className=" mt-10">
       {dataLength >= 1 && (
         <ul className="flex justify-center">
           <li>
