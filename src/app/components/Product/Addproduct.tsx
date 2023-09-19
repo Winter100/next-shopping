@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ import LoadingSpinner from "../Spinner/LoadingSpinner";
 import Selector from "./Selector";
 import { InputIcon } from "./InputIcon";
 import CitySelector from "./CitySelector";
+import { available } from "@/app/lib/constants-url";
 
 interface AddProductProps {
   editData: any;
@@ -123,6 +124,16 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+
+    if (file) {
+      const fileSizeInMb = file.size / (1024 * 1024);
+      if (fileSizeInMb > 4) {
+        alert("파일 크기가 4MB를 초과합니다. 더 작은 파일을 선택해주세요.");
+        e.target.value = "";
+        setMessage("");
+        return;
+      }
+    }
     setFiles([file]);
     setMessage("");
     if (file) {
@@ -144,27 +155,38 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     const selectedImageUrls: any[] = [];
     const addFiles = [];
 
-    if (files.length > 10) {
-      alert("최대 10개의 이미지까지 업로드 가능합니다.");
-      e.target.value = "";
-      return;
-    }
+    selectedImageUrls.length = 0;
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+
+      const fileSizeInMB = file.size / (1024 * 1024);
+
+      if (subImage.length + addFiles.length >= 10) {
+        alert("최대 10개의 이미지만 업로드 가능합니다.");
+        e.target.value = "";
+        break;
+      }
+
+      if (fileSizeInMB > 4) {
+        alert("4MB를 초과하는 파일은 업로드할 수 없습니다.");
+        continue;
+      }
+
       addFiles.push(file);
 
       const reader = new FileReader();
 
       reader.onload = () => {
         selectedImageUrls.push(reader.result);
-        if (selectedImageUrls.length === files.length) {
-          setSubImage(selectedImageUrls);
+        if (selectedImageUrls.length === addFiles.length) {
+          setSubImage((prevImages) => [...prevImages, ...selectedImageUrls]);
         }
       };
 
       reader.readAsDataURL(file);
     }
+
     setSubFiles(addFiles);
 
     return;
@@ -252,6 +274,13 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       }
     }
 
+    const uploadedSubImages = subfiles ? await subUploadStart(subfiles) : [];
+    const filteredSubImage = subImage.filter((imageUrl) => {
+      return !imageUrl.startsWith("data:image");
+    });
+
+    const finalSubImage = [...filteredSubImage, ...uploadedSubImages];
+
     if (data?.user) {
       const requestData = {
         title,
@@ -259,7 +288,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         price,
         selectedValue,
         mainImageSrc: files ? await mainUploadStart(files) : image,
-        subImageSrc: subfiles ? await subUploadStart(subfiles) : subImage,
+        subImageSrc: finalSubImage,
         region,
         checkedList,
         contact,
@@ -278,7 +307,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         });
 
         if (response.status === 200) {
-          window.location.href = "/product/search?keyword=all&page=1";
+          window.location.href = available;
           return;
         }
       } catch (error) {
@@ -297,6 +326,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
   ) {
     return (
       <Selector
+        disabled={isLoading}
         selectRef={ref}
         label={label}
         name={name}
@@ -309,12 +339,36 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     );
   }
 
+  const loadingBgClass = isLoading ? "bg-gray-100" : "";
+  const loadingHoverClass = isLoading
+    ? ""
+    : "hover:cursor-pointer hover:font-bold";
+
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  function handleMouseEnter(index: number) {
+    setHoveredIndex(index);
+  }
+
+  function handleMouseLeave() {
+    setHoveredIndex(null);
+  }
+
+  function removeSubImage(index: number) {
+    if (isLoading) {
+      return;
+    }
+    const updatedSubImage = [...subImage];
+    updatedSubImage.splice(index, 1);
+    setSubImage(updatedSubImage);
+  }
+
   return (
-    <form className="container mx-auto py-8" onSubmit={handleSubmit}>
+    <form className="container mx-auto py-4" onSubmit={handleSubmit}>
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8 h-full">
         <div className="flex flex-col md:flex-row">
-          <div className="md:w-[480px]">
-            <div className="border-2 h-[600px] relative">
+          <div className=" md:w-[400px] h-full border">
+            <div className=" h-[400px] md:h-[570px] relative">
               {image && (
                 <Image
                   className="w-full h-full"
@@ -324,31 +378,38 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 />
               )}
             </div>
-            <div className="text-center my-2 md:mt-1 border-2 ">
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleImageChange}
-                id="mainImage"
-                accept="image/*"
-                name="imageSrc"
-                ref={imageInputRef}
-              />
-              <label
-                htmlFor="mainImage"
-                className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold"
-              >
-                대표 이미지 업로드
-              </label>
-            </div>
+            {!isLoading && (
+              <div className={`${loadingBgClass} text-center border-t`}>
+                <input
+                  disabled={isLoading}
+                  type="file"
+                  className="hidden"
+                  onChange={handleImageChange}
+                  id="mainImage"
+                  accept="image/*"
+                  name="imageSrc"
+                  ref={imageInputRef}
+                />
+                <div className={`px-1 py-1 text-gray-600 rounded-lg  `}>
+                  <label
+                    htmlFor="mainImage"
+                    className={`${loadingHoverClass} text-sm `}
+                  >
+                    대표 이미지 업로드
+                    <span className={`text-xs`}> (최대:4MB)</span>
+                  </label>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="md:w-1/2 md:ml-8">
-            <div className="text-4xl font-semibold text-gray-800 text-center my-2">
-              <label className="block font-bold" htmlFor="title">
+            <div className="text-gray-800 text-center my-2">
+              <label className="block text-xl font-bold my-2" htmlFor="title">
                 제목
               </label>
               <input
+                disabled={isLoading}
                 onChange={titleChangeHandler}
                 ref={titleInputRef}
                 value={title}
@@ -357,7 +418,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 type="text"
                 placeholder="최대 20자"
                 maxLength={MAXLENGTH}
-                className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
+                className={`${
+                  isLoading ? "bg-gray-100" : ""
+                } w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:border-blue-500`}
               />
             </div>
 
@@ -366,26 +429,32 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 판매 옵션
               </h2>
               <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 py-3">
-                <InputIcon
-                  ChangeHandler={contactChangeHandler}
-                  inputRef={contactInputRef}
-                  value={contact}
-                  maxLength={20}
-                  name="contact"
-                  id="contact"
-                  label="카카오톡 아이디"
-                  icon=""
-                />
-                <InputIcon
-                  ChangeHandler={priceChangeHandler}
-                  inputRef={priceInputRef}
-                  value={price}
-                  maxLength={20}
-                  name="price"
-                  id="price"
-                  label="가격"
-                  icon="원"
-                />
+                <div className="w-52 m-auto">
+                  <InputIcon
+                    disabled={isLoading}
+                    ChangeHandler={contactChangeHandler}
+                    inputRef={contactInputRef}
+                    value={contact}
+                    maxLength={20}
+                    name="contact"
+                    id="contact"
+                    label="카카오톡 아이디"
+                    icon=""
+                  />
+                </div>
+                <div className="w-52 m-auto">
+                  <InputIcon
+                    disabled={isLoading}
+                    ChangeHandler={priceChangeHandler}
+                    inputRef={priceInputRef}
+                    value={price}
+                    maxLength={20}
+                    name="price"
+                    id="price"
+                    label="가격"
+                    icon="원"
+                  />
+                </div>
               </div>
 
               <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4 border-y-2 py-3">
@@ -408,6 +477,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 <div className="m-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4">
                   {selectedValue.isMeet === "yes" && (
                     <CitySelector
+                      disabled={isLoading}
                       region={region}
                       selectIsRegion={selectIsRegion}
                       selectedClassName={selectedClassName}
@@ -432,21 +502,34 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
           </div>
         </div>
 
-        <div className="mt-6 border-2">
-          <div className="m-auto">
-            <div className="flex flex-wrap items-center">
-              {subImage.map((imageUrl, index) => (
-                <div
-                  key={index}
-                  className=" items-center relative w-1/5 h-44 border-2"
-                >
-                  <Image fill src={imageUrl} alt={`Image ${index}`} />
-                </div>
-              ))}
-            </div>
+        <div className="m-auto mt-6 w-full md:w-3/4 ">
+          <div className="m-auto grid grid-cols-2 gap-3 md:gap-1 md:w-full md:grid-cols-5 ">
+            {subImage.map((imageUrl, index) => (
+              <div
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => removeSubImage(index)}
+                key={index}
+                className={`relative ${
+                  isLoading ? "" : "hover:cursor-pointer"
+                } h-32 md:h-36 border`}
+              >
+                {hoveredIndex === index && !isLoading && (
+                  <div className="absolute w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:bg-gray-600 text-transparent hover:text-red-600  hover:bg-opacity-60 m-0 p-0 z-10 ">
+                    <span className="text-2xl m-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      X
+                    </span>
+                  </div>
+                )}
+                <Image fill src={imageUrl} alt={`Image ${index}`} />
+              </div>
+            ))}
+          </div>
 
-            <div className="text-center mt-2">
+          {!isLoading && (
+            <div className={`${loadingBgClass} text-center border-t`}>
               <input
+                disabled={isLoading}
                 type="file"
                 multiple
                 onChange={handleSubImageChage}
@@ -455,14 +538,16 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 accept="image/*"
                 name="subimageSrc"
               />
+
               <label
                 htmlFor="subImage"
-                className="bg-zinc-100 px-1 py-1 text-gray-600 rounded-lg cursor-pointer hover:text-black hover:font-bold"
+                className={`${loadingHoverClass} text-sm`}
               >
                 그 외 이미지 업로드
+                <span className=" text-xs"> (4Mb씩 최대 10개)</span>
               </label>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="mt-10">
@@ -470,26 +555,29 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
             내용
           </label>
           <textarea
+            disabled={isLoading}
             onChange={descriptionChangeHandler}
             ref={descriptionInputRef}
             value={description}
             name="description"
             id="description"
-            className="resize-none w-full  border rounded p-2 lg:h-[800px] h-[600px]"
+            className={`${loadingBgClass} resize-none w-full  border rounded p-2 lg:h-[800px] h-[600px]`}
           />
         </div>
         <div className="text-center">
-          {!isLoading && (
+          {isLoading ? (
+            <button
+              disabled={isLoading}
+              className="w-fit mx-auto ml-4 px-4 py-2 bg-gray-500 text-white font-semibold rounded"
+            >
+              <LoadingSpinner />
+            </button>
+          ) : (
             <button
               type="submit"
               className="ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700"
             >
               {method === "PATCH" ? "수정하기" : "등록"}
-            </button>
-          )}
-          {isLoading && (
-            <button className="w-fit mx-auto ml-4 px-4 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700">
-              <LoadingSpinner />
             </button>
           )}
           <p>{message}</p>

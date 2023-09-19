@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className={gridStyle}>{data && <UserMenuIcon />}</div>
         </div>
 
-        <div className="flex items-center justify-between mx-6 my-2 md:mx-0 md:my-8">
+        <div className="flex items-center justify-between mx-6 my-2 md:my-8">
           <div className="flex items-center space-x-4">
             <Link href="/" className={linkStyle}>
               Home

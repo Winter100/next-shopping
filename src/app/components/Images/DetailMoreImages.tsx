@@ -22,7 +22,7 @@ export default function DetailMoreImages({
           <Image fill src={src} alt={imageType} />
         </div>
       ) : (
-        <div className="md:h-44 h-16  ">
+        <div className="h-32 md:h-36 ">
           <Image fill src={src} alt={`Image ${indexs}`} quality={90} />
         </div>
       )}

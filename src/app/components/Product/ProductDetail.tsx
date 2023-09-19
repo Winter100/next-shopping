@@ -135,7 +135,13 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
                 <h2 className={`text-2xl font-semibold mb-2 text-center`}>
                   직거래 장소
                 </h2>
-                <div className=" grid grid-cols-4 lg:grid-cols-5 m-auto text-center w-full md:w-11/12">
+                <div
+                  className={`${
+                    data.checkedList?.length <= 2
+                      ? "grid-cols-2"
+                      : "grid-cols-4"
+                  } grid m-auto text-center w-full md:w-11/12`}
+                >
                   {data.checkedList?.map((item, idx) => (
                     <TagComponent key={item + idx} value={"yes"} text={item} />
                   ))}

@@ -10,6 +10,7 @@ interface SelectorProps {
   selectRef?: React.MutableRefObject<any>;
   selectedClassName?: string;
   setSelectedClassName: any;
+  disabled: boolean;
 }
 
 interface OptionItem {
@@ -19,6 +20,7 @@ interface OptionItem {
 
 export default function Selector({
   option,
+  disabled,
   label,
   name,
   selectedHandlChange,
@@ -42,6 +44,7 @@ export default function Selector({
   return (
     <div className="w-52 m-auto" tabIndex={1} ref={selectRef}>
       <Select
+        disabled={disabled}
         size="lg"
         labelProps={labelProps}
         label={label}

@@ -13,10 +13,12 @@ interface PropsType {
   setCities?: React.Dispatch<any>;
   selectedClassName: string;
   setSelectedClassName: React.Dispatch<any>;
+  disabled: boolean;
 }
 
 export default function CitySelector({
   selectIsRegion,
+  disabled,
   checkedList,
   setCheckedList,
   region,
@@ -68,14 +70,17 @@ export default function CitySelector({
         }
       : { className: "" };
 
+  const loadingBgClass = disabled ? "bg-gray-200" : "";
+
   return (
     <div className="m-auto">
       <div
-        className="w-52 relative text-center z-10 "
+        className={`w-52 relative text-center z-10`}
         tabIndex={1}
         ref={selectIsRegion}
       >
         <Select
+          disabled={disabled}
           labelProps={labelClassName}
           size="lg"
           label={"지역"}
@@ -90,7 +95,7 @@ export default function CitySelector({
           }}
         >
           {provinceList?.map((item) => (
-            <Option key={item.keyword} value={item.keyword}>
+            <Option key={item.keyword} value={item.keyword} disabled={disabled}>
               {item.keyword}
             </Option>
           ))}
@@ -98,10 +103,10 @@ export default function CitySelector({
         <></>
       </div>
 
-      <div className="lg:mb-48 mb-2">
+      <div className={` lg:mb-48 mb-2 `}>
         {region?.length > 1 && (
           <div
-            className={`lg:absolute lg:w-96 w-52 bg-white grid lg:grid-cols-${
+            className={`   lg:absolute lg:w-96 w-52 bg-white grid lg:grid-cols-${
               cities?.length >= 4 ? "4" : "2"
             }  gap-2 border-2 shadow-lg p-2 ${checkboxBorder} ${
               cities?.length < 4 ? "grid-cols-1" : "grid-cols-2"
@@ -110,11 +115,12 @@ export default function CitySelector({
             {cities?.map((item, idx) => (
               <div
                 key={`${item} ${idx}`}
-                className={`flex items-center justify-left space-x-2 text-xs`}
+                className={`  flex items-center justify-left space-x-2 text-xs`}
               >
                 <input
+                  disabled={disabled}
                   type="checkbox"
-                  className={`w-3 h-3 text-blue-500`}
+                  className={`${loadingBgClass} w-3 h-3 text-blue-500`}
                   id={item}
                   value={item}
                   name="city"

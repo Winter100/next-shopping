@@ -15,7 +15,7 @@ export default async function SearchPage({
   const searchData: ProductsType[] = await data?.searchData;
   const pageInfo: PageInfoProps = await data?.pageInfo;
 
-  const dataLength = data.searchData?.length;
+  const dataLength = data?.searchData?.length;
 
   return (
     <div className="m-auto">

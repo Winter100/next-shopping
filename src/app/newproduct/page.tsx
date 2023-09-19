@@ -4,9 +4,5 @@ import { myGetServerSession } from "../lib/getSession";
 export default async function NewproductPage() {
   await myGetServerSession();
 
-  return (
-    <div className="mt-10">
-      <AddProcuct editData={null} method="POST" />
-    </div>
-  );
+  return <AddProcuct editData={null} method="POST" />;
 }
