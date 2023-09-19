@@ -18,7 +18,7 @@ export default async function SearchPage({
   const dataLength = data.searchData?.length;
 
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="m-auto">
       <ProductList products={searchData} pageInfo={pageInfo} />
       <Pagination pageInfo={pageInfo} dataLength={dataLength} />
     </div>
