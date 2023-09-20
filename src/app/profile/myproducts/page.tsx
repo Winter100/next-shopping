@@ -10,8 +10,8 @@ export default async function MyProductsPage() {
   const data = await getData(email, name);
 
   return (
-    <div className="m-auto my-20 max-w-2xl px-4 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8 border-2 shadow-lg rounded-md">
-      <h1 className="text-3xl font-bold my-4 text-center">내 판매 목록</h1>
+    <div>
+      <h1 className="text-3xl font-bold text-center">내 판매 목록</h1>
 
       {data?.length >= 1 ? (
         <MyProductsList products={data} />

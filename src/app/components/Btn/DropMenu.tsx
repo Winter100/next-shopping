@@ -6,9 +6,11 @@ import Modal from "./DeleteModal";
 export default function MyProductMenu({
   productId,
   soldout,
+  handleDropdownToggle,
 }: {
   productId: string;
   soldout: boolean;
+  handleDropdownToggle: any;
 }) {
   const [isModal, setIsModal] = useState(false);
   const [modalId, setModalId] = useState<string | null>(null);
@@ -29,26 +31,31 @@ export default function MyProductMenu({
   return (
     <div className="absolute z-10 right-0 mt-2 w-28 bg-white border border-gray-200 divide-y divide-gray-200 rounded-md shadow-lg">
       {modalId === productId && isModal && (
-        <Modal setIsModal={setIsModal} id={modalId} method={method} />
+        <Modal
+          handleDropdownToggle={handleDropdownToggle}
+          setIsModal={setIsModal}
+          id={modalId}
+          method={method}
+        />
       )}
       <div className="py-1 ">
         {!soldout && (
           <>
             <Link
               href={`/product/edit/${productId}`}
-              className="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className="w-full block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100"
             >
               수정
             </Link>
             <button
               onClick={() => deleteHandler(productId)}
-              className="text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
+              className="text-center  block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 w-full"
             >
               삭제
             </button>
             <button
               onClick={() => soldOutHandler(productId)}
-              className="text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
+              className="text-center block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 w-full"
             >
               판매완료
             </button>
@@ -57,7 +64,7 @@ export default function MyProductMenu({
         {soldout && (
           <button
             onClick={() => deleteHandler(productId)}
-            className="text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
+            className="text-center block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 w-full"
           >
             삭제
           </button>

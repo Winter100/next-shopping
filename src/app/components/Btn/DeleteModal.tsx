@@ -7,11 +7,17 @@ import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface ModalProps {
   setIsModal: (isConfirmed: boolean) => void;
+  handleDropdownToggle: any;
   id: string;
   method: string;
 }
 
-export default function Modal({ setIsModal, id, method }: ModalProps) {
+export default function Modal({
+  setIsModal,
+  id,
+  method,
+  handleDropdownToggle,
+}: ModalProps) {
   const [open, setOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,10 +47,14 @@ export default function Modal({ setIsModal, id, method }: ModalProps) {
         }
         setOpen;
         setIsModal(false);
+        handleDropdownToggle(id);
         router.refresh();
         return;
       } else {
         // 취소 로직
+        if (isLoading) {
+          return;
+        }
         setOpen;
         setIsModal(false);
       }

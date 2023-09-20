@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ProductsType } from "../../type/type";
 import MyProductMenu from "../Btn/DropMenu";
-import Link from "next/link";
+import MoreIcon from "../../../../public/Menu/more.svg";
 
 export default function MyProductsList({
   products,
@@ -17,100 +17,91 @@ export default function MyProductsList({
     setIsDropdownOpen((prevId) => (prevId === id ? null : id));
   }
 
+  const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
+  const grid2SpanStyle = "col-span-2 p-2";
+  const gridSpan8Style = "col-span-9 p-2 ";
+  const gridItemDibStyle = "grid grid-cols-5 h-full";
+  const gridItemStyle = "flex items-center justify-center";
+
   return (
     <div className="container mx-auto p-2">
       <h1 className="hidden ">내 판매 목록</h1>
+      <div className={`${gridTitleStyle} border-y`}>
+        <div className={`${grid2SpanStyle}`}>
+          <div className={gridItemStyle}>상품명</div>
+        </div>
+        <div className={gridSpan8Style}>
+          <div className={gridItemDibStyle}>
+            <div className={gridItemStyle}>제목</div>
+            <div className={gridItemStyle}>판매가</div>
+            <div className={gridItemStyle}>판매상태</div>
+            <div className={gridItemStyle}>등록일</div>
+            <div className={gridItemStyle}>편집</div>
+          </div>
+        </div>
+      </div>
       {products?.length > 0 && (
-        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <ul className="grid grid-flow-row gap-1 ">
           {products?.map((product) => (
             <li
               key={product?._id}
-              className="bg-white shadow-lg rounded-lg p-2 border-2"
+              className={`${gridTitleStyle} ${
+                isDropdownOpen === product?._id ? "bg-blue-gray-50" : ""
+              } border-b h-24`}
             >
-              <div className="relative">
-                <div className="absolute top-0 right-0">
-                  <button
-                    onClick={() => handleDropdownToggle(product?._id)}
-                    className="bg-black text-white p-1 rounded-full"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-align-justify"
-                    >
-                      <line x1="21" y1="10" x2="3" y2="10"></line>
-                      <line x1="21" y1="6" x2="3" y2="6"></line>
-                      <line x1="21" y1="14" x2="3" y2="14"></line>
-                      <line x1="21" y1="18" x2="3" y2="18"></line>
-                    </svg>
-                  </button>
-                  {isDropdownOpen === product?._id && (
-                    <MyProductMenu
-                      productId={product?._id}
-                      soldout={product?.soldout}
-                    />
-                  )}
-                </div>
+              <div className={`${grid2SpanStyle} relative`}>
+                <Image
+                  className="p-2"
+                  src={product?.mainImageSrc}
+                  alt={product?.title}
+                  fill
+                />
               </div>
-              <div className=" w-full h-[170px] md:h-[230px] relative ">
-                <div className="w-full h-full relative">
-                  <div className="absolute top-0 right-0 z-10">
-                    <button
-                      onClick={() => handleDropdownToggle(product?._id)}
-                      className="bg-black text-white p-1 rounded-full"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="feather feather-align-justify"
-                      >
-                        <line x1="21" y1="10" x2="3" y2="10"></line>
-                        <line x1="21" y1="6" x2="3" y2="6"></line>
-                        <line x1="21" y1="14" x2="3" y2="14"></line>
-                        <line x1="21" y1="18" x2="3" y2="18"></line>
-                      </svg>
-                    </button>
-                    {isDropdownOpen === product?._id && (
-                      <MyProductMenu
-                        productId={product?._id}
-                        soldout={product?.soldout}
-                      />
+              <div className={gridSpan8Style}>
+                <div className={gridItemDibStyle}>
+                  <div className={gridItemStyle}>{product?.title}</div>
+                  <div className={gridItemStyle}>
+                    {product?.price.toLocaleString()}원
+                  </div>
+                  <div className={gridItemStyle}>
+                    {product?.soldout ? (
+                      <span className=" text-red-600">판매완료</span>
+                    ) : (
+                      <span className=" text-blue-600">판매중</span>
                     )}
                   </div>
-                  {product?.soldout && (
-                    <span className="p-1 bg-black top-0 left-0 text-xs absolute font-sans text-white z-10">
-                      거래완료
-                    </span>
-                  )}
-                  <Image
-                    src={product?.mainImageSrc}
-                    alt={product?.title}
-                    fill
-                    quality={80}
-                    className="group-hover:opacity-75"
-                  />
+                  <div className={gridItemStyle}>{`${product?.date?.year}-${
+                    product?.date?.month < 10
+                      ? `0${product?.date?.month}`
+                      : product?.date?.month
+                  }-${
+                    product?.date?.day < 10
+                      ? `0${product?.date?.day}`
+                      : product?.date?.day
+                  }`}</div>
+                  <div className={gridItemStyle}>
+                    <div className={`${gridItemStyle} w-full h-full`}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDropdownToggle(product?._id);
+                        }}
+                      >
+                        <Image src={MoreIcon} alt="메뉴버튼" />
+                      </button>
+                      <div className=" relative -top-14 left-28">
+                        {isDropdownOpen === product?._id && (
+                          <MyProductMenu
+                            productId={product?._id}
+                            soldout={product?.soldout}
+                            handleDropdownToggle={handleDropdownToggle}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <Link
-                href={`/product/detail/${product?._id}`}
-                className=" text-sm  font-semibold hover:text-lime-600"
-              >
-                <div className=" mt-1 truncate">{product?.title}</div>
-              </Link>
             </li>
           ))}
         </ul>
