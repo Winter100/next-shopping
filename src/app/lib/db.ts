@@ -226,7 +226,9 @@ export async function getMyProducts(email: string, name: string) {
       .find(query)
       .toArray();
 
-    return response;
+    const transData = await transFormedData(response);
+
+    return transData;
   } catch (error) {
     console.log(error);
     throw new Error("사용자 제품 가져오기 실패!");

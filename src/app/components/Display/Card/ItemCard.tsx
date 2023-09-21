@@ -32,11 +32,17 @@ export default function ItemCard({ product }: any) {
             className="transition-transform duration-300 transform scale-100 group-hover:scale-105"
           />
         </figure>
-        <div className="p-4 sm:card-body">
+        <div className="p-3 md:card-body">
+          {/* <div className="p-4 sm:card-body"> */}
           <h2 className="card-title">
             <span className="truncate">{product?.title}</span>
+
             {isNew && <div className="badge badge-secondary">NEW</div>}
+            {product?.soldout && (
+              <div className="badge badge-primary">SoldOut</div>
+            )}
           </h2>
+
           <div className="card-actions justify-between my-2 sm:my-0">
             <div className="badge badge-outline">{displayText}</div>
             <div className=" text-sm font-bold">

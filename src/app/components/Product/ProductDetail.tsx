@@ -15,12 +15,12 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
   } text-sm font-medium text-center `;
 
   return (
-    <div className="container mx-auto py-8 mt-15">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <div className="h-8 m-auto">
+    <div className="my-4">
+      <div className="mx-auto">
+        {/* <div className="h-8 m-auto">
           <BuyBtn email={data?.email} id={data?._id} soldout={data?.soldout} />
-        </div>
-        <div className=" flex flex-col md:flex-row border-2 rounded-lg p-2 ">
+        </div> */}
+        <div className=" flex flex-col md:flex-row p-2 ">
           <div className="w-10/12 md:w-1/2 lg:w-2/5  m-auto ">
             <DetailMoreImages
               imageType="main"
@@ -30,7 +30,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           </div>
           <div className="md:w-1/2 w- md:ml-1  my-auto">
             <div className="mb-2 border-b-2 text-center ">
-              <h1 className="font-serif text-4xl font-bold py-2 mb-2 m-auto  w-4/5 ">
+              <h1 className="text-4xl py-2 mb-2 m-auto  w-4/5 ">
                 {data?.title}
               </h1>
             </div>

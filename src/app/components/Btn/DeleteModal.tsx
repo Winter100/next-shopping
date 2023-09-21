@@ -6,13 +6,15 @@ import { redirect, useRouter } from "next/navigation";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface ModalProps {
-  setIsModal: (isConfirmed: boolean) => void;
-  handleDropdownToggle: any;
-  id: string;
-  method: string;
+  setIsModal?: (isConfirmed: boolean) => void;
+  handleDropdownToggle?: any;
+  id?: string;
+  method?: string;
+  selectedItems?: any;
 }
 
 export default function Modal({
+  selectedItems,
   setIsModal,
   id,
   method,
@@ -40,15 +42,25 @@ export default function Modal({
           const response = await fetch(`/api/editproduct/delete/${id}`, {
             method,
           });
+          handleDropdownToggle(id);
         } else if (method === "POST") {
           const response = await fetch(`/api/editproduct/delete/${id}`, {
             method,
           });
+          handleDropdownToggle(id);
+        } else if (method === "wish") {
+          const response = await fetch("/api/wishlist/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ids: selectedItems }),
+          });
         }
+        router.refresh();
         setOpen;
         setIsModal(false);
-        handleDropdownToggle(id);
-        router.refresh();
+
         return;
       } else {
         // 취소 로직
@@ -79,6 +91,11 @@ export default function Modal({
     modalMessage.checkMessage =
       "판매 완료한 물품은 되돌릴 수 없습니다. 판매 완료하시겠습니까?";
     modalMessage.lastCheckMessage = "네, 판매 완료하겠습니다.";
+  } else if (method === "wish") {
+    modalMessage.title = "선택 물품을 찜 목록에서 삭제하시겠습니까?";
+    modalMessage.checkMessage =
+      "삭제한 물품은 되돌릴 수 없습니다. 삭제하시겠습니까?";
+    modalMessage.lastCheckMessage = "네, 삭제하겠습니다.";
   }
 
   return (

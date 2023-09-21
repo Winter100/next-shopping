@@ -20,7 +20,7 @@ export default function Navbar() {
         </span>
       </div>
 
-      <div className="my-4 max-w-4xl mx-auto">
+      <div className="my-2 max-w-4xl mx-auto">
         <div className="flex items-center justify-end space-x-4 text-xs mx-4 md:mx-0">
           {!data ? (
             <>
@@ -37,7 +37,7 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-4 my-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-4 my-4">
           <div className={`${gridStyle}`}>
             <Link href="/" className="font-bold text-2xl">
               싹다팜
@@ -49,8 +49,8 @@ export default function Navbar() {
           <div className={gridStyle}>{data && <UserMenuIcon />}</div>
         </div>
 
-        <div className="flex items-center justify-between mx-6 my-2 md:my-8">
-          <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-center my-4">
+          <div className="flex justify-center items-center space-x-8">
             <Link href="/" className={linkStyle}>
               Home
             </Link>

@@ -1,8 +1,6 @@
 import Image from "next/image";
 import addProductIcon from "../../../../public/Menu/edit.svg";
 import userIcon from "../../../../public/Menu/user.svg";
-import wishIcon from "../../../../public/Menu/heart.svg";
-import salesIcon from "../../../../public/Menu/dollar-sign.svg";
 import Link from "next/link";
 
 export default function UserMenuIcon() {
@@ -13,29 +11,9 @@ export default function UserMenuIcon() {
         <Link href="/newproduct">
           <Image
             src={addProductIcon}
-            alt="AddProductIcon"
+            alt="AddProduct"
             height={iconHeight}
             title="상품등록"
-          />
-        </Link>
-      </li>
-      <li>
-        <Link href="/profile/myproducts">
-          <Image
-            src={salesIcon}
-            alt="salesIcon"
-            height={iconHeight}
-            title="내 판매목록"
-          />
-        </Link>
-      </li>
-      <li>
-        <Link href="/profile/wishlist">
-          <Image
-            src={wishIcon}
-            alt="WishIcon"
-            height={iconHeight}
-            title="찜 목록"
           />
         </Link>
       </li>

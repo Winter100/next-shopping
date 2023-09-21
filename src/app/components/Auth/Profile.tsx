@@ -74,14 +74,14 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
   const tagStyles = `block text-base font-bold leading-6 text-gray-900`;
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex flex-1 flex-col justify-center">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           My Page
         </h2>
       </div>
 
-      <div className="mt-14 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <form className="space-y-6" onSubmit={submitHandler}>
           <div>
             <div className="flex items-center justify-between">

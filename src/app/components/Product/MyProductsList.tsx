@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ProductsType } from "../../type/type";
 import MyProductMenu from "../Btn/DropMenu";
 import MoreIcon from "../../../../public/Menu/more.svg";
+import Link from "next/link";
 
 export default function MyProductsList({
   products,
@@ -18,16 +19,16 @@ export default function MyProductsList({
   }
 
   const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
-  const grid2SpanStyle = "col-span-2 p-2";
-  const gridSpan8Style = "col-span-9 p-2 ";
+  const grid2SpanStyle = "col-span-2";
+  const gridSpan8Style = "col-span-9";
   const gridItemDibStyle = "grid grid-cols-5 h-full";
   const gridItemStyle = "flex items-center justify-center";
 
   return (
     <div className="container mx-auto p-2">
-      <h1 className="hidden ">내 판매 목록</h1>
-      <div className={`${gridTitleStyle} border-y`}>
-        <div className={`${grid2SpanStyle}`}>
+      <h1 className="hidden pt-2">내 판매 목록</h1>
+      <div className={`${gridTitleStyle} border-y h-12 `}>
+        <div className={`${grid2SpanStyle} flex justify-center`}>
           <div className={gridItemStyle}>상품명</div>
         </div>
         <div className={gridSpan8Style}>
@@ -47,15 +48,17 @@ export default function MyProductsList({
               key={product?._id}
               className={`${gridTitleStyle} ${
                 isDropdownOpen === product?._id ? "bg-blue-gray-50" : ""
-              } border-b h-24`}
+              } hover:bg-blue-gray-50 border-b h-24`}
             >
               <div className={`${grid2SpanStyle} relative`}>
-                <Image
-                  className="p-2"
-                  src={product?.mainImageSrc}
-                  alt={product?.title}
-                  fill
-                />
+                <Link href={`/product/detail/${product._id}`}>
+                  <Image
+                    className="py-2 px-4"
+                    src={product?.mainImageSrc}
+                    alt={product?.title}
+                    fill
+                  />
+                </Link>
               </div>
               <div className={gridSpan8Style}>
                 <div className={gridItemDibStyle}>
