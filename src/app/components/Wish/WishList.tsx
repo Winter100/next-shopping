@@ -5,8 +5,50 @@ import Link from "next/link";
 import { ProductsType } from "../../type/type";
 import Modal from "../Btn/DeleteModal";
 import trashIcon from "../../../../public/Menu/trash-2.svg";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import LoadingSpinner from "../Spinner/LoadingSpinner";
 
-export default function WishList({ products }: { products: ProductsType[] }) {
+export default function WishList({
+  email,
+}: {
+  products?: ProductsType[];
+  email: string;
+}) {
+  const { data } = useSession();
+
+  async function getWish(email: string) {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/wishlist/get`,
+      {
+        cache: "no-store",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      }
+    );
+    const wish: ProductsType[] = (await response.json()) as [];
+    return wish;
+  }
+
+  const {
+    data: wish,
+    isLoading,
+    isFetching,
+    error,
+  } = useQuery({
+    queryKey: ["wishlist"],
+    queryFn: async () => await getWish(email),
+    // cacheTime: 0,
+  });
+  const queryClient = useQueryClient();
+
+  const addWishlistItemMutation = useMutation(async () => {}, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["wishlist"]);
+    },
+  });
+
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
 
@@ -35,6 +77,8 @@ export default function WishList({ products }: { products: ProductsType[] }) {
 
       {isModal && (
         <Modal
+          setSelectedItems={setSelectedItems}
+          addWishlistItemMutation={addWishlistItemMutation}
           method="wish"
           selectedItems={selectedItems}
           setIsModal={setIsModal}
@@ -53,7 +97,12 @@ export default function WishList({ products }: { products: ProductsType[] }) {
             <div className={gridItemStyle}>판매자</div>
             <div className={gridItemStyle}>카카오톡</div>
             <div className={`${gridItemStyle} border-l`}>
-              {selectedItems.length >= 1 && (
+              {isFetching && (
+                <div className=" flex items-center justify-center my-2">
+                  <LoadingSpinner />
+                </div>
+              )}
+              {selectedItems.length >= 1 && !isLoading && !isFetching && (
                 <button onClick={modalHandler}>
                   <Image src={trashIcon} alt="삭제" title="삭제" />
                 </button>
@@ -62,15 +111,15 @@ export default function WishList({ products }: { products: ProductsType[] }) {
           </div>
         </div>
       </div>
-      {products?.length > 0 && (
+      {wish?.length > 0 && !isLoading && (
         <ul className="grid grid-flow-row gap-1 ">
-          {products?.map((product) => (
+          {wish?.map((product) => (
             <li
               key={product?._id}
               className={`${gridTitleStyle} hover:bg-blue-gray-50 border-b h-24`}
             >
               <div className={`${grid2SpanStyle} relative`}>
-                <Link href={`/product/detail/${product._id}`}>
+                <Link href={`/product/detail/${product?._id}`}>
                   <Image
                     className="py-2 px-4"
                     src={product?.mainImageSrc}
@@ -101,7 +150,7 @@ export default function WishList({ products }: { products: ProductsType[] }) {
                     >
                       <input
                         disabled={isModal}
-                        checked={selectedItems.includes(product._id)}
+                        checked={selectedItems.includes(product?._id)}
                         type="checkbox"
                         onChange={() => {}}
                       />

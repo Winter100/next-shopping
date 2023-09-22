@@ -1,7 +1,7 @@
-import BuyBtn from "../Btn/BuyBtn";
 import { ProductsType } from "../../type/type";
 import DetailMoreImages from "../Images/DetailMoreImages";
 import TagComponent from "./TagComponent";
+import WishIcon from "../Wish/WishIcon";
 
 export default function ProductDetail({ data }: { data: ProductsType }) {
   const date = `${data?.date?.year}-${
@@ -15,11 +15,9 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
   } text-sm font-medium text-center `;
 
   return (
-    <div className="my-4">
+    <div className="my-2">
       <div className="mx-auto">
-        {/* <div className="h-8 m-auto">
-          <BuyBtn email={data?.email} id={data?._id} soldout={data?.soldout} />
-        </div> */}
+        <WishIcon productId={data?._id} productEmail={data?.email} />
         <div className=" flex flex-col md:flex-row p-2 ">
           <div className="w-10/12 md:w-1/2 lg:w-2/5  m-auto ">
             <DetailMoreImages
@@ -151,7 +149,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
           </div>
         </div>
 
-        <div className="lg:my-6 m-auto w-4/5 my-2 grid grid-cols-5 justify-items-start">
+        <div className="lg:my-6 m-auto w-4/5 my-2 gap-1 grid grid-cols-5 justify-items-start">
           {data?.subImageSrc?.map((item, index) => (
             <div key={index} className="w-full border-2">
               <DetailMoreImages imageType="sub" src={item} indexs={index} />

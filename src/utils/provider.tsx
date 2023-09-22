@@ -6,9 +6,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function Providers({ children }: React.PropsWithChildren) {
   const [client] = React.useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 0 } } })
+    new QueryClient({
+      defaultOptions: {
+        queries: { refetchOnWindowFocus: false, retry: false },
+      },
+    })
   );
-
+  // { defaultOptions: { queries: { staleTime: 0 } } }
   return (
     <QueryClientProvider client={client}>
       {children}

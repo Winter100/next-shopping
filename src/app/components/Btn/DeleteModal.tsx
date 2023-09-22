@@ -6,14 +6,18 @@ import { redirect, useRouter } from "next/navigation";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 interface ModalProps {
+  setSelectedItems?: any;
   setIsModal?: (isConfirmed: boolean) => void;
   handleDropdownToggle?: any;
   id?: string;
   method?: string;
   selectedItems?: any;
+  addWishlistItemMutation?: any;
 }
 
 export default function Modal({
+  setSelectedItems,
+  addWishlistItemMutation,
   selectedItems,
   setIsModal,
   id,
@@ -56,11 +60,13 @@ export default function Modal({
             },
             body: JSON.stringify({ ids: selectedItems }),
           });
+          await setSelectedItems([]);
+          await addWishlistItemMutation.mutate("");
         }
+
         router.refresh();
         setOpen;
         setIsModal(false);
-
         return;
       } else {
         // 취소 로직
