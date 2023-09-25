@@ -74,7 +74,7 @@ export default function Profile({ userInfo }: { userInfo: userInfoType }) {
   const tagStyles = `block text-base font-bold leading-6 text-gray-900`;
 
   return (
-    <div className="flex flex-1 flex-col justify-center">
+    <div className="flex flex-1 flex-col justify-center p-2">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           My Page

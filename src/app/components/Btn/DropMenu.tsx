@@ -48,16 +48,16 @@ export default function MyProductMenu({
               수정
             </Link>
             <button
-              onClick={() => deleteHandler(productId)}
-              className="text-center  block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 w-full"
-            >
-              삭제
-            </button>
-            <button
               onClick={() => soldOutHandler(productId)}
               className="text-center block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 w-full"
             >
               판매완료
+            </button>
+            <button
+              onClick={() => deleteHandler(productId)}
+              className="text-center  block px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 w-full"
+            >
+              삭제
             </button>
           </>
         )}

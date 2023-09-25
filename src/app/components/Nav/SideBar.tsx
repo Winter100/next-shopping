@@ -11,12 +11,14 @@ export default function SideBar() {
 
   const pathname = usePathname();
 
-  const linkStyle = `relative flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`;
-
+  const linkStyle = `relative h-14 md:h-12 text-sm flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`;
+  const mobileLiStyle = "fixed bottom-0 md:relative z-10 w-full bg-white";
   return (
-    <aside id="sidebar-multi-level-sidebar" aria-label="Sidebar">
-      <div className="h-full px-3 overflow-y-auto ">
-        <ul className="space-y-2 font-medium">
+    <aside id=" sidebar-multi-level-sidebar" aria-label="Sidebar">
+      <div className=" bg-white md:bg-none md:h-full    md:px-3 md:overflow-y-auto ">
+        <ul
+          className={`${mobileLiStyle} text-center grid grid-cols-3 md:grid-cols-none md:space-y-2 md:font-medium`}
+        >
           <li>
             <Link
               href="/profile"

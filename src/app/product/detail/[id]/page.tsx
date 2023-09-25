@@ -7,7 +7,6 @@ export default async function ProductDetailPage({
   params: { id: string };
 }) {
   const id = encodeURIComponent(params.id);
-
   const { detailData } = await getData(id);
 
   return (
@@ -20,15 +19,6 @@ export default async function ProductDetailPage({
         </p>
       )}
     </div>
-    // <div className="flex min-h-screen flex-col items-center justify-between">
-    //   {detailData._id === id ? (
-    //     <ProductDetail data={detailData} />
-    //   ) : (
-    //     <p className="m-auto text-center text-2xl font-bold">
-    //       존재하지 않는 제품입니다.
-    //     </p>
-    //   )}
-    // </div>
   );
 }
 

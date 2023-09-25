@@ -6,11 +6,13 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-6 mt-4 min-h-[1000px]">
-      <nav className="col-span-1 mt-10">
+    <div className="md:grid md:grid-cols-6 md:mt-4 md:min-h-[1000px]">
+      <div className="md:col-span-5 my-4 md:order-last md:p-0 h-full min-h-full pb-16 md:pb-0">
+        {children}
+      </div>
+      <nav className="w-full md:col-span-1 md:order-first md:bottom-auto">
         <SideBar />
       </nav>
-      <div className="col-span-5 my-4">{children}</div>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export default async function MyProductsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center">내 판매 목록</h1>
+      <h1 className="text-3xl my-2 font-bold text-center">내 판매 목록</h1>
 
       {data?.length >= 1 ? (
         <MyProductsList products={data} />

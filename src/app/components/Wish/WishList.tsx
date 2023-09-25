@@ -67,12 +67,12 @@ export default function WishList({
 
   const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
   const grid2SpanStyle = "col-span-2";
-  const gridSpan8Style = "col-span-9";
-  const gridItemDibStyle = "grid grid-cols-6 h-full";
-  const gridItemStyle = "flex items-center justify-center";
+  const gridSpan8Style = "col-span-9  md:text-xs";
+  const gridItemDibStyle = "grid grid-cols-6 h-full ";
+  const gridItemStyle = "flex items-center justify-center text-xs";
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="container mx-auto">
       <h1 className="hidden pt-2">찜 목록</h1>
 
       {isModal && (
@@ -112,7 +112,7 @@ export default function WishList({
         </div>
       </div>
       {wish?.length > 0 && !isLoading && (
-        <ul className="grid grid-flow-row gap-1 ">
+        <ul className="grid grid-flow-row">
           {wish?.map((product) => (
             <li
               key={product?._id}
@@ -121,7 +121,7 @@ export default function WishList({
               <div className={`${grid2SpanStyle} relative`}>
                 <Link href={`/product/detail/${product?._id}`}>
                   <Image
-                    className="py-2 px-4"
+                    className="py-2 px-1 md:px-6"
                     src={product?.mainImageSrc}
                     alt={product?.title}
                     fill
@@ -132,7 +132,7 @@ export default function WishList({
                 <div className={gridItemDibStyle}>
                   <div className={gridItemStyle}>{product?.title}</div>
                   <div className={gridItemStyle}>
-                    {product?.price.toLocaleString()}원
+                    {product?.price.toLocaleString()}
                   </div>
                   <div className={gridItemStyle}>
                     {product?.soldout ? (

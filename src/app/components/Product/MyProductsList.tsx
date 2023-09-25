@@ -20,13 +20,13 @@ export default function MyProductsList({
 
   const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
   const grid2SpanStyle = "col-span-2";
-  const gridSpan8Style = "col-span-9";
-  const gridItemDibStyle = "grid grid-cols-5 h-full";
-  const gridItemStyle = "flex items-center justify-center";
+  const gridSpan8Style = "col-span-9  md:text-xs";
+  const gridItemDibStyle = "grid grid-cols-5 h-full  ";
+  const gridItemStyle = "flex items-center justify-center px-2 text-xs";
 
   return (
-    <div className="container mx-auto p-2">
-      <h1 className="hidden pt-2">내 판매 목록</h1>
+    <div className="container mx-auto   ">
+      <h1 className="hidden">내 판매 목록</h1>
       <div className={`${gridTitleStyle} border-y h-12 `}>
         <div className={`${grid2SpanStyle} flex justify-center`}>
           <div className={gridItemStyle}>상품명</div>
@@ -42,7 +42,7 @@ export default function MyProductsList({
         </div>
       </div>
       {products?.length > 0 && (
-        <ul className="grid grid-flow-row gap-1 ">
+        <ul className="grid grid-flow-row  ">
           {products?.map((product) => (
             <li
               key={product?._id}
@@ -53,18 +53,18 @@ export default function MyProductsList({
               <div className={`${grid2SpanStyle} relative`}>
                 <Link href={`/product/detail/${product._id}`}>
                   <Image
-                    className="py-2 px-4"
+                    className="py-2 px-1 md:px-6"
                     src={product?.mainImageSrc}
                     alt={product?.title}
                     fill
                   />
                 </Link>
               </div>
-              <div className={gridSpan8Style}>
-                <div className={gridItemDibStyle}>
-                  <div className={gridItemStyle}>{product?.title}</div>
-                  <div className={gridItemStyle}>
-                    {product?.price.toLocaleString()}원
+              <div className={`${gridSpan8Style} `}>
+                <div className={`${gridItemDibStyle} `}>
+                  <div className={`${gridItemStyle} `}>{product?.title}</div>
+                  <div className={`${gridItemStyle} `}>
+                    {product?.price.toLocaleString()}
                   </div>
                   <div className={gridItemStyle}>
                     {product?.soldout ? (
@@ -73,15 +73,21 @@ export default function MyProductsList({
                       <span className=" text-blue-600">판매중</span>
                     )}
                   </div>
-                  <div className={gridItemStyle}>{`${product?.date?.year}-${
-                    product?.date?.month < 10
-                      ? `0${product?.date?.month}`
-                      : product?.date?.month
-                  }-${
-                    product?.date?.day < 10
-                      ? `0${product?.date?.day}`
-                      : product?.date?.day
-                  }`}</div>
+                  <div className={gridItemStyle}>
+                    <ul className="md:flex md:items-center md:justify-center">
+                      <li>{product?.date?.year}</li>
+                      <li className="ml-1">
+                        {product?.date?.month < 10
+                          ? `0${product?.date?.month} `
+                          : product?.date?.month}
+                      </li>
+                      <li className="ml-1">{`${
+                        product?.date?.day < 10
+                          ? `0${product?.date?.day} `
+                          : product?.date?.day
+                      }`}</li>
+                    </ul>
+                  </div>
                   <div className={gridItemStyle}>
                     <div className={`${gridItemStyle} w-full h-full`}>
                       <button
@@ -92,7 +98,7 @@ export default function MyProductsList({
                       >
                         <Image src={MoreIcon} alt="메뉴버튼" />
                       </button>
-                      <div className=" relative -top-14 left-28">
+                      <div className=" relative -top-14 -left-8 md:left-28">
                         {isDropdownOpen === product?._id && (
                           <MyProductMenu
                             productId={product?._id}
