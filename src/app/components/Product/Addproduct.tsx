@@ -307,7 +307,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         });
 
         if (response.status === 200) {
-          window.location.href = available;
+          if (method === "PATCH") router.push("/profile/myproducts");
+          else window.location.href = available;
           return;
         }
       } catch (error) {

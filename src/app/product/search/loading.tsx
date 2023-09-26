@@ -7,13 +7,13 @@ export default function Loading() {
       <div className="my-4">
         <div className="mx-auto mt-14">
           <h2 className="sr-only">Loading</h2>
-          <div className="grid grid-cols-1 md:gap-4 md:grid-cols-3 mt-1 m-auto">
+          <div className=" grid grid-cols-2 px-2 gap-2 md:grid-cols-3 mt-1 m-auto">
             {Array(6)
               .fill(null)
               .map((_, i) => (
                 <div
                   key={i}
-                  className="mb-6 md:mb-2 w-4/5 md:w-full h-full m-auto"
+                  className="mb-4 md:mb-2 w-full md:w-full sm:h-full m-auto"
                 >
                   <Skeleton height={290} />
                   <Skeleton count={3} />

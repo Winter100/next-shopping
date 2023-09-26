@@ -7,11 +7,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function SideBar() {
-  const spanStyle = "ml-3 ";
+  const spanStyle = "m-auto";
 
   const pathname = usePathname();
 
-  const linkStyle = `relative h-14 md:h-12 text-sm flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`;
+  const linkStyle = ` relative h-14 md:h-12 text-sm flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`;
   const mobileLiStyle = "fixed bottom-0 md:relative z-10 w-full bg-white";
   return (
     <aside id=" sidebar-multi-level-sidebar" aria-label="Sidebar">

@@ -20,9 +20,10 @@ export default function MyProductsList({
 
   const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
   const grid2SpanStyle = "col-span-2";
-  const gridSpan8Style = "col-span-9  md:text-xs";
-  const gridItemDibStyle = "grid grid-cols-5 h-full  ";
-  const gridItemStyle = "flex items-center justify-center px-2 text-xs";
+  const gridSpan8Style = "col-span-9  sm:text-xs";
+  const gridItemDibStyle = "grid grid-cols-5 h-full gap-2 sm:gap-1 ";
+  const gridItemStyle =
+    "flex items-center justify-center  text-[0.5rem] sm:text-xs";
 
   return (
     <div className="container mx-auto   ">
@@ -37,12 +38,12 @@ export default function MyProductsList({
             <div className={gridItemStyle}>판매가</div>
             <div className={gridItemStyle}>판매상태</div>
             <div className={gridItemStyle}>등록일</div>
-            <div className={gridItemStyle}>편집</div>
+            <div className={`${gridItemStyle} border-l`}>편집</div>
           </div>
         </div>
       </div>
       {products?.length > 0 && (
-        <ul className="grid grid-flow-row  ">
+        <ul className="grid grid-flow-row">
           {products?.map((product) => (
             <li
               key={product?._id}
@@ -53,7 +54,7 @@ export default function MyProductsList({
               <div className={`${grid2SpanStyle} relative`}>
                 <Link href={`/product/detail/${product._id}`}>
                   <Image
-                    className="py-2 px-1 md:px-6"
+                    className="py-3 px-2 md:px-6"
                     src={product?.mainImageSrc}
                     alt={product?.title}
                     fill
@@ -62,8 +63,9 @@ export default function MyProductsList({
               </div>
               <div className={`${gridSpan8Style} `}>
                 <div className={`${gridItemDibStyle} `}>
-                  <div className={`${gridItemStyle} `}>{product?.title}</div>
-                  <div className={`${gridItemStyle} `}>
+                  <div className={`${gridItemStyle}  `}>{product?.title}</div>
+
+                  <div className={`${gridItemStyle} text-blue-600`}>
                     {product?.price.toLocaleString()}
                   </div>
                   <div className={gridItemStyle}>
@@ -88,7 +90,7 @@ export default function MyProductsList({
                       }`}</li>
                     </ul>
                   </div>
-                  <div className={gridItemStyle}>
+                  <div className={`${gridItemStyle} border-l `}>
                     <div className={`${gridItemStyle} w-full h-full`}>
                       <button
                         onClick={(e) => {

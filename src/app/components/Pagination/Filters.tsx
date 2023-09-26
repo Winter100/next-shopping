@@ -37,7 +37,7 @@ export default function Filters({ pageInfo }: { pageInfo: PageInfoProps }) {
   };
 
   return (
-    <div className="font-sans w-auto text-sm flex items-center justify-end z-20">
+    <div className="font-sans w-auto text-sm flex items-center justify-end px-2 sm:px-0">
       <div>{pageInfo?.totalItems} 개의 상품</div>
       <div className="z-10 text-center">
         <Select

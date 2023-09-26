@@ -22,9 +22,9 @@ export default function ItemCard({ product }: any) {
     displayText = `${daysAgo}일 전`;
   }
   return (
-    <div className="card w-2/3 sm:w-full h-full m-auto bg-base-100 shadow-xl  ">
+    <div className="card w-full h-full m-auto bg-base-100 shadow-xl  ">
       <Link href={`/product/detail/${product?._id}`}>
-        <figure className=" w-full h-60 relative overflow-hidden group">
+        <figure className=" rounded-t-md w-full h-48 sm:h-60 relative overflow-hidden group">
           <Image
             fill
             src={product?.mainImageSrc}
@@ -32,8 +32,7 @@ export default function ItemCard({ product }: any) {
             className="transition-transform duration-300 transform scale-100 group-hover:scale-105"
           />
         </figure>
-        <div className="p-3 md:card-body">
-          {/* <div className="p-4 sm:card-body"> */}
+        <div className="p-3 h-28 sm:h-auto md:card-body">
           <h2 className="card-title">
             <span className="truncate">{product?.title}</span>
 

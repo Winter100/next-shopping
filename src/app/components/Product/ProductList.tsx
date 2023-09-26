@@ -16,10 +16,10 @@ export default function ProductList({
       </div>
       <div className="mx-auto">
         <h2 className="sr-only">판매목록</h2>
-        <div className="grid grid-cols-1 md:gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 px-2 gap-2 sm:px-0 md:gap-4 md:grid-cols-3">
           {products?.length >= 1 &&
             products?.map((product) => (
-              <div key={product?._id} className="mb-6 md:mb-2">
+              <div key={product?._id} className="mb-4 md:mb-2">
                 <ItemCard product={product} />
               </div>
             ))}

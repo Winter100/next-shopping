@@ -67,13 +67,14 @@ export default function WishList({
 
   const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
   const grid2SpanStyle = "col-span-2";
-  const gridSpan8Style = "col-span-9  md:text-xs";
-  const gridItemDibStyle = "grid grid-cols-6 h-full ";
-  const gridItemStyle = "flex items-center justify-center text-xs";
+  const gridSpan8Style = "col-span-9  sm:text-xs";
+  const gridItemDibStyle = "grid grid-cols-6 h-full gap-2 sm:gap-1  ";
+  const gridItemStyle =
+    "flex items-center justify-center text-[0.5rem] sm:text-xs";
 
   return (
-    <div className="container mx-auto">
-      <h1 className="hidden pt-2">찜 목록</h1>
+    <div className="container mx-auto ">
+      <h1 className="hidden">찜 목록</h1>
 
       {isModal && (
         <Modal
@@ -87,11 +88,11 @@ export default function WishList({
 
       <div className={`${gridTitleStyle} border-y h-12 `}>
         <div className={`${grid2SpanStyle} flex justify-center`}>
-          <div className={gridItemStyle}>상품명</div>
+          <div className={`${gridItemStyle}`}>상품명</div>
         </div>
         <div className={gridSpan8Style}>
           <div className={gridItemDibStyle}>
-            <div className={gridItemStyle}>제목</div>
+            <div className={`${gridItemStyle}`}>제목</div>
             <div className={gridItemStyle}>판매가</div>
             <div className={gridItemStyle}>판매상태</div>
             <div className={gridItemStyle}>판매자</div>
@@ -121,7 +122,7 @@ export default function WishList({
               <div className={`${grid2SpanStyle} relative`}>
                 <Link href={`/product/detail/${product?._id}`}>
                   <Image
-                    className="py-2 px-1 md:px-6"
+                    className="py-3 px-2 md:px-6"
                     src={product?.mainImageSrc}
                     alt={product?.title}
                     fill
@@ -130,8 +131,11 @@ export default function WishList({
               </div>
               <div className={gridSpan8Style}>
                 <div className={gridItemDibStyle}>
-                  <div className={gridItemStyle}>{product?.title}</div>
-                  <div className={gridItemStyle}>
+                  <div className={`${gridItemStyle} `}>{product?.title}</div>
+                  <div
+                    title={product?.price.toLocaleString()}
+                    className={`${gridItemStyle} text-blue-600`}
+                  >
                     {product?.price.toLocaleString()}
                   </div>
                   <div className={gridItemStyle}>
@@ -141,8 +145,10 @@ export default function WishList({
                       <span className=" text-blue-600">판매중</span>
                     )}
                   </div>
-                  <div className={gridItemStyle}>{`${product?.name}`}</div>
-                  <div className={gridItemStyle}>{`${product?.contact}`}</div>
+                  <div className={`${gridItemStyle}`}>{`${product?.name}`}</div>
+                  <div
+                    className={`${gridItemStyle} `}
+                  >{`${product?.contact}`}</div>
                   <div className={`${gridItemStyle} border-l `}>
                     <div
                       onClick={() => handleItemClick(product?._id)}

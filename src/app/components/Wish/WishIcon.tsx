@@ -20,9 +20,10 @@ export default function WishIcon({
   const pathname = usePathname().replace("/product/detail/", "");
   const [myWishList, setMyWishList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isSameUser = data?.user?.email === productEmail;
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || isSameUser) return setIsLoading(false);
     async function getWished() {
       const res = await fetch(`/api/wishlist/getid`, {
         cache: "no-store",
@@ -37,7 +38,7 @@ export default function WishIcon({
     }
 
     getWished();
-  }, [email, data, productId]);
+  }, [email, data, productId, isSameUser]);
 
   async function addWishlistItem(itemId: string) {
     setMyWishList((pre) =>
@@ -57,20 +58,25 @@ export default function WishIcon({
   }
 
   const divStyle = "w-6 h-6 text-center m-auto flex items-center justify-cente";
-  const isSameUser = data?.user?.email === productEmail;
 
   return (
-    <div className={divStyle}>
+    <div>
       {!isLoading && data?.user && !isSameUser && (
-        <button onClick={() => addWishlistItem(productId)}>
-          {myWishList?.includes(pathname) ? (
-            <HeartIcon className="w-full h-full text-red-500" />
-          ) : (
-            <OutlineHeartIcon className="w-full h-full text-gray-500" />
-          )}
-        </button>
+        <div className={divStyle}>
+          <button onClick={() => addWishlistItem(productId)}>
+            {myWishList?.includes(pathname) ? (
+              <HeartIcon className="w-full h-full text-red-500" />
+            ) : (
+              <OutlineHeartIcon className="w-full h-full text-gray-500" />
+            )}
+          </button>
+        </div>
       )}
-      {isLoading && <LoadingSpinner />}
+      {isLoading && (
+        <div className={divStyle}>
+          <LoadingSpinner />
+        </div>
+      )}
     </div>
   );
 }
