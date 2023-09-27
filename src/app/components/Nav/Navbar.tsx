@@ -1,7 +1,7 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { available } from "@/app/lib/constants-url";
 import Search from "../Pagination/Search";
 import UserMenuIcon from "../Menu/UserMenuIcon";
@@ -15,16 +15,22 @@ export default function Navbar() {
   const linkStyle = " font-bold hover:text-purple-600 ";
   const gridStyle = "flex items-center justify-center  md:my-0 ";
 
+  const [popUp, setpopUp] = useState(true);
   return (
-    <div className=" relative">
-      <nav className="bg-white border-b-2 sm:border-b-4 w-full ">
-        <div className="bg-indigo-600 h-6 text-white flex items-center justify-center">
-          <span className="text-[0.6rem]">
-            이 사이트는 상업 목적이 아닌 개인 프로젝트 목적으로 만들어졌습니다
-          </span>
-        </div>
+    <div className="">
+      <nav className="bg-white border-b-2 sm:border-b-4 w-full   ">
+        {popUp && (
+          <div className="bg-indigo-600 h-6 text-white flex items-center justify-center">
+            <span className="text-[0.6rem] ">
+              이 사이트는 상업 목적이 아닌 개인 프로젝트 목적으로 만들어졌습니다
+            </span>
+            <button onClick={() => setpopUp(false)} className=" ml-4 text-xs">
+              {"[닫기]"}
+            </button>
+          </div>
+        )}
 
-        <div className="my-1 md:my-2 max-w-4xl mx-auto sticky top-0 z-30">
+        <div className="my-1 md:my-2 max-w-4xl mx-auto">
           <div className="flex items-center justify-end space-x-4 text-xs mx-4 md:mx-0">
             {!data ? (
               <>

@@ -15,7 +15,7 @@ export default function ProductDetail({ data }: { data: ProductsType }) {
   } text-sm font-medium text-center `;
 
   return (
-    <div className="my-2">
+    <div className="my-2 px-2">
       <div className="mx-auto">
         <WishIcon productId={data?._id} productEmail={data?.email} />
         <div className=" flex flex-col md:flex-row p-2 ">
