@@ -10,12 +10,21 @@ export default function Search() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  let isSubmitting = false;
+
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (isSubmitting) {
+      setTimeout(() => handleSubmit(e), 200);
+      return;
+    }
+
+    isSubmitting = true;
 
     const inputValue = searchTerm.replace(/(\s*)/g, "");
 
@@ -32,7 +41,7 @@ export default function Search() {
   }
 
   return (
-    <div className="w-72 m-auto border rounded-lg border-indigo-600 h-12">
+    <div className=" w-72 m-auto border rounded-lg border-indigo-600 h-12">
       <form
         onSubmit={handleSubmit}
         className="flex justify-center items-center border-none h-full"
