@@ -65,12 +65,11 @@ export default function WishList({
     setIsModal(true);
   }
 
-  const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
-  const grid2SpanStyle = "col-span-2";
-  const gridSpan8Style = "col-span-9  sm:text-xs";
-  const gridItemDibStyle = "grid grid-cols-6 h-full gap-2 sm:gap-1  ";
-  const gridItemStyle =
-    "flex items-center justify-center text-[0.5rem] sm:text-xs";
+  const gridTitleStyle = "w-full text-xs grid grid-cols-6 text-center px-1";
+  const gridSpan8Style = "col-span-6  sm:text-xs";
+  const gridItemDibStyle = "grid grid-cols-6 h-full ";
+  const gridItemTitleStyle = "flex items-center justify-center text-sm";
+  const gridItemStyle = "flex items-center justify-center text-xs";
 
   return (
     <div className="container mx-auto ">
@@ -86,18 +85,15 @@ export default function WishList({
         />
       )}
 
-      <div className={`${gridTitleStyle} border-y h-12 `}>
-        <div className={`${grid2SpanStyle} flex justify-center`}>
-          <div className={`${gridItemStyle}`}>상품명</div>
-        </div>
+      <div className={`${gridTitleStyle} border-y h-10 `}>
         <div className={gridSpan8Style}>
           <div className={gridItemDibStyle}>
-            <div className={`${gridItemStyle}`}>제목</div>
-            <div className={gridItemStyle}>판매가</div>
-            <div className={gridItemStyle}>판매상태</div>
-            <div className={gridItemStyle}>판매자</div>
-            <div className={gridItemStyle}>카카오톡</div>
-            <div className={`${gridItemStyle} border-l`}>
+            <div className={`${gridItemTitleStyle}`}>제목</div>
+            <div className={gridItemTitleStyle}>판매가</div>
+            <div className={gridItemTitleStyle}>판매상태</div>
+            <div className={gridItemTitleStyle}>판매자</div>
+            <div className={gridItemTitleStyle}>카카오톡</div>
+            <div className={`${gridItemTitleStyle} border-l`}>
               {isFetching && (
                 <div className=" flex items-center justify-center my-2">
                   <LoadingSpinner />
@@ -112,26 +108,35 @@ export default function WishList({
           </div>
         </div>
       </div>
-      {wish?.length > 0 && !isLoading && (
+      {wish?.length >= 1 && !isLoading ? (
         <ul className="grid grid-flow-row">
           {wish?.map((product) => (
             <li
               key={product?._id}
-              className={`${gridTitleStyle} hover:bg-blue-gray-50 border-b h-24`}
+              className={`${gridTitleStyle} px-1 hover:bg-blue-gray-50 border-b h-28`}
             >
-              <div className={`${grid2SpanStyle} relative`}>
-                <Link href={`/product/detail/${product?._id}`}>
-                  <Image
-                    className="py-3 px-2 md:px-6"
-                    src={product?.mainImageSrc}
-                    alt={product?.title}
-                    fill
-                  />
-                </Link>
-              </div>
               <div className={gridSpan8Style}>
                 <div className={gridItemDibStyle}>
-                  <div className={`${gridItemStyle} `}>{product?.title}</div>
+                  <div className={`relative`}>
+                    <div className=" grid grid-rows-5 h-full sm:px-3">
+                      <div className=" row-span-4 relative">
+                        <Link href={`/product/detail/${product._id}`}>
+                          <Image
+                            className="py-1"
+                            src={product?.mainImageSrc}
+                            alt={product?.title}
+                            fill
+                          />
+                        </Link>
+                      </div>
+                      <div
+                        title={product?.title}
+                        className={`flex items-center text-xs row-span-1 truncate `}
+                      >
+                        {product?.title}
+                      </div>
+                    </div>
+                  </div>
                   <div
                     title={product?.price.toLocaleString()}
                     className={`${gridItemStyle} text-blue-600`}
@@ -167,6 +172,10 @@ export default function WishList({
             </li>
           ))}
         </ul>
+      ) : (
+        <p className="text-lg text-center text-red-600 text-bold my-8 m-auto">
+          찜하고 있는 물건이 없습니다.
+        </p>
       )}
     </div>
   );

@@ -13,15 +13,7 @@ export default async function MyProductsPage() {
     <div>
       <h1 className="text-2xl my-2 font-bold text-center">내 판매 목록</h1>
 
-      {data?.length >= 1 ? (
-        <MyProductsList products={data} />
-      ) : (
-        <div>
-          <p className="text-lg text-center text-red-600 text-bold my-8">
-            판매하고 있는 물건이 없습니다.
-          </p>
-        </div>
-      )}
+      {data?.length >= 1 && <MyProductsList products={data} />}
     </div>
   );
 }

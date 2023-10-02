@@ -18,53 +18,58 @@ export default function MyProductsList({
     setIsDropdownOpen((prevId) => (prevId === id ? null : id));
   }
 
-  const gridTitleStyle = "w-full text-xs grid grid-cols-11 text-center";
-  const grid2SpanStyle = "col-span-2";
-  const gridSpan8Style = "col-span-9  sm:text-xs";
-  const gridItemDibStyle = "grid grid-cols-5 h-full gap-2 sm:gap-1 ";
-  const gridItemStyle =
-    "flex items-center justify-center  text-[0.5rem] sm:text-xs";
+  const gridTitleStyle = "w-full text-sm grid grid-cols-5 text-center px-1";
+  const gridSpan8Style = "col-span-5  sm:text-xs";
+  const gridItemDibStyle = "grid grid-cols-5 h-full ";
+  const gridItemTitleStyle = "flex items-center justify-center text-sm";
+  const gridItemStyle = "flex items-center justify-center text-xs";
 
   return (
-    <div className="container mx-auto   ">
+    <div className="container mx-auto    ">
       <h1 className="hidden">내 판매 목록</h1>
-      <div className={`${gridTitleStyle} border-y h-12 `}>
-        <div className={`${grid2SpanStyle} flex justify-center`}>
-          <div className={gridItemStyle}>상품명</div>
-        </div>
+
+      <div className={`${gridTitleStyle}  border-y h-10 `}>
         <div className={gridSpan8Style}>
           <div className={gridItemDibStyle}>
-            <div className={gridItemStyle}>제목</div>
-            <div className={gridItemStyle}>판매가</div>
-            <div className={gridItemStyle}>판매상태</div>
-            <div className={gridItemStyle}>등록일</div>
-            <div className={`${gridItemStyle} border-l`}>편집</div>
+            <div className={gridItemTitleStyle}>제목</div>
+            <div className={gridItemTitleStyle}>판매가</div>
+            <div className={gridItemTitleStyle}>판매상태</div>
+            <div className={gridItemTitleStyle}>등록일</div>
+            <div className={`${gridItemTitleStyle} border-l`}>편집</div>
           </div>
         </div>
       </div>
-      {products?.length > 0 && (
+      {products?.length >= 1 ? (
         <ul className="grid grid-flow-row">
           {products?.map((product) => (
             <li
               key={product?._id}
               className={`${gridTitleStyle} ${
                 isDropdownOpen === product?._id ? "bg-blue-gray-50" : ""
-              } hover:bg-blue-gray-50 border-b h-24`}
+              } hover:bg-blue-gray-50 border-b h-28 px-1 `}
             >
-              <div className={`${grid2SpanStyle} relative`}>
-                <Link href={`/product/detail/${product._id}`}>
-                  <Image
-                    className="py-3 px-2 md:px-6"
-                    src={product?.mainImageSrc}
-                    alt={product?.title}
-                    fill
-                  />
-                </Link>
-              </div>
               <div className={`${gridSpan8Style} `}>
                 <div className={`${gridItemDibStyle} `}>
-                  <div className={`${gridItemStyle}  `}>{product?.title}</div>
-
+                  <div className={`relative`}>
+                    <div className=" grid grid-rows-5 h-full sm:px-3">
+                      <div className=" row-span-4 relative">
+                        <Link href={`/product/detail/${product._id}`}>
+                          <Image
+                            className="py-1 sm:px-2"
+                            src={product?.mainImageSrc}
+                            alt={product?.title}
+                            fill
+                          />
+                        </Link>
+                      </div>
+                      <div
+                        title={product?.title}
+                        className={`sm:px-2 flex items-center text-xs row-span-1 truncate `}
+                      >
+                        {product?.title}
+                      </div>
+                    </div>
+                  </div>
                   <div className={`${gridItemStyle} text-blue-600`}>
                     {product?.price.toLocaleString()}
                   </div>
@@ -116,6 +121,10 @@ export default function MyProductsList({
             </li>
           ))}
         </ul>
+      ) : (
+        <p className="text-lg text-center text-red-600 text-bold my-8 m-auto">
+          판매하고 있는 물건이 없습니다.
+        </p>
       )}
     </div>
   );
