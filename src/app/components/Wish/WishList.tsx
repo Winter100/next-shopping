@@ -108,7 +108,7 @@ export default function WishList({
           </div>
         </div>
       </div>
-      {wish?.length >= 1 && !isLoading ? (
+      {wish?.length >= 1 && !isLoading && (
         <ul className="grid grid-flow-row">
           {wish?.map((product) => (
             <li
@@ -172,7 +172,8 @@ export default function WishList({
             </li>
           ))}
         </ul>
-      ) : (
+      )}
+      {wish?.length < 1 && !isLoading && (
         <p className="text-lg text-center text-red-600 text-bold my-8 m-auto">
           찜하고 있는 물건이 없습니다.
         </p>

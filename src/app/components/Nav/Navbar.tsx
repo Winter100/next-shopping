@@ -18,7 +18,7 @@ export default function Navbar() {
   const [popUp, setpopUp] = useState(true);
   return (
     <div>
-      <nav className="bg-white border-b-2 sm:border-b-4 w-full   ">
+      <nav className="bg-white border-b-2 sm:border-b-4 w-full m-auto">
         {popUp && (
           <div className="bg-indigo-600 h-6 text-white flex items-center justify-center">
             <span className="text-[0.6rem] ">
