@@ -23,7 +23,9 @@ export default async function EditProductsPage({
   return data ? (
     <AddProcuct editData={data.detailData} method="PATCH" />
   ) : (
-    <p>존재하지 않는 제품입니다.</p>
+    <p className="m-auto flex items-center justify-center text-2xl font-bold w-80 h-80">
+      존재하지 않는 제품입니다.
+    </p>
   );
 }
 
@@ -37,18 +39,23 @@ async function getData(
     email = session.user.email;
   }
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    }
-  );
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+        cache: "no-store",
+      }
+    );
 
-  const { detailData } = await response.json();
+    const { detailData } = await response.json();
 
-  return { detailData };
+    return { detailData };
+  } catch (e) {
+    return;
+  }
 }

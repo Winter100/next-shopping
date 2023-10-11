@@ -18,17 +18,21 @@ export default function WishList({
   const { data } = useSession();
 
   async function getWish(email: string) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/wishlist/get`,
-      {
-        cache: "no-store",
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      }
-    );
-    const wish: ProductsType[] = (await response.json()) as [];
-    return wish;
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/wishlist/get`,
+        {
+          cache: "no-store",
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
+      const wish: ProductsType[] = (await response.json()) as [];
+      return wish;
+    } catch (e) {
+      return [];
+    }
   }
 
   const {

@@ -14,7 +14,7 @@ export default async function ProductDetailPage({
       {detailData._id === id ? (
         <ProductDetail data={detailData} />
       ) : (
-        <p className="m-auto text-center text-2xl font-bold">
+        <p className="m-auto flex items-center justify-center text-2xl font-bold w-80 h-80">
           존재하지 않는 제품입니다.
         </p>
       )}
@@ -25,15 +25,19 @@ export default async function ProductDetailPage({
 async function getData(
   detailId: string
 ): Promise<{ detailData: ProductsType }> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
-    {
-      method: "POST",
-      cache: "no-store",
-    }
-  );
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/detailproducts/${detailId}`,
+      {
+        method: "POST",
+        cache: "no-store",
+      }
+    );
 
-  const { detailData } = await response.json();
+    const { detailData } = await response.json();
 
-  return { detailData };
+    return { detailData };
+  } catch (e) {
+    return;
+  }
 }

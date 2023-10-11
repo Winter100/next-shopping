@@ -122,11 +122,19 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
     return subImageSrc;
   }
 
+  const allowedMimeTypes = ["image/png", "image/jpeg"];
+
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
 
     if (file) {
       const fileSizeInMb = file.size / (1024 * 1024);
+
+      if (!allowedMimeTypes.includes(file.type)) {
+        alert("jpeg, png 파일만 업로드 가능합니다.");
+        return;
+      }
+
       if (fileSizeInMb > 4) {
         alert("파일 크기가 4MB를 초과합니다. 더 작은 파일을 선택해주세요.");
         e.target.value = "";
@@ -161,6 +169,11 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
       const file = files[i];
 
       const fileSizeInMB = file.size / (1024 * 1024);
+
+      if (!allowedMimeTypes.includes(file.type)) {
+        alert("jpeg, png 파일만 업로드 가능합니다.");
+        continue;
+      }
 
       if (subImage.length + addFiles.length >= 10) {
         alert("최대 10개의 이미지만 업로드 가능합니다.");
@@ -307,8 +320,9 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
         });
 
         if (response.status === 200) {
-          if (method === "PATCH") router.push("/profile/myproducts");
-          else window.location.href = available;
+          method === "PATCH"
+            ? (window.location.href = "/profile/myproducts")
+            : (window.location.href = available);
           return;
         }
       } catch (error) {
@@ -387,7 +401,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                   className="hidden"
                   onChange={handleImageChange}
                   id="mainImage"
-                  accept="image/*"
+                  accept="image/png, image/jpeg"
                   name="imageSrc"
                   ref={imageInputRef}
                 />
@@ -536,7 +550,7 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 onChange={handleSubImageChage}
                 className="hidden"
                 id="subImage"
-                accept="image/*"
+                accept="image/png, image/jpeg"
                 name="subimageSrc"
               />
 
@@ -545,7 +559,8 @@ export default function AddProcuct({ editData = "", method }: AddProductProps) {
                 className={`${loadingHoverClass} text-sm`}
               >
                 그 외 이미지 업로드
-                <span className=" text-xs"> (4Mb씩 최대 10개)</span>
+                {/* <span className=" text-xs"> (4Mb씩 최대 10개)</span> */}
+                <span className=" text-xs">{` (${subImage?.length}/10)`}</span>
               </label>
             </div>
           )}

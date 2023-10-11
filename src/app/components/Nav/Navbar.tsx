@@ -22,7 +22,7 @@ export default function Navbar() {
         {popUp && (
           <div className="bg-indigo-600 h-6 text-white flex items-center justify-center">
             <span className="text-[0.6rem] ">
-              이 사이트는 상업 목적이 아닌 개인 프로젝트 목적으로 만들어졌습니다
+              이 사이트는 개인 프로젝트 목적으로 만들어졌습니다
             </span>
             <button onClick={() => setpopUp(false)} className=" ml-4 text-xs">
               {"[닫기]"}

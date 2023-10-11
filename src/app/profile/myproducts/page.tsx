@@ -19,19 +19,23 @@ export default async function MyProductsPage() {
 }
 
 async function getData(email: string, name: string) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/myproducts`,
-    {
-      cache: "no-store",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, name }),
-    }
-  );
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/myproducts`,
+      {
+        cache: "no-store",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name }),
+      }
+    );
 
-  const myProductsData: ProductsType[] = await response.json();
+    const myProductsData: ProductsType[] = await response.json();
 
-  return myProductsData;
+    return myProductsData;
+  } catch (e) {
+    return [];
+  }
 }

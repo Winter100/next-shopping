@@ -44,6 +44,6 @@ async function getData(keyword: string, page: number, filterValue: string) {
 
     return data;
   } catch (e) {
-    console.log(e);
+    return { searchData: [], pageInfo: [] };
   }
 }
