@@ -4,7 +4,7 @@ import { myGetServerSession } from "@/app/lib/getSession";
 export default async function WishListPage() {
   const session = await myGetServerSession();
 
-  const { email, name } = session?.user;
+  const { email } = session?.user;
 
   return (
     <div>

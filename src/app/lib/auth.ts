@@ -68,7 +68,7 @@ export async function changePassword(
 
     const hashedPassword = await hashPassword(newPassword);
 
-    const result = await db
+    await db
       .collection(usersCollection)
       .updateOne({ email: userEmail }, { $set: { password: hashedPassword } });
 

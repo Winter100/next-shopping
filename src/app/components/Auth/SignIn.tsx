@@ -32,16 +32,20 @@ export default function SignIn() {
     setIsLoading(true);
     setMessage("");
 
-    const response = await signIn("credentials", {
-      redirect: false,
-      email: userValue.email,
-      password: userValue.password,
-    });
+    try {
+      const response = await signIn("credentials", {
+        redirect: false,
+        email: userValue.email,
+        password: userValue.password,
+      });
 
-    if (response?.error) {
-      setMessage(response?.error || "잠시후 다시 시도해주세요.");
-      setIsLoading(false);
-    } else {
+      if (response?.error) {
+        setMessage(response?.error || "잠시후 다시 시도해주세요.");
+        setIsLoading(false);
+      } else {
+        router.push("/");
+      }
+    } catch (e) {
       router.push("/");
     }
   }

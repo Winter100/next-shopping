@@ -60,7 +60,7 @@ export default function SignUp() {
       setIsLoading(false);
       setMessage(result?.message);
     } catch (e) {
-      console.log(e);
+      router.push("/");
     }
   }
 
