@@ -1,4 +1,4 @@
-import { getDetailProduct } from "@/app/lib/db";
+import { getDetailProduct } from "@/app/_lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(

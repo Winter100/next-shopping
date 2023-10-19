@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MongoDbSignUp } from "../../lib/signUp";
-import { User } from "../../type/type";
-import { checkEmail } from "@/app/lib/db";
+import { MongoDbSignUp } from "../../_lib/signUp";
+import { User } from "../../_type/type";
+import { checkEmail } from "@/app/_lib/db";
 
 export async function POST(req: NextRequest) {
   try {

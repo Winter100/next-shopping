@@ -1,4 +1,4 @@
-import { getAllProducts } from "@/app/lib/db";
+import { getAllProducts } from "@/app/_lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

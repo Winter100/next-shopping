@@ -1,5 +1,5 @@
-import { authOptions } from "@/app/lib/auth";
-import { getMywishListId } from "@/app/lib/db";
+import { authOptions } from "@/app/_lib/auth";
+import { getMywishListId } from "@/app/_lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
