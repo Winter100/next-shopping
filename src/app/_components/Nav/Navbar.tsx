@@ -12,7 +12,7 @@ export default function Navbar() {
   const pathName = usePathname();
   const isHomeActive = pathName?.includes("/product") ? "text-purple-600" : "";
 
-  const linkStyle = " font-bold hover:text-purple-600 ";
+  const linkStyle = " text-sm font-bold hover:text-purple-600 ";
   const gridStyle = "flex items-center justify-center  md:my-0 ";
 
   const [popUp, setpopUp] = useState(true);
@@ -30,7 +30,7 @@ export default function Navbar() {
           </div>
         )}
 
-        <div className="my-1 md:my-2 max-w-4xl mx-auto">
+        <div className="my-1 max-w-4xl mx-auto">
           <div className="flex items-center justify-end space-x-4 text-xs mx-4 md:mx-0">
             {!data ? (
               <>
@@ -52,9 +52,9 @@ export default function Navbar() {
             )}
           </div>
 
-          <div className=" grid grid-cols-3 sm:grid-cols-3 sm:gap-x-4 my-0 sm:my-4 h-full">
+          <div className=" grid grid-cols-3 sm:grid-cols-3 sm:gap-x-4 my-0 sm:my-2 h-full">
             <div className="sm:hidden block"></div>
-            <div className={`${gridStyle} my-2 order-2 sm:order-1`}>
+            <div className={`${gridStyle} my-1 order-2 sm:order-1`}>
               <Link href="/" className="font-bold text-xl  sm:text-2xl">
                 싹다팜
               </Link>

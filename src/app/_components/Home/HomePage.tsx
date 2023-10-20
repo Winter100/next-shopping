@@ -10,31 +10,21 @@ export default function HomePage() {
   }
 
   const textStyle = "text-sm text-center md:text-left";
+  const boxStyle =
+    "flex flex-col items-center space-y-2 p-4 border-2 rounded-sm shadow-md ";
 
   return (
     <section className="w-full my-8">
-      <div className="container px-4 md:px-6">
-        <div className="grid gap-6 items-center">
+      <div className="container md:px-6">
+        <div className="grid gap-4 items-center">
           <div className="flex flex-col justify-center space-y-8 ">
-            <div className="space-y-2 text-center">
-              <h1 className="mb-4 text-black text-6xl font-bold ">싹다팜</h1>
-              <p className="max-w-[600px] dark:text-zinc-100 mx-auto text-sm">
-                싹다팜은 내가 가진 물품을 자유롭게 파는 곳입니다.
-              </p>
-              <p
-                onClick={onClickHandler}
-                className="m-auto hover:cursor-pointer border-none flex items-center justify-center bg-blue-500 rounded-2xl text-white w-20 h-8"
-              >
-                보러가기
-              </p>
-            </div>
-            <div className="w-full max-w-full space-y-4 mx-auto text-sm bg-blue-gray-50 rounded-lg">
+            <div className="w-full max-w-full space-y-4 mx-auto text-sm rounded-lg">
               <p className=" text-center my-2 font-bold text-xl text-light-blue-500">
                 기능 안내
               </p>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div className="flex flex-col items-center space-y-2 border-gray-800 p-4">
+              <div className="grid grid-cols-3 gap-2">
+                <div className={boxStyle}>
                   <div className="p-2 bg-black bg-opacity-50 rounded-full">
                     <svg
                       className="text-white h-6 w-6 mb-2 opacity-75"
@@ -57,7 +47,7 @@ export default function HomePage() {
                     상품 리스트에서 원하는 물건을 찾아볼 수 있습니다.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-gray-800 p-4 rounded-lg">
+                <div className={boxStyle}>
                   <div className="p-2 bg-black bg-opacity-50 rounded-full">
                     <svg
                       className=" text-white h-6 w-6 mb-2 opacity-75"
@@ -80,7 +70,7 @@ export default function HomePage() {
                     검색창을 이용해 원하는 상품을 검색할 수 있습니다.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-gray-800 p-4 rounded-lg">
+                <div className={boxStyle}>
                   <div className="p-2 bg-black bg-opacity-50 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +93,7 @@ export default function HomePage() {
                     회원가입 후 상품을 판매하거나 찜 목록에 추가할 수 있습니다.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-gray-800 p-4 rounded-lg">
+                <div className={boxStyle}>
                   <div className="p-2 bg-black bg-opacity-50 rounded-full">
                     <svg
                       className="text-white  h-6 w-6 mb-2 opacity-75"
@@ -128,7 +118,7 @@ export default function HomePage() {
                     로그인 후 상품을 등록해 판매할 수 있습니다.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-gray-800 p-4 rounded-lg">
+                <div className={boxStyle}>
                   <div className="p-2 bg-black bg-opacity-50 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +141,7 @@ export default function HomePage() {
                     판매 목록에서 상품을 관리할 수 있습니다.
                   </p>
                 </div>
-                <div className="flex flex-col items-center space-y-2 border-gray-800 p-4 rounded-lg">
+                <div className={boxStyle}>
                   <div className="p-2 bg-black bg-opacity-50 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -175,6 +165,12 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+            <p
+              onClick={onClickHandler}
+              className="m-auto  hover:cursor-pointer border-none flex items-center justify-center bg-blue-500 rounded-2xl text-white w-20 h-8"
+            >
+              보러가기
+            </p>
           </div>
         </div>
       </div>

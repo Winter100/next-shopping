@@ -10,7 +10,8 @@ export default function ProfileLayout({
       <div className="md:col-span-5 mt-6 sm:mt-4 md:order-last md:p-0 h-full min-h-full pb-16 md:pb-0">
         {children}
       </div>
-      <nav className="w-full sm:mt-16 md:col-span-1 md:order-first md:bottom-auto">
+
+      <nav className="w-full sm:mt-4 md:col-span-1 md:order-first md:bottom-auto">
         <SideBar />
       </nav>
     </div>

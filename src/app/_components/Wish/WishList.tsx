@@ -6,7 +6,6 @@ import { ProductsType } from "../../_type/type";
 import Modal from "../Btn/DeleteModal";
 import trashIcon from "../../../../public/Menu/trash-2.svg";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 
 export default function WishList({
@@ -15,8 +14,6 @@ export default function WishList({
   products?: ProductsType[];
   email: string;
 }) {
-  const { data } = useSession();
-
   async function getWish(email: string) {
     try {
       const response = await fetch(

@@ -8,7 +8,6 @@ export default async function WishListPage() {
 
   return (
     <div>
-      <h1 className="text-2xl my-2 font-bold text-center">찜 목록</h1>
       <WishList email={email} />
     </div>
   );

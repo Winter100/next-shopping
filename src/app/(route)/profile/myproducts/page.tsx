@@ -5,16 +5,10 @@ import { ProductsType } from "@/app/_type/type";
 export default async function MyProductsPage() {
   const session = await myGetServerSession();
 
-  const { email, name } = session.user;
+  const { email, name } = session?.user;
   const data = await getData(email, name);
 
-  return (
-    <div>
-      <h1 className="text-2xl my-2 font-bold text-center">내 판매 목록</h1>
-
-      {data?.length >= 1 && <MyProductsList products={data} />}
-    </div>
-  );
+  return <div>{data?.length >= 1 && <MyProductsList products={data} />}</div>;
 }
 
 async function getData(email: string, name: string) {
