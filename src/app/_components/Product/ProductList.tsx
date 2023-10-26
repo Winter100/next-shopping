@@ -1,6 +1,6 @@
-import { PageInfoProps, ProductsType } from "../../_type/type";
-import Filters from "../Pagination/Filters";
+import { PageInfoProps, ProductsType } from "@/app/_type/type";
 import ItemCard from "../Display/Card/ItemCard";
+import Filters from "../Pagination/Filters";
 
 export default function ProductList({
   products = [],

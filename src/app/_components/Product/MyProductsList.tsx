@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ProductsType } from "../../_type/type";
-import MyProductMenu from "../Btn/DropMenu";
+
 import MoreIcon from "../../../../public/Menu/more.svg";
 import Link from "next/link";
+import { ProductsType } from "@/app/_type/type";
+import MyProductMenu from "../Btn/DropMenu";
 
 export default function MyProductsList({
   products,
