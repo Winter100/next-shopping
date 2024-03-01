@@ -4,7 +4,7 @@
 
 Next.js 13(App)을 이용한 풀스택 프로젝트입니다.
 
-[싹다팜](https://next-shopping-topaz.vercel.app/)은 이용자가 판매하고자 하는 물품과 가격을 등록하면 다른 이용자들이 보고 개별적으로 연락해 거래를 하는 사이트입니다.
+[싹다팜](https://ssakdapam.vercel.app/)은 이용자가 판매하고자 하는 물품과 가격을 등록하면 다른 이용자들이 보고 개별적으로 연락해 거래를 하는 사이트입니다.
 
 **Link: [싹다팜](https://next-shopping-topaz.vercel.app/)**
 
